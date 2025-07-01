@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-title: var(--font-hindu-title);
+  --font-hindu-body: var(--font-hindu-body);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #949698bb;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6c6d6f;
+}
+
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-title: var(--font-hindu-title);
+  --font-hindu-body: var(--font-hindu-body);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+  /* background: var(--background); */
+  /* color: var(--foreground); */
+  font-family: var(--font-hindu-body), Arial, Helvetica, sans-serif;
+}
+
+/* Example heading style like "The Hindu" logo */
+.title {
+  font-family: var(--font-title), Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
