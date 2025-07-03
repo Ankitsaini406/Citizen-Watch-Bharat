@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String            @id @default(cuid())
+  name         String
+  email        String            @unique
+  phonenumber  String?
+  address      String?
+  image        String?
+  password     String?
+  role         Role              @default(USER)
+  offerletter  String?
+  joindate     DateTime?
+  terminate    DateTime?
+  noticeperiod DateTime?
+  isDelete     Boolean           @default(false)
+  status       String?
+  lastLogin    DateTime?
+  createdBy    String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  managerId    String?
+  editedUsers  EditHistory[]     @relation("EditorUser")
+  editHistory  EditHistory[]
+  news         News[]
+  editedNews   News[]            @relation("NewsEditor")
+  newsEdited   NewsEditHistory[]
+  manager      User?             @relation("UserManager", fields: [managerId], references: [id])
+  subordinates User[]            @relation("UserManager")
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String @unique
+  slug String @unique
+  news News[]
+}
+
+model News {
+  id            String            @id @default(cuid())
+  title         String
+  slug          String            @unique
+  subtitle      String?
+  tags          String[]
+  categoryId    String
+  content       Json
+  issue         String[]          @default([])
+  authorId      String
+  author_name   String
+  views         Int               @default(0)
+  live          Boolean           @default(false)
+  isReview      Boolean           @default(false)
+  isPublish     Boolean           @default(false)
+  isDeleted     Boolean           @default(false)
+  twitter_link  String
+  facebook_link String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  city          String
+  state         String
+  status        String            @default("draft")
+  heroImage     String[]
+  editorId      String?
+  editor_name   String?
+  lastEditedAt  DateTime?
+  author        User              @relation(fields: [authorId], references: [id])
+  category      Category          @relation(fields: [categoryId], references: [id])
+  editor        User?             @relation("NewsEditor", fields: [editorId], references: [id])
+  editHistory   NewsEditHistory[]
+}
+
+model EditHistory {
+  id       String   @id @default(cuid())
+  userId   String
+  editorId String
+  editDate DateTime @default(now())
+  editor   User     @relation("EditorUser", fields: [editorId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+}
+
+model NewsEditHistory {
+  id       String   @id @default(cuid())
+  newsId   String
+  editorId String
+  editDate DateTime @default(now())
+  editor   User     @relation(fields: [editorId], references: [id])
+  news     News     @relation(fields: [newsId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+  EDITOR
+  INTERN
+  SUB_ADMIN
+  JOURNALIST
+  SENIOR_EDITOR
+  SENIOR_JOURNALIST
+}
