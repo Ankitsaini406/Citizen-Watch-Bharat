@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${hinduTitleFont.variable} ${hinduBodyFont.variable} antialiased flex flex-col min-h-screen selection:bg-black `}
+        className={`${hinduTitleFont.variable} ${hinduBodyFont.variable} antialiased flex flex-col min-h-screen`}
       >
         <ChildLayout>
         {children}

@@ -52,14 +52,14 @@
 body {
   /* background: var(--background); */
   /* color: var(--foreground); */
+  overscroll-behavior: contain;
   font-family: var(--font-hindu-body), Arial, Helvetica, sans-serif;
 }
 
-/* Example heading style like "The Hindu" logo */
-.title {
-  font-family: var(--font-title), Georgia, serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
+.container {
+  max-width: 1200px ;
+}
+
+button {
+  cursor: pointer;
 }
