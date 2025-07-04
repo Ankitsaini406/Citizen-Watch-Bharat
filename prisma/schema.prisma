@@ -37,10 +37,25 @@ model User {
 }
 
 model Category {
-  id   String @id @default(cuid())
-  name String @unique
-  slug String @unique
-  news News[]
+  id          String       @id @default(cuid())
+  name        String       @unique
+  slug        String       @unique
+  description String?
+  parentId    String?
+  parent      Category?    @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[]   @relation("CategoryHierarchy")
+  news        News[]
+  subCategories SubCategory[]
+}
+
+model SubCategory {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  news        News[]
 }
 
 model News {
@@ -50,12 +65,14 @@ model News {
   subtitle      String?
   tags          String[]
   categoryId    String
+  subCategoryId String?
   content       Json
   issue         String[]          @default([])
   authorId      String
   author_name   String
   views         Int               @default(0)
   live          Boolean           @default(false)
+  isBreaking    Boolean           @default(false)
   isReview      Boolean           @default(false)
   isPublish     Boolean           @default(false)
   isDeleted     Boolean           @default(false)
@@ -72,6 +89,7 @@ model News {
   lastEditedAt  DateTime?
   author        User              @relation(fields: [authorId], references: [id])
   category      Category          @relation(fields: [categoryId], references: [id])
+  subCategory   SubCategory?      @relation(fields: [subCategoryId], references: [id])
   editor        User?             @relation("NewsEditor", fields: [editorId], references: [id])
   editHistory   NewsEditHistory[]
 }

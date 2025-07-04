@@ -1,6 +1,7 @@
 // src/app/page.tsx
 
 import { TopBanner } from "@/components/AddBanners";
+import { BrakingNews } from "@/components/BrakingNews";
 import CategoryNewsList from "@/components/Home/CategoryNewsList";
 
 async function getCategories() {
@@ -22,7 +23,10 @@ export default async function Home() {
   return (
     <div className="container mx-auto">
       <TopBanner />
-      <CategoryNewsList categories={categories} news={news} />;
+      <BrakingNews />
+      {/* <LeftBanner /> */}
+      <CategoryNewsList categories={categories} news={news} />
+      {/* <RightBanner /> */}
     </div>
   )
 }
