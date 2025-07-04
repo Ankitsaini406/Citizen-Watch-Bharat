@@ -37,14 +37,14 @@ model User {
 }
 
 model Category {
-  id          String       @id @default(cuid())
-  name        String       @unique
-  slug        String       @unique
-  description String?
-  parentId    String?
-  parent      Category?    @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children    Category[]   @relation("CategoryHierarchy")
-  news        News[]
+  id            String        @id @default(cuid())
+  name          String        @unique
+  slug          String        @unique
+  description   String?
+  parentId      String?
+  parent        Category?     @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children      Category[]    @relation("CategoryHierarchy")
+  news          News[]
   subCategories SubCategory[]
 }
 
@@ -78,20 +78,20 @@ model News {
   isDeleted     Boolean           @default(false)
   twitter_link  String
   facebook_link String
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
   city          String
   state         String
   status        String            @default("draft")
   heroImage     String[]
   editorId      String?
   editor_name   String?
-  lastEditedAt  DateTime?
   author        User              @relation(fields: [authorId], references: [id])
   category      Category          @relation(fields: [categoryId], references: [id])
   subCategory   SubCategory?      @relation(fields: [subCategoryId], references: [id])
   editor        User?             @relation("NewsEditor", fields: [editorId], references: [id])
   editHistory   NewsEditHistory[]
+  lastEditedAt  DateTime?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
 }
 
 model EditHistory {

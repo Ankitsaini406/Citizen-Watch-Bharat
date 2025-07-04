@@ -5,7 +5,12 @@ export async function GET() {
     const breakingNews = await prisma.news.findMany({
         where: { isBreaking: true, isPublish: true, isDeleted: false },
         orderBy: { createdAt: "desc" },
-        select: { slug: true, title: true },
+        select: {
+            slug: true,
+            title: true,
+            category: { select: { slug: true } },
+            subCategory: { select: { slug: true } },
+        },
         take: 10,
     });
     return NextResponse.json(breakingNews);

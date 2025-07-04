@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 
 type BreakingNewsItem = {
-    id: string;
     title: string;
+    slug: string;
+    category: string;
+    subCategory: string;
 };
 
 export function BrakingNews() {
