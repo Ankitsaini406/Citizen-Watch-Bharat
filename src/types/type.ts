@@ -6,7 +6,7 @@ export type Category = {
 };
 
 export type News = {
-    id: string;
+    slug: string;
     title: string;
     category?: { slug: string };
 };

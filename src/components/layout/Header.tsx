@@ -228,7 +228,7 @@ export default function Header() {
                 </div>
             </header>
             {/* Desktop Categories */}
-            <nav className="hidden md:flex justify-center bg-white shadow-md py-3 z-40" aria-label="Categories">
+            <nav className="hidden md:flex sticky top-0 justify-center bg-gray-100 shadow-md py-3 z-40" aria-label="Categories">
                 <ul className="flex gap-6 font-bold text-sm lg:text-base">
                     {categories.map((cat) => {
                         const isActive = pathname?.startsWith(`/category/${cat.slug}`);

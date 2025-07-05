@@ -1,31 +1,28 @@
 // src/app/page.tsx
 
 import { TopBanner } from "@/components/AddBanners";
-import { BrakingNews } from "@/components/BrakingNews";
+import { BrakingNews } from "@/components/NewsComponents";
 import CategoryNewsList from "@/components/Home/CategoryNewsList";
-
-async function getCategories() {
-  const res = await fetch(`http://localhost:3007/api/news/category`, { cache: "no-store" });
-  const data = await res.json();
-  return data.data || [];
-}
-
-async function getNews() {
-  const res = await fetch(`http://localhost:3007/api/news`, { cache: "no-store" });
-  const data = await res.json();
-  return data.data || [];
-}
+import { getCategoriesWithNews } from "@/data/dummyData";
 
 export default async function Home() {
-  const categories = await getCategories();
-  const news = await getNews();
+  const categoriesWithNews = getCategoriesWithNews();
+  
+  // Extract categories and news for the existing component structure
+  const categories = categoriesWithNews.map(cat => ({
+    id: cat.id,
+    name: cat.name,
+    slug: cat.slug
+  }));
+  
+  const news = categoriesWithNews.flatMap(cat => cat.news);
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto pb-10">
       <TopBanner />
       <BrakingNews />
       {/* <LeftBanner /> */}
-      <CategoryNewsList categories={categories} news={news} />
+        <CategoryNewsList categories={categories} news={news} />
       {/* <RightBanner /> */}
     </div>
   )
