@@ -13,7 +13,7 @@ export function TopBanner() {
 
 export function LeftBanner() {
     return (
-        <div className="hidden xl:block fixed left-0 top-72">
+        <div className="hidden 2xl:block fixed left-0 top-72">
             <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-80">
                 <h1 className="text-3xl text-background">
                     ADD
@@ -25,7 +25,7 @@ export function LeftBanner() {
 
 export function RightBanner() {
     return (
-        <div className="hidden xl:block fixed right-0 top-72">
+        <div className="hidden 2xl:block fixed right-0 top-72">
             <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-80">
                 <h1 className="text-3xl text-background">
                     ADD

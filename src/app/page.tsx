@@ -1,6 +1,6 @@
 // src/app/page.tsx
 
-import { TopBanner } from "@/components/AddBanners";
+import { LeftBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import { BrakingNews } from "@/components/NewsComponents";
 import CategoryNewsList from "@/components/Home/CategoryNewsList";
 import { getCategoriesWithNews } from "@/data/dummyData";
@@ -21,9 +21,9 @@ export default async function Home() {
     <div className=" pb-10">
       <TopBanner />
       <BrakingNews />
-      {/* <LeftBanner /> */}
+      <LeftBanner />
         <CategoryNewsList categories={categories} news={news} />
-      {/* <RightBanner /> */}
+      <RightBanner />
     </div>
   )
 }
