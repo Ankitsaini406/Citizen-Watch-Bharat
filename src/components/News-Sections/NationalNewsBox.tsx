@@ -13,7 +13,7 @@ export default function NationalNewsBox({ category, categoryNameHindi }: Props) 
             {/* Category Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4 w-full">
-                    <h1 className="text-xl font-bold text-red-700 whitespace-nowrap">
+                    <h1 className="text-xl font-bold pb-2 text-red-700 whitespace-nowrap">
                         {categoryNameHindi[category.name] || category.name}
                     </h1>
                     <div className="flex-1 border-t-2 border-red-700"></div>
