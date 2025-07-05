@@ -35,7 +35,7 @@ export function BrakingNews() {
     const marqueeText = news.map(n => n.title).join("   •   ");
 
     return (
-        <div className="bg-red-600 py-2 overflow-hidden relative">
+        <div className="container mx-auto bg-red-600 py-2 overflow-hidden relative">
             <div className="absolute left-0 top-0 h-full flex items-center px-4 bg-red-800 text-white font-bold z-10">
                 Breaking News
             </div>

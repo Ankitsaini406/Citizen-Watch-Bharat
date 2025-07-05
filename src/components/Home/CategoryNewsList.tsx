@@ -55,7 +55,7 @@ export default function CategoryNewsList({ categories, news }: Props) {
         });
 
     return (
-        <div className="max-w-7xl mx-auto px-4 xl:px-0 py-8">
+        <div className="container mx-auto px-4 xl:px-0 py-8">
             {newsByCategory.map((cat) => {
                 switch (cat.name) {
                     case "National":
@@ -67,7 +67,7 @@ export default function CategoryNewsList({ categories, news }: Props) {
                                     <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                                     <LatestNews />
                                 </div>
-                                
+
                                 {/* Desktop Layout: Grid with 70/30 split */}
                                 <div className="hidden lg:grid lg:grid-cols-[70%_30%] gap-0 xl:gap-5">
                                     <NationalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
@@ -77,21 +77,61 @@ export default function CategoryNewsList({ categories, news }: Props) {
                             </div>
                         );
                     case "International":
-                        return <InternationalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <InternationalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                     case "Political":
-                        return <PoliticalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <PoliticalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                     case "Business":
-                        return <BusinessNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <BusinessNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                     case "Sports":
-                        return <SportsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <SportsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                     case "Entertainment":
-                        return <EntertainmentNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <EntertainmentNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                     case "Elections":
-                        return <ElectionsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <ElectionsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                     case "Web-Stories":
-                        return <WebStoriesNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <WebStoriesNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                     default:
-                        return <CategoryNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />;
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <CategoryNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                            </div>
+                        );
                 }
             })}
         </div>
