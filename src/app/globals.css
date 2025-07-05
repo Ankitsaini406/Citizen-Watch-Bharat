@@ -64,6 +64,10 @@ button {
   cursor: pointer;
 }
 
+.container {
+  max-width: 1000px;
+}
+
 .marquee {
   display: inline-block;
   min-width: 100%;
