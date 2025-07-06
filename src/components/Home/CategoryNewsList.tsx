@@ -3,14 +3,14 @@
 import { Category, News } from "@/types/type";
 import React from "react";
 import CategoryNewsBox from "./CategoryNewsBox";
-import NationalNewsBox from "../News-Sections/NationalNewsBox";
-import InternationalNewsBox from "../News-Sections/InternationalNewsBox";
-import PoliticalNewsBox from "../News-Sections/PoliticalNewsBox";
-import BusinessNewsBox from "../News-Sections/BusinessNewsBox";
-import SportsNewsBox from "../News-Sections/SportsNewsBox";
-import EntertainmentNewsBox from "../News-Sections/EntertainmentNewsBox";
-import ElectionsNewsBox from "../News-Sections/ElectionsNewsBox";
-import WebStoriesNewsBox from "../News-Sections/WebStoriesNewsBox";
+import NationalNewsBox from "./News-Sections/NationalNewsBox";
+import InternationalNewsBox from "./News-Sections/InternationalNewsBox";
+import PoliticalNewsBox from "./News-Sections/PoliticalNewsBox";
+import BusinessNewsBox from "./News-Sections/BusinessNewsBox";
+import SportsNewsBox from "./News-Sections/SportsNewsBox";
+import EntertainmentNewsBox from "./News-Sections/EntertainmentNewsBox";
+import ElectionsNewsBox from "./News-Sections/ElectionsNewsBox";
+import WebStoriesNewsBox from "./News-Sections/WebStoriesNewsBox";
 import { LatestNews } from "../NewsComponents";
 import { ButtonSeeMore } from "@/utils/Buttons";
 
