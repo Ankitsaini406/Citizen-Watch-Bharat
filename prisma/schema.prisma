@@ -8,32 +8,34 @@ datasource db {
 }
 
 model User {
-  id           String            @id @default(cuid())
-  name         String
-  email        String            @unique
-  phonenumber  String?
-  address      String?
-  image        String?
-  password     String?
-  role         Role              @default(USER)
-  offerletter  String?
-  joindate     DateTime?
-  terminate    DateTime?
-  noticeperiod DateTime?
-  isDelete     Boolean           @default(false)
-  status       String?
-  lastLogin    DateTime?
-  createdBy    String?
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
-  managerId    String?
-  editedUsers  EditHistory[]     @relation("EditorUser")
-  editHistory  EditHistory[]
-  news         News[]
-  editedNews   News[]            @relation("NewsEditor")
-  newsEdited   NewsEditHistory[]
-  manager      User?             @relation("UserManager", fields: [managerId], references: [id])
-  subordinates User[]            @relation("UserManager")
+  id             String            @id @default(cuid())
+  name           String
+  email          String            @unique
+  phonenumber    String?
+  address        String?
+  image          String?
+  password       String?
+  role           Role              @default(USER)
+  offerletter    String?
+  joindate       DateTime?
+  terminate      DateTime?
+  noticeperiod   DateTime?
+  isDelete       Boolean           @default(false)
+  status         String?
+  lastLogin      DateTime?
+  createdBy      String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  managerId      String?
+  isActive       Boolean           @default(false)
+  editedUsers    EditHistory[]     @relation("EditorUser")
+  editHistory    EditHistory[]
+  news           News[]
+  editedNews     News[]            @relation("NewsEditor")
+  newsEdited     NewsEditHistory[]
+  manager        User?             @relation("UserManager", fields: [managerId], references: [id])
+  subordinates   User[]            @relation("UserManager")
+  UserAttendance UserAttendance[]
 }
 
 model Category {
@@ -54,8 +56,8 @@ model SubCategory {
   slug        String   @unique
   description String?
   categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
   news        News[]
+  category    Category @relation(fields: [categoryId], references: [id])
 }
 
 model News {
@@ -65,33 +67,34 @@ model News {
   subtitle      String?
   tags          String[]
   categoryId    String
-  subCategoryId String?
   content       Json
   issue         String[]          @default([])
   authorId      String
   author_name   String
   views         Int               @default(0)
   live          Boolean           @default(false)
-  isBreaking    Boolean           @default(false)
   isReview      Boolean           @default(false)
   isPublish     Boolean           @default(false)
   isDeleted     Boolean           @default(false)
   twitter_link  String
   facebook_link String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
   city          String
   state         String
   status        String            @default("draft")
   heroImage     String[]
   editorId      String?
   editor_name   String?
+  lastEditedAt  DateTime?
+  subCategoryId String?
+  isBreaking    Boolean           @default(false)
+  pngImage      String?
   author        User              @relation(fields: [authorId], references: [id])
   category      Category          @relation(fields: [categoryId], references: [id])
-  subCategory   SubCategory?      @relation(fields: [subCategoryId], references: [id])
   editor        User?             @relation("NewsEditor", fields: [editorId], references: [id])
+  subCategory   SubCategory?      @relation(fields: [subCategoryId], references: [id])
   editHistory   NewsEditHistory[]
-  lastEditedAt  DateTime?
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
 }
 
 model EditHistory {
@@ -110,6 +113,30 @@ model NewsEditHistory {
   editDate DateTime @default(now())
   editor   User     @relation(fields: [editorId], references: [id])
   news     News     @relation(fields: [newsId], references: [id])
+}
+
+model Advertisement {
+  id        String   @id
+  title     String
+  imageUrl  String
+  link      String
+  position  String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  page      String
+}
+
+model UserAttendance {
+  id       String    @id
+  userId   String
+  date     DateTime
+  loginAt  DateTime?
+  punchIn  DateTime?
+  punchOut DateTime?
+  User     User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
 }
 
 enum Role {

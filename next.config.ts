@@ -2,13 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'citizenwatchbharat.com',
-        pathname: '/images/**',
-      },
-    ],
+    domains: ['citizenwatchbharat.com'],
   },
 };
 

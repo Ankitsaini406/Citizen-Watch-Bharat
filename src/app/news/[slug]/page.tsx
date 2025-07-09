@@ -1,188 +1,254 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import ViewTracker from '@/components/ViewTracker';
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import Image from "next/image";
+import RichTextPreview, { LexicalNode } from "@/utils/Editor/RichTextPreview";
+import { Facebook, X } from "lucide-react";
 
 interface NewsArticle {
     id: string;
+    slug: string;
     title: string;
     subtitle?: string;
-    slug: string;
-    content: string | object;
     tags: string[];
-    state: string;
-    city: string;
-    views: number;
-    heroImage: string[];
-    createdAt: string;
-    updatedAt: string;
-    author: {
-        id: string;
-        name: string;
-        image?: string;
-        role: string;
-    };
     category: {
-        id: string;
         name: string;
-        slug: string;
     };
-    subCategory?: {
-        id: string;
+    content: { root: { children: LexicalNode[] } };
+    author: {
         name: string;
-        slug: string;
     };
+    views: number;
+    twitter_link: string;
+    facebook_link: string;
+    createdAt: string;
+    city: string;
+    state: string;
+    heroImage: string[];
+    subCategoryId?: string;
+    pngImage?: string;
 }
 
-export default function NewsArticlePage() {
+// Error state component
+function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+    return (
+        <div className="flex flex-col items-center justify-center h-64 text-center text-red-600">
+            <svg className="w-12 h-12 mb-3" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div className="mb-2 text-lg font-semibold">{message}</div>
+            <div className="flex gap-4 mt-2">
+                <button
+                    onClick={onRetry}
+                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+                >
+                    Retry
+                </button>
+                <Link href="/" className="underline text-blue-600 px-4 py-2">Go Home</Link>
+            </div>
+        </div>
+    );
+}
+
+// Shimmering skeleton loader for news article
+function NewsSkeleton() {
+    return (
+        <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden animate-pulse">
+            {/* Title */}
+            <div className="h-10 bg-gray-200 rounded w-3/4 mb-4" />
+            {/* Subtitle */}
+            <div className="h-6 bg-gray-200 rounded w-1/2 mb-6" />
+            {/* Hero Image */}
+            <div className="relative w-full h-80 sm:h-[400px] bg-gray-300 rounded mb-6" />
+            <div className="p-6 lg:px-0">
+                {/* Category and Date */}
+                <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm">
+                    <div className="h-4 w-24 bg-gray-200 rounded" />
+                    <div className="flex gap-5">
+                        <div className="h-4 w-20 bg-gray-200 rounded" />
+                        <div className="h-4 w-28 bg-gray-200 rounded" />
+                    </div>
+                </div>
+                {/* Main Content */}
+                <div className="space-y-3 mb-8">
+                    <div className="h-4 bg-gray-200 rounded w-full" />
+                    <div className="h-4 bg-gray-200 rounded w-5/6" />
+                    <div className="h-4 bg-gray-200 rounded w-2/3" />
+                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                </div>
+                {/* Tags */}
+                <div className="mb-6 flex flex-wrap gap-2">
+                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
+                    <div className="h-6 w-12 bg-gray-200 rounded-full" />
+                </div>
+                {/* Author and Social */}
+                <div className="flex flex-wrap items-center gap-4 mb-6">
+                    <div className="h-6 w-32 bg-gray-200 rounded" />
+                    <div className="flex gap-2">
+                        <div className="h-6 w-16 bg-gray-200 rounded" />
+                        <div className="h-6 w-20 bg-gray-200 rounded" />
+                    </div>
+                </div>
+            </div>
+        </article>
+    );
+}
+
+export default function NewsPage() {
     const params = useParams();
     const [article, setArticle] = useState<NewsArticle | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [currentViews, setCurrentViews] = useState<number>(0);
+    const [retryKey, setRetryKey] = useState(0);
 
     useEffect(() => {
-        const fetchArticle = async () => {
+        const fetchNews = async () => {
+            setLoading(true);
+            setError(null);
             try {
-                setLoading(true);
-                const response = await fetch(`/api/news?slug=${params.slug}`);
-                const data = await response.json();
-
-                if (data.success && data.data.length > 0) {
-                    setArticle(data.data[0]);
-                    setCurrentViews(data.data[0].views || 0);
+                const res = await fetch(`/api/news/${params.slug}`);
+                const data = await res.json();
+                console.log(`This is news data : `, data.data.news.heroImage);
+                if (data.success) {
+                    setArticle(data.data.news);
                 } else {
-                    setError('Article not found');
+                    setError("Article not found");
                 }
             } catch {
-                setError('Failed to load article');
+                setError("Failed to load news");
             } finally {
                 setLoading(false);
             }
         };
 
-        if (params.slug) {
-            fetchArticle();
-        }
-    }, [params.slug]);
+        fetchNews();
+    }, [params?.slug, retryKey]);
 
-    const handleViewTracked = (views: number) => {
-        setCurrentViews(views);
+    const handleRetry = () => {
+        setRetryKey(prev => prev + 1);
     };
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-50">
-                <div className="container mx-auto px-4 py-8">
-                    <div className="animate-pulse">
-                        <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-                        <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
-                        <div className="h-96 bg-gray-200 rounded mb-8"></div>
-                    </div>
-                </div>
-            </div>
-        );
+        return <NewsSkeleton />;
+    }
+    if (error) {
+        return <ErrorState message={error} onRetry={handleRetry} />;
     }
 
-    if (error || !article) {
+    // Article page
+    if (params?.slug && article) {
+        let firstImage = "";
+        const heroImageRaw = article.heroImage;
+
+        if (Array.isArray(heroImageRaw) && heroImageRaw.length > 0) {
+            const first = heroImageRaw[0];
+            // If the first element is a JSON array string, parse it
+            if (typeof first === "string" && first.trim().startsWith("[")) {
+                try {
+                    const parsed = JSON.parse(first);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        firstImage = parsed[0];
+                    }
+                } catch (e) {
+                    firstImage = first;
+                    console.log(e)
+                }
+            } else if (typeof first === "string") {
+                firstImage = first;
+            }
+        } else if (typeof heroImageRaw === "string") {
+            firstImage = heroImageRaw;
+        }
+
         return (
-            <div className="min-h-screen bg-gray-50">
-                <div className="container mx-auto px-4 py-8">
-                    <div className="text-center">
-                        <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                            {error || 'Article not found'}
-                        </h1>
-                        <Link href="/" className="text-red-600 hover:text-red-800 underline">
-                            Return to Home
-                        </Link>
+            <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
+                {/* Title */}
+                <h1 className="text-4xl font-bold mb-2 leading-tight">{article.title}</h1>
+                {/* Subtitle */}
+                {article.subtitle && (
+                    <h2 className="text-xl text-gray-700 mb-4">{article.subtitle}</h2>
+                )}
+                {/* Hero Image */}
+                {firstImage && (
+                    <div className="relative w-full h-80 sm:h-[400px]">
+                        <Image
+                            src={firstImage}
+                            alt={article.title}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
                     </div>
-                </div>
-            </div>
-        );
-    }
+                )}
 
-    return (
-        <div className="min-h-screen bg-gray-50">
-            <ViewTracker 
-                slug={params.slug as string} 
-                onViewTracked={handleViewTracked}
-            />
-            
-            <div className="container mx-auto px-4 py-8">
-                <nav className="mb-8">
-                    <ol className="flex items-center space-x-2 text-sm text-gray-600">
-                        <li>
-                            <Link href="/" className="hover:text-red-600">Home</Link>
-                        </li>
-                        <li>/</li>
-                        <li>
-                            <Link href={`/news/category/${article.category.slug}`} className="hover:text-red-600">
-                                {article.category.name}
-                            </Link>
-                        </li>
-                        <li>/</li>
-                        <li className="text-gray-900 truncate">{article.title}</li>
-                    </ol>
-                </nav>
-
-                <article className="bg-white rounded-lg shadow-sm border p-8">
-                    <div className="mb-4">
-                        <span className="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800">
+                <div className="p-6 lg:px-0">
+                    {/* Category and Date */}
+                    <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
+                        <span className="uppercase font-semibold tracking-wider text-red-600">
                             {article.category.name}
                         </span>
-                    </div>
-
-                    <h1 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                        {article.title}
-                    </h1>
-
-                    {article.subtitle && (
-                        <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-                            {article.subtitle}
-                        </p>
-                    )}
-
-                    <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 mb-8 pb-6 border-b border-gray-200">
-                        <div className="flex items-center">
-                            <span>{article.author.name}</span>
-                        </div>
-                        <div className="flex items-center">
-                            <span className="font-semibold text-red-600">{currentViews} views</span>
-                        </div>
-                        <div className="flex items-center">
-                            <span>{article.city}, {article.state}</span>
+                        <div className="flex gap-5">
+                            <span>{new Date(article.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            {article.city && (
+                                <span>{article.city}, {article.state}</span>
+                            )}
                         </div>
                     </div>
 
-                    <div className="prose prose-lg max-w-none">
-                        <div className="text-gray-700 leading-relaxed">
-                            <p>This is a sample news article content. The view count above shows how many times this article has been viewed.</p>
-                            <p>Every time someone visits this page, the view count will automatically increase by 1.</p>
-                        </div>
+                    {/* Main Content */}
+                    <div className="prose max-w-none mb-8">
+                        {article.content && typeof article.content === "object" ? (
+                            <RichTextPreview lexicalJson={article.content} />
+                        ) : (
+                            <span className="text-gray-400">No content</span>
+                        )}
                     </div>
 
+                    {/* Tags */}
                     {article.tags && article.tags.length > 0 && (
-                        <div className="mt-8 pt-6 border-t border-gray-200">
-                            <h3 className="text-sm font-semibold text-gray-900 mb-3">Tags:</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {article.tags.map((tag, index) => (
-                                    <span key={index} className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full">
-                                        #{tag}
-                                    </span>
-                                ))}
-                            </div>
+                        <div className="mb-6 flex flex-wrap gap-2">
+                            {article.tags.map(tag => (
+                                <span key={tag} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                                    #{tag}
+                                </span>
+                            ))}
                         </div>
                     )}
-                </article>
 
-                <div className="mt-8 text-center">
-                    <Link href="/" className="text-red-600 hover:text-red-800 underline">
-                        ← Back to Home
-                    </Link>
+                    {/* Author and Social */}
+                    <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+                        <div className="flex items-center gap-2">
+                            <span className="font-medium text-gray-800">By {article.author.name}</span>
+                        </div>
+                        <div className="flex gap-2">
+                            {article.twitter_link && (
+                                <Link
+                                    href={article.twitter_link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="View on X"
+                                    className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-black/90"
+                                >
+                                    <X className="w-5 h-5 text-black group-hover:text-white transition-colors duration-150" />
+                                </Link>
+                            )}
+                            {article.facebook_link && (
+                                <Link
+                                    href={article.facebook_link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="View on Facebook"
+                                    className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-[#1877F3]"
+                                >
+                                    <Facebook className="w-5 h-5 text-[#1877F3] group-hover:text-white transition-colors duration-150" />
+                                </Link>
+                            )}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    );
+            </article>
+        );
+    }
 } 

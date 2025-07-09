@@ -7,8 +7,6 @@ export async function GET(
 ) {
     try {
         const { slug } = params;
-        
-        // Get the news article and increment view count
         const news = await prisma.news.findUnique({
             where: {
                 slug: slug,
@@ -18,7 +16,29 @@ export async function GET(
             select: {
                 id: true,
                 title: true,
-                views: true,
+                subtitle: true,
+                city: true,
+                state: true,
+                subCategoryId: true,
+                pngImage: true,
+                facebook_link: true,
+                twitter_link: true,
+                heroImage: true,
+                tags: true,
+                createdAt: true,
+                content: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
             },
         });
 
@@ -34,7 +54,6 @@ export async function GET(
             where: { id: news.id },
             data: { views: { increment: 1 } },
             select: {
-                id: true,
                 title: true,
                 views: true,
             },
@@ -43,8 +62,7 @@ export async function GET(
         return NextResponse.json({
             success: true,
             data: {
-                id: updatedNews.id,
-                title: updatedNews.title,
+                news: news,
                 views: updatedNews.views,
             },
         });
