@@ -10,3 +10,43 @@ export type News = {
     title: string;
     category?: { slug: string };
 };
+
+export interface LexicalNode {
+    type: string;
+    text?: string;
+    format?: string | number;
+    listType?: string;
+    url?: string;
+    children?: LexicalNode[];
+    src?: string;
+    alignment?: string;
+    width?: number;
+    height?: number;
+    tag?: string;
+}
+
+export interface NewsArticle {
+    id: string;
+    slug: string;
+    title: string;
+    subtitle?: string;
+    tags: string[];
+    category: {
+        name: string;
+        slug: string;
+    };
+    content: { root: { children: LexicalNode[] } };
+    author: {
+        name: string;
+    };
+    views: number;
+    twitter_link: string;
+    facebook_link: string;
+    createdAt: string;
+    city: string;
+    state: string;
+    heroImage: string[];
+    subCategoryId?: string;
+    pngImage?: string;
+}
+

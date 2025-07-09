@@ -4,32 +4,9 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import RichTextPreview, { LexicalNode } from "@/utils/Editor/RichTextPreview";
+import RichTextPreview from "@/utils/Editor/RichTextPreview";
 import { Facebook, X } from "lucide-react";
-
-interface NewsArticle {
-    id: string;
-    slug: string;
-    title: string;
-    subtitle?: string;
-    tags: string[];
-    category: {
-        name: string;
-    };
-    content: { root: { children: LexicalNode[] } };
-    author: {
-        name: string;
-    };
-    views: number;
-    twitter_link: string;
-    facebook_link: string;
-    createdAt: string;
-    city: string;
-    state: string;
-    heroImage: string[];
-    subCategoryId?: string;
-    pngImage?: string;
-}
+import { NewsArticle } from "@/types/type";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -56,11 +33,8 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 function NewsSkeleton() {
     return (
         <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden animate-pulse">
-            {/* Title */}
             <div className="h-10 bg-gray-200 rounded w-3/4 mb-4" />
-            {/* Subtitle */}
             <div className="h-6 bg-gray-200 rounded w-1/2 mb-6" />
-            {/* Hero Image */}
             <div className="relative w-full h-80 sm:h-[400px] bg-gray-300 rounded mb-6" />
             <div className="p-6 lg:px-0">
                 {/* Category and Date */}
@@ -103,6 +77,10 @@ export default function NewsPage() {
     const [error, setError] = useState<string | null>(null);
     const [retryKey, setRetryKey] = useState(0);
 
+    // New states for related and category news
+    const [relatedNews, setRelatedNews] = useState<NewsArticle[]>([]);
+    const [categoryNews, setCategoryNews] = useState<NewsArticle[]>([]);
+
     useEffect(() => {
         const fetchNews = async () => {
             setLoading(true);
@@ -110,7 +88,6 @@ export default function NewsPage() {
             try {
                 const res = await fetch(`/api/news/${params.slug}`);
                 const data = await res.json();
-                console.log(`This is news data : `, data.data.news.heroImage);
                 if (data.success) {
                     setArticle(data.data.news);
                 } else {
@@ -125,6 +102,29 @@ export default function NewsPage() {
 
         fetchNews();
     }, [params?.slug, retryKey]);
+
+    // Fetch related and category news after article is loaded
+    useEffect(() => {
+        if (!article) return;
+
+        // Fetch related news by tags
+        if (article.tags && article.tags.length > 0) {
+            fetch(`/api/news/related?tags=${article.tags.join(",")}&exclude=${params.slug}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) setRelatedNews(data.data || []);
+                });
+        }
+
+        // Fetch more news from the same category
+        if (article.category?.slug) {
+            fetch(`/api/news/category/${article.category.slug}?exclude=${params.slug}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) setCategoryNews(data.data.news || []);
+                });
+        }
+    }, [article, params.slug]);
 
     const handleRetry = () => {
         setRetryKey(prev => prev + 1);
@@ -144,7 +144,6 @@ export default function NewsPage() {
 
         if (Array.isArray(heroImageRaw) && heroImageRaw.length > 0) {
             const first = heroImageRaw[0];
-            // If the first element is a JSON array string, parse it
             if (typeof first === "string" && first.trim().startsWith("[")) {
                 try {
                     const parsed = JSON.parse(first);
@@ -164,13 +163,10 @@ export default function NewsPage() {
 
         return (
             <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
-                {/* Title */}
                 <h1 className="text-4xl font-bold mb-2 leading-tight">{article.title}</h1>
-                {/* Subtitle */}
                 {article.subtitle && (
                     <h2 className="text-xl text-gray-700 mb-4">{article.subtitle}</h2>
                 )}
-                {/* Hero Image */}
                 {firstImage && (
                     <div className="relative w-full h-80 sm:h-[400px]">
                         <Image
@@ -248,6 +244,36 @@ export default function NewsPage() {
                         </div>
                     </div>
                 </div>
+
+                {/* Related News Section */}
+                <h3 className="text-2xl font-semibold mb-4">Related News</h3>
+                {relatedNews.length > 0 && (
+                    <section className="mt-12">
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            {relatedNews.map(news => (
+                                <Link key={news.slug} href={`/news/${news.slug}`} className="block border rounded p-3 hover:bg-gray-50">
+                                    <div className="font-bold">{news.title}</div>
+                                    <div className="text-sm text-gray-500">{news.category?.name}</div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* More from Category Section */}
+                <h3 className="text-2xl font-semibold mb-4">More from {article.category?.name}</h3>
+                {categoryNews.length > 0 && (
+                    <section className="mt-12">
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            {categoryNews.map(news => (
+                                <Link key={news.slug} href={`/news/${news.slug}`} className="block border rounded p-3 hover:bg-gray-50">
+                                    <div className="font-bold">{news.title}</div>
+                                    <div className="text-sm text-gray-500">{news.category?.name}</div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
             </article>
         );
     }

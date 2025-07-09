@@ -9,7 +9,6 @@ export async function GET() {
                 id: true,
                 name: true,
                 slug: true,
-                // Add more fields if needed
             },
             orderBy: { name: 'asc' },
         });

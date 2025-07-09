@@ -1,19 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-
-export interface LexicalNode {
-    type: string;
-    text?: string;
-    format?: string | number;
-    listType?: string;
-    url?: string;
-    children?: LexicalNode[];
-    src?: string;
-    alignment?: string;
-    width?: number;
-    height?: number;
-    tag?: string;
-}
+import { LexicalNode } from '@/types/type';
 
 const processChildren = (children: LexicalNode[], parentType?: string, parentCellIndex?: number): React.ReactNode[] => {
     return children.map((child, index) => {
