@@ -58,9 +58,9 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                         />
                         {/* Text overlay at bottom */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
-                            <h3 className="font-semibold text-white text-2xl leading-tight line-clamp-3 hover:underline underline-offset-2">
+                            <h2 className="font-semibold text-white text-2xl leading-tight line-clamp-3 hover:underline underline-offset-2">
                                 {news.title}
-                            </h3>
+                            </h2>
                         </div>
                     </div>
                 </Link>
@@ -97,9 +97,9 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
         <div className="bg-white overflow-hidden h-full border-b border-gray-300">
             <Link href={`/news/${news.slug}`} className="block h-full">
                     {/* Title only - no image */}
-                    <h3 className="font-semibold text-gray-900 leading-tight mb-4 line-clamp-2 hover:underline underline-offset-2">
+                    <h4 className="font-semibold text-gray-900 leading-tight mb-4 line-clamp-2 hover:underline underline-offset-2">
                         {news.title}
-                    </h3>
+                    </h4>
             </Link>
         </div>
     );
