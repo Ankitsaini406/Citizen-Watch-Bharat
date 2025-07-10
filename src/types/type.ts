@@ -50,3 +50,14 @@ export interface NewsArticle {
     pngImage?: string;
 }
 
+export interface Advertisement {
+    id: string;
+    title: string;
+    imageUrl: string;
+    link: string;
+    position: string;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    page: string;
+}
