@@ -50,7 +50,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                     <div className="relative h-80 lg:h-full bg-gray-200">
                         <Image
                             src={imageUrl}
-                            alt={news.title.split(" ").slice(0, 10).join(" ") + (news.title.split(" ").length > 10 ? "..." : "")}
+                            alt={news.title.split(" ").slice(0, 5).join(" ") + (news.title.split(" ").length > 5 ? "..." : "")}
                             fill
                             className="object-cover"
                             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -76,7 +76,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                     <div className="relative h-48 bg-gray-200">
                         <Image
                             src={imageUrl}
-                            alt={news.title.split(" ").slice(0, 10).join(" ") + (news.title.split(" ").length > 10 ? "..." : "")}
+                            alt={news.title.split(" ").slice(0, 5).join(" ") + (news.title.split(" ").length > 5 ? "..." : "")}
                             fill
                             className="object-cover"
                             sizes="(max-width: 1024px) 100vw, 33vw"
