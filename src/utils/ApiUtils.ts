@@ -1,8 +1,10 @@
 import { Advertisement, Category, NewsArticle } from "@/types/type";
 
+export const baseUrl = process.env.NODE_ENV === "production" ? process.env.HOST_URL : process.env.LOCAL_URL;
+
 export async function fetchAdvertisements(position: string, page: string = 'home'): Promise<Advertisement[]> {
     try {
-        const response = await fetch(`/api/advertisements?position=${position}&page=${page}`, {
+        const response = await fetch(`${baseUrl}api/advertisements?position=${position}&page=${page}`, {
             cache: 'no-store',
         });
 
@@ -18,8 +20,9 @@ export async function fetchAdvertisements(position: string, page: string = 'home
 }
 
 export async function fetchAllCategoriesAndNews(): Promise<{ categories: Category[]; news: NewsArticle[] }> {
+
     try {
-        const response = await fetch('http://localhost:3007/api/news/all', { cache: 'no-store' });
+        const response = await fetch(`${baseUrl}api/news/all`, { cache: 'no-store' });
         if (!response.ok) {
             throw new Error('Failed to fetch categories and news');
         }
@@ -32,8 +35,9 @@ export async function fetchAllCategoriesAndNews(): Promise<{ categories: Categor
 }
 
 export async function fetchBreakingNews(): Promise<NewsArticle[]> {
+
     try {
-        const response = await fetch('http://localhost:3007/api/news/all', { cache: 'no-store' });
+        const response = await fetch(`${baseUrl}api/news/all`, { cache: 'no-store' });
         if (!response.ok) throw new Error('Failed to fetch breaking news');
         const { news } = await response.json();
         return news.filter((n: NewsArticle) => n.isBreaking);
@@ -44,8 +48,9 @@ export async function fetchBreakingNews(): Promise<NewsArticle[]> {
 }
 
 export async function fetchLatestNews(limit = 6): Promise<NewsArticle[]> {
+
     try {
-        const response = await fetch('http://localhost:3007/api/news/all', { cache: 'no-store' });
+        const response = await fetch(`${baseUrl}api/news/all`, { cache: 'no-store' });
         if (!response.ok) throw new Error('Failed to fetch latest news');
         const { news } = await response.json();
         return news
