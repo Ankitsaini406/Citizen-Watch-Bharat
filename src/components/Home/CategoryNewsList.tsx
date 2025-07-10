@@ -45,8 +45,6 @@ export default function CategoryNewsList() {
     useEffect(() => {
         const fetchData = async () => {
             const { categories, news } = await fetchAllCategoriesAndNews();
-            console.log('Fetched categories:', categories);
-            console.log('Fetched news:', news);
             setCategories(categories);
             setNews(news);
         };

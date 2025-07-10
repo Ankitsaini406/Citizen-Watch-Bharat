@@ -59,6 +59,8 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                             className="object-cover"
                             sizes="(max-width: 1024px) 100vw, 50vw"
                             priority={true}
+                            placeholder="blur"
+                            blurDataURL="/placeholder.svg"
                         />
                         {/* Text overlay at bottom */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
@@ -87,7 +89,9 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                             }
                             fill
                             className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 33vw"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            placeholder="blur"
+                            blurDataURL="/placeholder.svg"
                         />
                     </div>
                     <div className="pt-4">
