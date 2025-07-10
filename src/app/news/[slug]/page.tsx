@@ -7,6 +7,7 @@ import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
 import { Facebook, X } from "lucide-react";
 import { NewsArticle } from "@/types/type";
+import { extractFirstImage } from "@/utils/Utils";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -139,27 +140,8 @@ export default function NewsPage() {
 
     // Article page
     if (params?.slug && article) {
-        let firstImage = "";
         const heroImageRaw = article.heroImage;
-
-        if (Array.isArray(heroImageRaw) && heroImageRaw.length > 0) {
-            const first = heroImageRaw[0];
-            if (typeof first === "string" && first.trim().startsWith("[")) {
-                try {
-                    const parsed = JSON.parse(first);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        firstImage = parsed[0];
-                    }
-                } catch (e) {
-                    firstImage = first;
-                    console.log(e)
-                }
-            } else if (typeof first === "string") {
-                firstImage = first;
-            }
-        } else if (typeof heroImageRaw === "string") {
-            firstImage = heroImageRaw;
-        }
+        const firstImage = extractFirstImage(heroImageRaw);
 
         return (
             <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">

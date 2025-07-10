@@ -1,7 +1,7 @@
 "use client";
 
 import { Category, News } from "@/types/type";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CategoryNewsBox from "./CategoryNewsBox";
 import NationalNewsBox from "./News-Sections/NationalNewsBox";
 import InternationalNewsBox from "./News-Sections/InternationalNewsBox";
@@ -13,6 +13,8 @@ import ElectionsNewsBox from "./News-Sections/ElectionsNewsBox";
 import WebStoriesNewsBox from "./News-Sections/WebStoriesNewsBox";
 import { LatestNews } from "../NewsComponents";
 import { ButtonSeeMore } from "@/utils/Buttons";
+import { BottomBanner, MiddleBanner } from "../AddBanners";
+import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 
 const categoryNameHindi: Record<string, string> = {
     "Political": "राजनीति",
@@ -36,12 +38,25 @@ const categoryPriority: Record<string, number> = {
     "Web-Stories": 8,
 };
 
-type Props = {
-    categories: Category[];
-    news: News[];
-};
+export default function CategoryNewsList() {
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [news, setNews] = useState<News[]>([]);
 
-export default function CategoryNewsList({ categories, news }: Props) {
+    useEffect(() => {
+        const fetchData = async () => {
+            const { categories, news } = await fetchAllCategoriesAndNews();
+            console.log('Fetched categories:', categories);
+            console.log('Fetched news:', news);
+            setCategories(categories);
+            setNews(news);
+        };
+        fetchData();
+    }, []);
+
+    if (!categories.length || !news.length) {
+        return <div>No data loaded</div>;
+    }
+
     const newsByCategory = categories
         .map((cat) => ({
             ...cat,
@@ -88,6 +103,7 @@ export default function CategoryNewsList({ categories, news }: Props) {
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <PoliticalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <MiddleBanner />
                             </div>
                         );
                     case "Business":
@@ -123,6 +139,7 @@ export default function CategoryNewsList({ categories, news }: Props) {
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <WebStoriesNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <BottomBanner />
                             </div>
                         );
                     default:
@@ -130,6 +147,7 @@ export default function CategoryNewsList({ categories, news }: Props) {
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <CategoryNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <BottomBanner />
                             </div>
                         );
                 }

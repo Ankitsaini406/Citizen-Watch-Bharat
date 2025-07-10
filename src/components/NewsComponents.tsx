@@ -2,7 +2,9 @@
 
 import { ButtonLeft, ButtonLink } from "@/utils/Buttons";
 import { useEffect, useState } from "react";
-import { breakingNews, latestNews } from "@/data/dummyData";
+import { fetchBreakingNews, fetchLatestNews } from "@/utils/ApiUtils";
+import { NewsArticle } from "@/types/type";
+import { LatestLoading } from "@/utils/Loading";
 
 type BreakingNewsItem = {
     title: string;
@@ -15,6 +17,7 @@ type LatestNewsItem = {
     id: string;
     title: string;
     createdAt: string;
+    slug: string;
     category?: { name: string } | null;
 };
 
@@ -22,14 +25,16 @@ export function BrakingNews() {
     const [news, setNews] = useState<BreakingNewsItem[]>([]);
 
     useEffect(() => {
-        // Use dummy breaking news data
-        const dummyBreakingNews = breakingNews.map(item => ({
-            title: item.title,
-            slug: item.slug,
-            category: item.category?.slug || "",
-            subCategory: ""
-        }));
-        setNews(dummyBreakingNews);
+        fetchBreakingNews().then((breaking) => {
+            setNews(
+                breaking.map((item: NewsArticle) => ({
+                    title: item.title,
+                    slug: item.slug,
+                    category: item.category?.slug || "",
+                    subCategory: ""
+                }))
+            );
+        });
     }, []);
 
     const marqueeText = news.map(n => n.title).join("   •   ");
@@ -59,15 +64,18 @@ export function LatestNews() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Use dummy latest news data
-        const dummyLatestNews = latestNews.slice(0, 6).map((item, index) => ({
-            id: `latest-${index}`,
-            title: item.title,
-            createdAt: item.createdAt || new Date().toISOString(),
-            category: { name: item.category?.slug || "General" }
-        }));
-        setNews(dummyLatestNews);
-        setLoading(false);
+        fetchLatestNews().then((latest) => {
+            setNews(
+                latest.map((item: NewsArticle) => ({
+                    id: item.id,
+                    title: item.title,
+                    createdAt: item.createdAt,
+                    slug: item.slug,
+                    category: item.category ? { name: item.category.slug } : null
+                }))
+            );
+            setLoading(false);
+        });
     }, []);
 
     function timeAgo(dateString: string) {
@@ -86,13 +94,13 @@ export function LatestNews() {
             <h2 className="text-3xl font-extrabold text-red-700 mb-6">Latest News</h2>
             <div className="relative pl-6">
                 {loading ? (
-                    <div>Loading...</div>
+                    <LatestLoading />
                 ) : news.length === 0 ? (
                     <div>No latest news.</div>
                 ) : (
                     news.map((item, idx) => (
                         <div
-                            key={item.id}
+                            key={item.slug || item.id || idx}
                             className="pb-3 last:mb-0 mt-3 border-b relative group transition-all duration-200"
                         >
                             {/* Timeline Dot */}
@@ -114,7 +122,7 @@ export function LatestNews() {
                                     </span>
                                 )}
                             </div>
-                            <ButtonLink href={`/news/${item.id}`} title={item.title} className="line-clamp-2" />
+                            <ButtonLink href={`/news/${item.slug}`} title={item.title} className="line-clamp-2" />
                         </div>
                     ))
                 )}

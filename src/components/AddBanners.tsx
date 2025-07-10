@@ -257,3 +257,66 @@ export function MiddleBanner() {
         </div>
     );
 }
+
+export function BottomBanner() {
+    const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadAdvertisements = async () => {
+            try {
+                const ads = await fetchAdvertisements('bottom', 'Home');
+                setAdvertisements(ads);
+            } catch (error) {
+                console.error('Error loading top banner:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadAdvertisements();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="container mx-auto my-10 px-10 xl:px-0">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60">
+                    <h1 className="text-3xl text-background">Loading...</h1>
+                </div>
+            </div>
+        );
+    }
+
+    if (advertisements.length === 0) {
+        return (
+            <div className="container mx-auto my-10 px-10 xl:px-0">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60">
+                    <h1 className="text-3xl text-background">Advertisement</h1>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="container mx-auto my-10 px-10 xl:px-0">
+            {advertisements.map((ad) => (
+                <Link
+                    key={ad.id}
+                    href={ad.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                >
+                    <div className="relative flex justify-center items-center w-full h-60 md:h-40 lg:h-60 overflow-hidden">
+                        <Image
+                            fill
+                            src={ad.imageUrl}
+                            alt={ad.title}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                </Link>
+            ))}
+        </div>
+    );
+}

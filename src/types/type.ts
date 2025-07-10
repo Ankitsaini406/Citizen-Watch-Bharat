@@ -8,6 +8,7 @@ export type Category = {
 export type News = {
     slug: string;
     title: string;
+    heroImage: string[];
     category?: { slug: string };
 };
 
@@ -48,6 +49,7 @@ export interface NewsArticle {
     heroImage: string[];
     subCategoryId?: string;
     pngImage?: string;
+    isBreaking: boolean;
 }
 
 export interface Advertisement {
