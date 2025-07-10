@@ -50,7 +50,11 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                     <div className="relative h-80 lg:h-full bg-gray-200">
                         <Image
                             src={imageUrl}
-                            alt={news.title.split(" ").slice(0, 5).join(" ") + (news.title.split(" ").length > 5 ? "..." : "")}
+                            alt={
+                                news.title.split(" ").slice(0, 5).join(" ") +
+                                (news.title.split(" ").length > 5 ? "..." : "") +
+                                " alt"
+                            }
                             fill
                             className="object-cover"
                             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -76,7 +80,11 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                     <div className="relative h-48 bg-gray-200">
                         <Image
                             src={imageUrl}
-                            alt={news.title.split(" ").slice(0, 5).join(" ") + (news.title.split(" ").length > 5 ? "..." : "")}
+                            alt={
+                                news.title.split(" ").slice(0, 5).join(" ") +
+                                (news.title.split(" ").length > 5 ? "..." : "") +
+                                " alt"
+                            }
                             fill
                             className="object-cover"
                             sizes="(max-width: 1024px) 100vw, 33vw"
@@ -96,10 +104,10 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
     return (
         <div className="bg-white overflow-hidden h-full border-b border-gray-300">
             <Link href={`/news/${news.slug}`} className="block h-full">
-                    {/* Title only - no image */}
-                    <h4 className="font-semibold text-gray-900 leading-tight mb-4 line-clamp-2 hover:underline underline-offset-2">
-                        {news.title}
-                    </h4>
+                {/* Title only - no image */}
+                <h4 className="font-semibold text-gray-900 leading-tight mb-4 line-clamp-2 hover:underline underline-offset-2">
+                    {news.title}
+                </h4>
             </Link>
         </div>
     );
