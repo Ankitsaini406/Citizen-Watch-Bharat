@@ -115,9 +115,9 @@ export function LatestNews() {
                                 <span className="absolute -left-[14.6px] top-3 w-0.5 h-full bg-black"></span>
                             )}
                             <div className="flex items-center gap-2 mb-1">
-                                <span className="text-xs text-gray-400">{timeAgo(item.createdAt)}</span>
+                                <span className="text-xs">{timeAgo(item.createdAt)}</span>
                                 {item.category?.name && (
-                                    <span className="bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full">
+                                    <span className="bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full capitalize">
                                         {item.category.name}
                                     </span>
                                 )}
