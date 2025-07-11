@@ -27,7 +27,7 @@ export function ButtonSeeMore({ href, title }: { href: string; title: string }) 
 
 export function ButtonLink({ href, title, className }: { href: string; title: string; className?: string; }) {
     return (
-        <Link href={href} className={`text-black font-bold hover:underline underline-offset-2 leading-snug ${className}`}>
+        <Link href={href} className={`text-black font-bold hover:underline underline-offset-2 line-clamp-2 leading-snug ${className}`}>
             <span className="relative z-10">{title}</span>
         </Link>
     )

@@ -8,6 +8,8 @@ import RichTextPreview from "@/utils/Editor/RichTextPreview";
 import { Facebook, X } from "lucide-react";
 import { NewsArticle } from "@/types/type";
 import { extractFirstImage, timeAgo } from "@/utils/Utils";
+import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
+import { ButtonLink } from "@/utils/Buttons";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -108,23 +110,38 @@ export default function NewsPage() {
     useEffect(() => {
         if (!article) return;
 
-        // Fetch related news by tags
-        if (article.tags && article.tags.length > 0) {
-            fetch(`/api/news/related?tags=${article.tags.join(",")}&exclude=${params.slug}`)
-                .then(res => res.json())
-                .then(data => {
+        async function fetchRelatedAndCategoryNews() {
+            // Fetch related news by tags
+            if (article && article.tags && article.tags.length > 0) {
+                try {
+                    const res = await fetch(`/api/news/related?tags=${article.tags.join(",")}&exclude=${params.slug}`);
+                    const data = await res.json();
+                    console.log('Related news data:', data);
                     if (data.success) setRelatedNews(data.data || []);
-                });
+                    else setRelatedNews([]);
+                } catch {
+                    setRelatedNews([]);
+                }
+            } else {
+                setRelatedNews([]);
+            }
+
+            // Fetch more news from the same category
+            if (article) {
+                try {
+                    const res = await fetch(`/api/news/category/${article.category.slug}?exclude=${params.slug}`);
+                    const data = await res.json();
+                    if (data.success) setCategoryNews(data.data || []);
+                    else setCategoryNews([]);
+                } catch {
+                    setCategoryNews([]);
+                }
+            } else {
+                setCategoryNews([]);
+            }
         }
 
-        // Fetch more news from the same category
-        if (article.category?.slug) {
-            fetch(`/api/news/category/${article.category.slug}?exclude=${params.slug}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) setCategoryNews(data.data.news || []);
-                });
-        }
+        fetchRelatedAndCategoryNews();
     }, [article, params.slug]);
 
     const handleRetry = () => {
@@ -144,119 +161,167 @@ export default function NewsPage() {
         const firstImage = extractFirstImage(heroImageRaw);
 
         return (
-            <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
-                <h1 className="text-4xl font-bold mb-2 leading-tight">{article.title}</h1>
-                {article.subtitle && (
-                    <h2 className="text-xl text-gray-700 mb-4">{article.subtitle}</h2>
-                )}
-                {firstImage && (
-                    <div className="relative w-full h-80 sm:h-[400px]">
-                        <Image
-                            src={firstImage}
-                            alt={article.title}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
-                    </div>
-                )}
-
-                <div className="p-6 lg:px-0">
-                    {/* Category and Date */}
-                    <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
-                        <span className="uppercase font-semibold tracking-wider text-red-600">
-                            {article.category.name}
-                        </span>
-                        <div className="flex gap-5">
-                            <span>{timeAgo(article.createdAt)}</span>
-                            {article.city && (
-                                <span>{article.city}, {article.state}</span>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Main Content */}
-                    <div className="prose max-w-none mb-8">
-                        {article.content && typeof article.content === "object" ? (
-                            <RichTextPreview lexicalJson={article.content} />
-                        ) : (
-                            <span className="text-gray-400">No content</span>
-                        )}
-                    </div>
-
-                    {/* Tags */}
-                    {article.tags && article.tags.length > 0 && (
-                        <div className="mb-6 flex flex-wrap gap-2">
-                            {article.tags.map(tag => (
-                                <span key={tag} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
-                                    #{tag}
-                                </span>
-                            ))}
+            <>
+                <TopBanner />
+                <LeftBanner />
+                <RightBanner />
+                <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
+                    <h1 className="text-4xl font-bold mb-2 leading-tight">{article.title}</h1>
+                    {article.subtitle && (
+                        <h2 className="text-xl text-gray-700 mb-4">{article.subtitle}</h2>
+                    )}
+                    {firstImage && (
+                        <div className="relative w-full h-80 sm:h-[400px]">
+                            <Image
+                                src={firstImage}
+                                alt={article.title}
+                                fill
+                                className="object-cover"
+                                priority
+                            />
                         </div>
                     )}
 
-                    {/* Author and Social */}
-                    <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
-                        <div className="flex items-center gap-2">
-                            <span className="font-medium text-gray-800">By {article.author.name}</span>
+                    <div className="p-6 lg:px-0">
+                        {/* Category and Date */}
+                        <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
+                            <span className="uppercase font-semibold tracking-wider text-red-600">
+                                {article.category.name}
+                            </span>
+                            <div className="flex gap-5">
+                                <span>{timeAgo(article.createdAt)}</span>
+                                {article.city && (
+                                    <span>{article.city}, {article.state}</span>
+                                )}
+                            </div>
                         </div>
-                        <div className="flex gap-2">
-                            {article.twitter_link && (
-                                <Link
-                                    href={article.twitter_link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="View on X"
-                                    className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-black/90"
-                                >
-                                    <X className="w-5 h-5 text-black group-hover:text-white transition-colors duration-150" />
-                                </Link>
+
+                        {/* Main Content */}
+                        <div className="prose max-w-none mb-8">
+                            {article.content && typeof article.content === "object" ? (
+                                <RichTextPreview lexicalJson={article.content} />
+                            ) : (
+                                <span className="text-gray-400">No content</span>
                             )}
-                            {article.facebook_link && (
-                                <Link
-                                    href={article.facebook_link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="View on Facebook"
-                                    className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-[#1877F3]"
-                                >
-                                    <Facebook className="w-5 h-5 text-[#1877F3] group-hover:text-white transition-colors duration-150" />
-                                </Link>
-                            )}
+                        </div>
+
+                        {/* Tags */}
+                        {article.tags && article.tags.length > 0 && (
+                            <div className="mb-6 flex flex-wrap gap-2">
+                                {article.tags.map(tag => (
+                                    <span key={tag} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                                        #{tag}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Author and Social */}
+                        <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+                            <div className="flex items-center gap-2">
+                                <span className="font-medium text-gray-800">By {article.author.name}</span>
+                            </div>
+                            <div className="flex gap-2">
+                                {article.twitter_link && (
+                                    <Link
+                                        href={article.twitter_link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="View on X"
+                                        className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-black/90"
+                                    >
+                                        <X className="w-5 h-5 text-black group-hover:text-white transition-colors duration-150" />
+                                    </Link>
+                                )}
+                                {article.facebook_link && (
+                                    <Link
+                                        href={article.facebook_link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="View on Facebook"
+                                        className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-[#1877F3]"
+                                    >
+                                        <Facebook className="w-5 h-5 text-[#1877F3] group-hover:text-white transition-colors duration-150" />
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Related News Section */}
-                <h3 className="text-2xl font-semibold mb-4">Related News</h3>
-                {relatedNews.length > 0 && (
-                    <section className="mt-12">
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            {relatedNews.map(news => (
-                                <Link key={news.slug} href={`/news/${news.slug}`} className="block border rounded p-3 hover:bg-gray-50">
-                                    <div className="font-bold">{news.title}</div>
-                                    <div className="text-sm text-gray-500">{news.category?.name}</div>
-                                </Link>
-                            ))}
-                        </div>
-                    </section>
-                )}
+                    <MiddleBanner />
 
-                {/* More from Category Section */}
-                <h3 className="text-2xl font-semibold mb-4">More from {article.category?.name}</h3>
-                {categoryNews.length > 0 && (
-                    <section className="mt-12">
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            {categoryNews.map(news => (
-                                <Link key={news.slug} href={`/news/${news.slug}`} className="block border rounded p-3 hover:bg-gray-50">
-                                    <div className="font-bold">{news.title}</div>
-                                    <div className="text-sm text-gray-500">{news.category?.name}</div>
-                                </Link>
-                            ))}
-                        </div>
-                    </section>
-                )}
-            </article>
+                    {/* Related News Section */}
+                    {relatedNews.length > 0 && (
+                        <section className="mt-12">
+                            <h3 className="text-2xl font-semibold mb-4">Related News</h3>
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                {relatedNews.map(news => {
+                                    const imageUrl = extractFirstImage(news.heroImage);
+                                    return (
+                                        <Link key={news.slug} href={`/news/${news.slug}`} className="block border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow bg-white group">
+                                            {imageUrl && (
+                                                <div className="relative w-full h-40 bg-gray-200">
+                                                    <Image
+                                                        src={imageUrl}
+                                                        alt={news.title}
+                                                        fill
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                                        placeholder="blur"
+                                                        blurDataURL="/placeholder.svg"
+                                                    />
+                                                </div>
+                                            )}
+                                            <div className="p-4">
+                                                <div className="text-xs text-red-600 font-semibold mb-1">{news.category?.name}</div>
+                                                <div className="font-bold text-lg mb-1 group-hover:text-red-700 transition-colors line-clamp-2">{news.title}</div>
+                                                <div className="text-xs text-gray-500">{timeAgo(news.createdAt)}</div>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* More from Category Section */}
+                    {categoryNews.length > 0 && (
+                        <section className="mt-12 px-6 lg:px-0">
+                            <h3 className="text-2xl font-semibold mb-4">More from {article.category?.name}</h3>
+                            <div className="grid gap-4 sm:grid-cols-3">
+                                {categoryNews.map(news => {
+                                    const imageUrl = extractFirstImage(news.heroImage);
+                                    return (
+                                        <div key={news.slug} className="block border border-gray-300 overflow-hidden bg-white group">
+                                            {imageUrl && (
+                                                <div className="relative w-full h-40 bg-gray-200">
+                                                    <Image
+                                                        src={imageUrl}
+                                                        alt={news.title}
+                                                        fill
+                                                        className="object-cover duration-200"
+                                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                                        placeholder="blur"
+                                                        blurDataURL="/placeholder.svg"
+                                                    />
+                                                </div>
+                                            )}
+                                            <div className="p-4">
+                                            <div className="text-xs text-red-600 font-semibold mb-1">{news.category?.name}</div>
+                                            <div className="flex flex-col justify-between h-20">
+                                                <ButtonLink href={`/news/${news.slug}`} title={news.title}/>
+                                                <div className="text-xs text-gray-500">{timeAgo(news.createdAt)}</div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    )}
+                </article>
+                <BottomBanner />
+            </>
         );
     }
 } 

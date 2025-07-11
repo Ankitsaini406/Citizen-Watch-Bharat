@@ -9,6 +9,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const { searchParams } = new URL(request.url);
         const page = parseInt(searchParams.get('page') || '1', 10);
         const skip = (page - 1) * PAGE_SIZE;
+        const excludeSlug = searchParams.get('exclude');
 
         // Get total count for pagination
         const [category, total] = await Promise.all([
@@ -33,6 +34,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
                 category: { slug },
                 isPublish: true,
                 isDeleted: false,
+                ...(excludeSlug ? { slug: { not: excludeSlug } } : {}),
             },
             orderBy: { createdAt: 'desc' },
             skip,

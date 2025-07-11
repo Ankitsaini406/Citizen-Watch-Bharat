@@ -71,7 +71,7 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
                 })}
             </div>
             <ButtonSeeMore
-                href={`/news/national/state/${state.slug}`}
+                href={`/news/national/${state.slug}`}
                 title="See all news"
                 aria-label={`See all news from ${state.name}`}
             />
@@ -79,6 +79,34 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
     );
 }
 
+function StateNewsSkeleton() {
+    return (
+        <section className="p-6">
+            <header className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-4 w-full">
+                    <div className="h-8 w-32 bg-gray-300 rounded animate-pulse" />
+                    <div className="flex-1 border-t-2 border-gray-300"></div>
+                </div>
+            </header>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
+                {[...Array(3)].map((_, idx) => (
+                    <div key={idx} className="flex flex-col overflow-hidden border border-gray-200">
+                        <div className="relative w-full h-40 bg-gray-200 animate-pulse" />
+                        <div className="flex-1 flex flex-col p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="h-3 w-16 bg-gray-200 rounded animate-pulse" />
+                                <div className="h-4 w-12 bg-gray-200 rounded-full animate-pulse" />
+                            </div>
+                            <div className="h-5 w-full bg-gray-200 rounded mb-2 animate-pulse" />
+                            <div className="h-5 w-2/3 bg-gray-200 rounded animate-pulse" />
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="h-10 w-32 bg-gray-200 rounded animate-pulse mx-auto" />
+        </section>
+    );
+}
 
 export default function NationalPage() {
     const [news, setNews] = useState<NewsArticle[]>([]);
@@ -101,20 +129,38 @@ export default function NationalPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen">
+                {/* Top Banner Skeleton */}
+                <div className="h-20 w-full animate-pulse mb-4" />
+                {/* Left Banner Skeleton */}
+                <div className="h-96 w-32 animate-pulse fixed left-0 top-24 hidden lg:block" />
                 <div className="container mx-auto px-4 py-8">
-                    <div className="animate-pulse">
-                        <div className="h-8 bg-gray-300 rounded mb-4"></div>
-                        <div className="h-64 bg-gray-300 rounded mb-4"></div>
-                        <div className="h-32 bg-gray-300 rounded mb-4"></div>
+                    <div className="grid grid-cols-1">
+                        <div className="lg:col-span-2">
+                            <div className="grid grid-cols-1 gap-6">
+                                {[...Array(3)].map((_, idx) => (
+                                    <StateNewsSkeleton key={idx} />
+                                ))}
+                            </div>
+                        </div>
+                        {/* Sidebar Middle Banner Skeleton */}
+                        <div className="lg:col-span-1">
+                            <div className="sticky top-8">
+                                <div className="h-96 w-full animate-pulse" />
+                            </div>
+                        </div>
                     </div>
                 </div>
+                {/* Bottom Banner Skeleton */}
+                <div className="h-20 w-full bg-gray-200 animate-pulse mt-4" />
+                {/* Right Banner Skeleton */}
+                <div className="h-96 w-32 animate-pulse fixed right-0 top-24 hidden lg:block" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen">
             <TopBanner />
             <LeftBanner />
             <div className="container mx-auto px-4 py-8">
