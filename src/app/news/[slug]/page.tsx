@@ -7,7 +7,7 @@ import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
 import { Facebook, X } from "lucide-react";
 import { NewsArticle } from "@/types/type";
-import { extractFirstImage } from "@/utils/Utils";
+import { extractFirstImage, timeAgo } from "@/utils/Utils";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -168,7 +168,7 @@ export default function NewsPage() {
                             {article.category.name}
                         </span>
                         <div className="flex gap-5">
-                            <span>{new Date(article.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            <span>{timeAgo(article.createdAt)}</span>
                             {article.city && (
                                 <span>{article.city}, {article.state}</span>
                             )}

@@ -60,4 +60,16 @@ export async function fetchLatestNews(limit = 6): Promise<NewsArticle[]> {
         console.error('Error fetching latest news:', error);
         return [];
     }
+}
+
+export async function fetchNewsByState(stateSlug: string, page = 1): Promise<{ data: NewsArticle[]; pagination: { total: number; page: number; totalPages: number } }> {
+    try {
+        const response = await fetch(`${baseUrl}api/news/state/${stateSlug}?page=${page}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Failed to fetch state news');
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error fetching state news:', error);
+        return { data: [], pagination: { total: 0, page: 1, totalPages: 0 } };
+    }
 } 

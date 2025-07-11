@@ -12,24 +12,24 @@ type NavLink = { label: string; href: string };
 
 // --- Data ---
 const categories: Category[] = [
+    { name: "National", slug: "national" },
+    { name: "International", slug: "international" },
     { name: "Political", slug: "political" },
-    { name: "Sports", slug: "sports" },
-    { name: "Entertainment", slug: "entertainment" },
     { name: "Business", slug: "business" },
     { name: "Elections", slug: "elections" },
-    { name: "International", slug: "international" },
-    { name: "National", slug: "national" },
+    { name: "Entertainment", slug: "entertainment" },
+    { name: "Sports", slug: "sports" },
     { name: "Web-Stories", slug: "web-stories" },
 ];
 
 const categoryNameHindi: Record<string, string> = {
+    National: "राष्ट्रीय",
+    International: "अंतरराष्ट्रीय",
     Political: "राजनीति",
-    Sports: "खेल",
-    Entertainment: "मनोरंजन",
     Business: "व्यापार",
     Elections: "चुनाव",
-    International: "अंतरराष्ट्रीय",
-    National: "राष्ट्रीय",
+    Entertainment: "मनोरंजन",
+    Sports: "खेल",
     "Web-Stories": "वेब कहानियाँ",
 };
 

@@ -15,6 +15,8 @@ export async function GET() {
             subtitle: true,
             createdAt: true,
             isBreaking: true,
+            state: true,
+            city: true,
             category: {
               select: {
                 id: true,

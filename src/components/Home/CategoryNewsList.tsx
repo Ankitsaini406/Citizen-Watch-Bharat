@@ -2,7 +2,6 @@
 
 import { Category, News } from "@/types/type";
 import React, { useEffect, useState } from "react";
-import CategoryNewsBox from "./CategoryNewsBox";
 import NationalNewsBox from "./News-Sections/NationalNewsBox";
 import InternationalNewsBox from "./News-Sections/InternationalNewsBox";
 import PoliticalNewsBox from "./News-Sections/PoliticalNewsBox";
@@ -17,13 +16,13 @@ import { BottomBanner, MiddleBanner } from "../AddBanners";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 
 const categoryNameHindi: Record<string, string> = {
+    "National": "राष्ट्रीय",
+    "International": "अंतरराष्ट्रीय",
     "Political": "राजनीति",
-    "Sports": "खेल",
-    "Entertainment": "मनोरंजन",
     "Business": "व्यापार",
     "Elections": "चुनाव",
-    "International": "अंतरराष्ट्रीय",
-    "National": "राष्ट्रीय",
+    "Entertainment": "मनोरंजन",
+    "Sports": "खेल",
     "Web-Stories": "वेब कहानियाँ",
 };
 
@@ -32,9 +31,9 @@ const categoryPriority: Record<string, number> = {
     "International": 2,
     "Political": 3,
     "Business": 4,
-    "Sports": 5,
+    "Elections": 5,
     "Entertainment": 6,
-    "Elections": 7,
+    "Sports": 7,
     "Web-Stories": 8,
 };
 
@@ -111,10 +110,10 @@ export default function CategoryNewsList() {
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
-                    case "Sports":
+                    case "Elections":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <SportsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ElectionsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
@@ -125,10 +124,10 @@ export default function CategoryNewsList() {
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
-                    case "Elections":
+                    case "Sports":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <ElectionsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <SportsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
@@ -141,13 +140,7 @@ export default function CategoryNewsList() {
                             </div>
                         );
                     default:
-                        return (
-                            <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <CategoryNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
-                                <BottomBanner />
-                            </div>
-                        );
+                        return null;
                 }
             })}
         </div>
