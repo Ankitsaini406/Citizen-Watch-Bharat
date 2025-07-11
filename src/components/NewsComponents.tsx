@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchBreakingNews, fetchLatestNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import { LatestLoading } from "@/utils/Loading";
+import { timeAgo } from "@/utils/Utils";
 
 type BreakingNewsItem = {
     title: string;
@@ -77,17 +78,6 @@ export function LatestNews() {
             setLoading(false);
         });
     }, []);
-
-    function timeAgo(dateString: string) {
-        const now = new Date();
-        const date = new Date(dateString);
-        const diffMs = now.getTime() - date.getTime();
-        const diffMins = Math.floor(diffMs / 60000);
-        if (diffMins < 60) return `${diffMins} mins ago`;
-        const diffHours = Math.floor(diffMins / 60);
-        if (diffHours < 24) return `${diffHours} hrs ago`;
-        return date.toLocaleDateString();
-    }
 
     return (
         <div className="bg-white md:p-4 pr-0 pt-0 border-0 lg:border-l w-full h-fit">

@@ -43,7 +43,7 @@ const commonLinks: NavLink[] = [
 function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
     return (
         <Link
-            href={`/category/${cat.slug}`}
+            href={`/news/${cat.slug}`}
             className={`px-2 py-1 transition-all border-b-2 text-foreground duration-300 focus-visible:underline ${isActive
                 ? "text-red-600 border-red-600"
                 : "border-transparent hover:border-red-600 hover:text-red-600"
@@ -231,7 +231,7 @@ export default function Header() {
             <nav className="hidden md:flex sticky top-0 justify-center bg-gray-100 shadow-md py-3 z-40" aria-label="Categories">
                 <ul className="flex gap-6 font-bold text-sm lg:text-base">
                     {categories.map((cat) => {
-                        const isActive = pathname?.startsWith(`/category/${cat.slug}`);
+                        const isActive = pathname?.startsWith(`/news/${cat.slug}`);
                         return (
                             <li key={cat.slug}>
                                 <CategoryLink cat={cat} isActive={!!isActive} />
@@ -244,7 +244,7 @@ export default function Header() {
             <nav className="md:hidden sticky top-0 bg-white shadow-md z-30" aria-label="Categories">
                 <ul className="flex gap-4 px-4 py-2 overflow-x-auto whitespace-nowrap font-bold text-[15px] scrollbar-hide">
                     {categories.map((cat) => {
-                        const isActive = pathname?.startsWith(`/category/${cat.slug}`);
+                        const isActive = pathname?.startsWith(`/news/${cat.slug}`);
                         return (
                             <li key={cat.slug}>
                                 <CategoryLink cat={cat} isActive={!!isActive} />

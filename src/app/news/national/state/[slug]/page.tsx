@@ -1,67 +1,28 @@
 'use client';
 
 import { LeftBanner, RightBanner, TopBanner, MiddleBanner, BottomBanner } from "@/components/AddBanners";
-import { useState, useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import { fetchNewsByState } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import { ButtonLink } from "@/utils/Buttons";
-import { extractFirstImage } from "@/utils/Utils";
+import { extractFirstImage, timeAgo } from "@/utils/Utils";
 import Image from "next/image";
-import Link from "next/link";
+import { indianStatesBySlug } from "@/data/indianStates";
 
-// Indian states mapping
-const indianStates = {
-    "andhra-pradesh": { name: "Andhra Pradesh", capital: "Amaravati" },
-    "arunachal-pradesh": { name: "Arunachal Pradesh", capital: "Itanagar" },
-    "assam": { name: "Assam", capital: "Dispur" },
-    "bihar": { name: "Bihar", capital: "Patna" },
-    "chhattisgarh": { name: "Chhattisgarh", capital: "Raipur" },
-    "goa": { name: "Goa", capital: "Panaji" },
-    "gujarat": { name: "Gujarat", capital: "Gandhinagar" },
-    "haryana": { name: "Haryana", capital: "Chandigarh" },
-    "himachal-pradesh": { name: "Himachal Pradesh", capital: "Shimla" },
-    "jharkhand": { name: "Jharkhand", capital: "Ranchi" },
-    "karnataka": { name: "Karnataka", capital: "Bengaluru" },
-    "kerala": { name: "Kerala", capital: "Thiruvananthapuram" },
-    "madhya-pradesh": { name: "Madhya Pradesh", capital: "Bhopal" },
-    "maharashtra": { name: "Maharashtra", capital: "Mumbai" },
-    "manipur": { name: "Manipur", capital: "Imphal" },
-    "meghalaya": { name: "Meghalaya", capital: "Shillong" },
-    "mizoram": { name: "Mizoram", capital: "Aizawl" },
-    "nagaland": { name: "Nagaland", capital: "Kohima" },
-    "odisha": { name: "Odisha", capital: "Bhubaneswar" },
-    "punjab": { name: "Punjab", capital: "Chandigarh" },
-    "rajasthan": { name: "Rajasthan", capital: "Jaipur" },
-    "sikkim": { name: "Sikkim", capital: "Gangtok" },
-    "tamil-nadu": { name: "Tamil Nadu", capital: "Chennai" },
-    "telangana": { name: "Telangana", capital: "Hyderabad" },
-    "tripura": { name: "Tripura", capital: "Agartala" },
-    "uttar-pradesh": { name: "Uttar Pradesh", capital: "Lucknow" },
-    "uttarakhand": { name: "Uttarakhand", capital: "Dehradun" },
-    "west-bengal": { name: "West Bengal", capital: "Kolkata" },
-    "delhi": { name: "Delhi", capital: "New Delhi" },
-    "jammu-kashmir": { name: "Jammu and Kashmir", capital: "Srinagar" },
-    "ladakh": { name: "Ladakh", capital: "Leh" },
-    "chandigarh": { name: "Chandigarh", capital: "Chandigarh" },
-    "puducherry": { name: "Puducherry", capital: "Puducherry" },
-    "andaman-nicobar": { name: "Andaman and Nicobar Islands", capital: "Port Blair" },
-    "dadra-nagar-haveli-daman-diu": { name: "Dadra and Nagar Haveli and Daman and Diu", capital: "Daman" },
-    "lakshadweep": { name: "Lakshadweep", capital: "Kavaratti" }
-};
-
-export default function StatePage({ params }: { params: { slug: string } }) {
+export default function StatePage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = use(params);
     const [news, setNews] = useState<NewsArticle[]>([]);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({ total: 0, page: 1, totalPages: 0 });
     const [currentPage, setCurrentPage] = useState(1);
 
-    const stateInfo = indianStates[params.slug as keyof typeof indianStates];
+    const stateInfo = indianStatesBySlug[slug];
 
     useEffect(() => {
         const loadNews = async () => {
             try {
                 setLoading(true);
-                const result = await fetchNewsByState(params.slug, currentPage);
+                const result = await fetchNewsByState(slug, currentPage);
                 setNews(result.data);
                 setPagination(result.pagination);
             } catch (error) {
@@ -72,20 +33,8 @@ export default function StatePage({ params }: { params: { slug: string } }) {
         };
 
         loadNews();
-    }, [params.slug, currentPage]);
+    }, [slug, currentPage]);
 
-    if (!stateInfo) {
-        return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-4">State Not Found</h1>
-                    <Link href="/news/national" className="text-red-600 hover:text-red-800">
-                        ← Back to National News
-                    </Link>
-                </div>
-            </div>
-        );
-    }
 
     if (loading) {
         return (
@@ -105,24 +54,15 @@ export default function StatePage({ params }: { params: { slug: string } }) {
         <div className="min-h-screen bg-gray-50">
             <TopBanner />
             <LeftBanner />
-            
+
             <div className="container mx-auto px-4 py-8">
-                <div className="mb-8">
-                    <div className="flex items-center gap-4 mb-4">
-                        <Link href="/news/national" className="text-red-600 hover:text-red-800">
-                            ← Back to National News
-                        </Link>
-                    </div>
-                    <h1 className="text-4xl font-bold text-gray-900 mb-2">{stateInfo.name} News</h1>
-                    <p className="text-gray-600">Capital: {stateInfo.capital}</p>
-                    <p className="text-gray-600">Latest news and updates from {stateInfo.name}</p>
-                </div>
+                <h1 className="text-4xl font-bold text-gray-900 mb-2">{stateInfo.name} News</h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
                         {news.length === 0 ? (
-                            <div className="bg-white rounded-lg shadow-md p-8 text-center">
+                            <div className="bg-white shadow-md p-8 text-center">
                                 <h2 className="text-xl font-semibold text-gray-700 mb-2">No News Available</h2>
                                 <p className="text-gray-500">No news articles found for {stateInfo.name} at the moment.</p>
                             </div>
@@ -131,37 +71,38 @@ export default function StatePage({ params }: { params: { slug: string } }) {
                                 {news.map((article, index) => {
                                     const imageUrl = extractFirstImage(article.heroImage);
                                     return (
-                                        <div key={article.slug || article.id || index} className="bg-white rounded-lg shadow-md p-6">
-                                            <div className="flex gap-4">
+                                        <div key={article.slug || article.id || index} className="bg-white shadow-md p-6">
+                                            <div className="flex flex-col md:flex-row gap-4">
                                                 {imageUrl && (
-                                                    <div className="flex-shrink-0">
+                                                    <div className="relative flex-shrink-0 w-full md:w-[200px] h-[150px]">
                                                         <Image
                                                             src={imageUrl}
                                                             alt={article.title}
-                                                            width={200}
-                                                            height={150}
-                                                            className="rounded-md object-cover"
+                                                            fill
+                                                            className="object-cover"
                                                         />
                                                     </div>
                                                 )}
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 mb-2">
-                                                        <span className="text-xs text-gray-500">
-                                                            {new Date(article.createdAt).toLocaleDateString()}
-                                                        </span>
-                                                        {article.category && (
-                                                            <span className="bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full">
-                                                                {article.category.name}
+                                                    <div className="flex items-center justify-between gap-2 mb-2">
+                                                        <div className="flex gap-2">
+                                                            <span className="text-xs text-gray-500">
+                                                                {timeAgo(article.createdAt)}
                                                             </span>
-                                                        )}
+                                                            {article.category && (
+                                                                <span className="bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full">
+                                                                    {article.category.name}
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                         {article.city && (
                                                             <span className="text-xs text-gray-500">
                                                                 {article.city}
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <ButtonLink 
-                                                        href={`/news/${article.slug}`} 
+                                                    <ButtonLink
+                                                        href={`/news/${article.slug}`}
                                                         title={article.title}
                                                         className="text-lg font-semibold line-clamp-2 hover:text-red-600 mb-2"
                                                     />
@@ -174,7 +115,6 @@ export default function StatePage({ params }: { params: { slug: string } }) {
                                                         {article.author && (
                                                             <span>By {article.author.name}</span>
                                                         )}
-                                                        <span>{article.views} views</span>
                                                     </div>
                                                 </div>
                                             </div>

@@ -6,59 +6,18 @@ import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import { ButtonLink, ButtonSeeMore } from "@/utils/Buttons";
 import { extractFirstImage, timeAgo } from "@/utils/Utils";
+import { indianStates } from "@/data/indianStates";
 import Image from "next/image";
 
-// Indian states with their capitals
-const indianStates = [
-    { name: "Andhra Pradesh", capital: "Amaravati", slug: "andhra-pradesh" },
-    { name: "Arunachal Pradesh", capital: "Itanagar", slug: "arunachal-pradesh" },
-    { name: "Assam", capital: "Dispur", slug: "assam" },
-    { name: "Bihar", capital: "Patna", slug: "bihar" },
-    { name: "Chhattisgarh", capital: "Raipur", slug: "chhattisgarh" },
-    { name: "Goa", capital: "Panaji", slug: "goa" },
-    { name: "Gujarat", capital: "Gandhinagar", slug: "gujarat" },
-    { name: "Haryana", capital: "Chandigarh", slug: "haryana" },
-    { name: "Himachal Pradesh", capital: "Shimla", slug: "himachal-pradesh" },
-    { name: "Jharkhand", capital: "Ranchi", slug: "jharkhand" },
-    { name: "Karnataka", capital: "Bengaluru", slug: "karnataka" },
-    { name: "Kerala", capital: "Thiruvananthapuram", slug: "kerala" },
-    { name: "Madhya Pradesh", capital: "Bhopal", slug: "madhya-pradesh" },
-    { name: "Maharashtra", capital: "Mumbai", slug: "maharashtra" },
-    { name: "Manipur", capital: "Imphal", slug: "manipur" },
-    { name: "Meghalaya", capital: "Shillong", slug: "meghalaya" },
-    { name: "Mizoram", capital: "Aizawl", slug: "mizoram" },
-    { name: "Nagaland", capital: "Kohima", slug: "nagaland" },
-    { name: "Odisha", capital: "Bhubaneswar", slug: "odisha" },
-    { name: "Punjab", capital: "Chandigarh", slug: "punjab" },
-    { name: "Rajasthan", capital: "Jaipur", slug: "rajasthan" },
-    { name: "Sikkim", capital: "Gangtok", slug: "sikkim" },
-    { name: "Tamil Nadu", capital: "Chennai", slug: "tamil-nadu" },
-    { name: "Telangana", capital: "Hyderabad", slug: "telangana" },
-    { name: "Tripura", capital: "Agartala", slug: "tripura" },
-    { name: "Uttar Pradesh", capital: "Lucknow", slug: "uttar-pradesh" },
-    { name: "Uttarakhand", capital: "Dehradun", slug: "uttarakhand" },
-    { name: "West Bengal", capital: "Kolkata", slug: "west-bengal" },
-    { name: "Delhi", capital: "New Delhi", slug: "delhi" },
-    { name: "Jammu and Kashmir", capital: "Srinagar", slug: "jammu-kashmir" },
-    { name: "Ladakh", capital: "Leh", slug: "ladakh" },
-    { name: "Chandigarh", capital: "Chandigarh", slug: "chandigarh" },
-    { name: "Puducherry", capital: "Puducherry", slug: "puducherry" },
-    { name: "Andaman and Nicobar Islands", capital: "Port Blair", slug: "andaman-nicobar" },
-    { name: "Dadra and Nagar Haveli and Daman and Diu", capital: "Daman", slug: "dadra-nagar-haveli-daman-diu" },
-    { name: "Lakshadweep", capital: "Kavaratti", slug: "lakshadweep" }
-];
 
-
-function StateNewsSection({ state, news }: { state: { name: string; capital: string; slug: string }; news: NewsArticle[] }) {
+function StateNewsSection({ state, news }: { state: { name: string; slug: string }; news: NewsArticle[] }) {
     const stateNews = news
         .filter(article =>
-            article.state?.toLowerCase().includes(state.name.toLowerCase()) ||
-            article.city?.toLowerCase().includes(state.capital.toLowerCase())
+            article.state?.toLowerCase().includes(state.name.toLowerCase())
         )
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     if (stateNews.length === 0) return null;
-
     const visibleNews = stateNews.slice(0, 6);
 
     return (
@@ -74,7 +33,6 @@ function StateNewsSection({ state, news }: { state: { name: string; capital: str
                     <div className="flex-1 border-t-2 border-red-700"></div>
                 </div>
             </header>
-            <p className="text-sm text-gray-500 mb-4">Capital: {state.capital}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
                 {visibleNews.map((article) => {
                     const imageUrl = extractFirstImage(article.heroImage);
@@ -112,11 +70,11 @@ function StateNewsSection({ state, news }: { state: { name: string; capital: str
                     );
                 })}
             </div>
-                    <ButtonSeeMore
-                        href={`/news/state/${state.slug}`}
-                        title="See all news"
-                        aria-label={`See all news from ${state.name}`}
-                    />
+            <ButtonSeeMore
+                href={`/news/national/state/${state.slug}`}
+                title="See all news"
+                aria-label={`See all news from ${state.name}`}
+            />
         </section>
     );
 }
@@ -161,10 +119,10 @@ export default function NationalPage() {
             <LeftBanner />
             <div className="container mx-auto px-4 py-8">
 
-                <div className="grid grid-cols-1 gap-8">
+                <div className="grid grid-cols-1">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
-                        <div className="mb-8">
+                        <div>
                             <div className="grid grid-cols-1 gap-6">
                                 {indianStates.map((state) => (
                                     <StateNewsSection
