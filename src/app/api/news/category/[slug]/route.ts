@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 const PAGE_SIZE = 15;
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-    const { slug } = params;
+export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     try {
         const { searchParams } = new URL(request.url);
         const page = parseInt(searchParams.get('page') || '1', 10);
