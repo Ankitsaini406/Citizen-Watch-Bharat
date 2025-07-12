@@ -3,8 +3,8 @@ import { prisma } from '@/lib/prisma';
 
 const PAGE_SIZE = 15;
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-    const { slug } = params;
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     
     try {
         const { searchParams } = new URL(request.url);
