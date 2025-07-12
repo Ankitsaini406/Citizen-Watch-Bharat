@@ -7,9 +7,8 @@ import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
 import { Facebook, X } from "lucide-react";
 import { NewsArticle } from "@/types/type";
-import { extractFirstImage, timeAgo } from "@/utils/Utils";
+import { extractFirstImage, ScrollableNewsSection, timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
-import { ButtonLink } from "@/utils/Buttons";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -250,75 +249,22 @@ export default function NewsPage() {
 
                     <MiddleBanner />
 
-                    {/* Related News Section */}
-                    {relatedNews.length > 0 && (
-                        <section className="mt-12">
-                            <h3 className="text-2xl font-semibold mb-4">Related News</h3>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                {relatedNews.map(news => {
-                                    const imageUrl = extractFirstImage(news.heroImage);
-                                    return (
-                                        <Link key={news.slug} href={`/news/${news.slug}`} className="block border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow bg-white group">
-                                            {imageUrl && (
-                                                <div className="relative w-full h-40 bg-gray-200">
-                                                    <Image
-                                                        src={imageUrl}
-                                                        alt={news.title}
-                                                        fill
-                                                        className="object-cover group-hover:scale-105 transition-transform duration-200"
-                                                        sizes="(max-width: 768px) 100vw, 50vw"
-                                                        placeholder="blur"
-                                                        blurDataURL="/placeholder.svg"
-                                                    />
-                                                </div>
-                                            )}
-                                            <div className="p-4">
-                                                <div className="text-xs text-red-600 font-semibold mb-1">{news.category?.name}</div>
-                                                <div className="font-bold text-lg mb-1 group-hover:text-red-700 transition-colors line-clamp-2">{news.title}</div>
-                                                <div className="text-xs text-gray-500">{timeAgo(news.createdAt)}</div>
-                                            </div>
-                                        </Link>
-                                    );
-                                })}
-                            </div>
-                        </section>
-                    )}
-
                     {/* More from Category Section */}
                     {categoryNews.length > 0 && (
-                        <section className="mt-12 px-6 lg:px-0">
-                            <h3 className="text-2xl font-semibold mb-4">More from {article.category?.name}</h3>
-                            <div className="grid gap-4 sm:grid-cols-3">
-                                {categoryNews.map(news => {
-                                    const imageUrl = extractFirstImage(news.heroImage);
-                                    return (
-                                        <div key={news.slug} className="block border border-gray-300 overflow-hidden bg-white group">
-                                            {imageUrl && (
-                                                <div className="relative w-full h-40 bg-gray-200">
-                                                    <Image
-                                                        src={imageUrl}
-                                                        alt={news.title}
-                                                        fill
-                                                        className="object-cover duration-200"
-                                                        sizes="(max-width: 768px) 100vw, 50vw"
-                                                        placeholder="blur"
-                                                        blurDataURL="/placeholder.svg"
-                                                    />
-                                                </div>
-                                            )}
-                                            <div className="p-4">
-                                            <div className="text-xs text-red-600 font-semibold mb-1">{news.category?.name}</div>
-                                            <div className="flex flex-col justify-between h-20">
-                                                <ButtonLink href={`/news/${news.slug}`} title={news.title}/>
-                                                <div className="text-xs text-gray-500">{timeAgo(news.createdAt)}</div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </section>
+                        <ScrollableNewsSection
+                            title={`More from ${article.category?.name}`}
+                            news={categoryNews}
+                        />
                     )}
+
+                    {/* Related News Section */}
+                    {relatedNews.length > 0 && (
+                        <ScrollableNewsSection
+                            title="Related News"
+                            news={relatedNews}
+                        />
+                    )}
+
                 </article>
                 <BottomBanner />
             </>

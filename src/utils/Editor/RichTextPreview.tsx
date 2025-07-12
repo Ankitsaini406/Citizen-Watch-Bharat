@@ -7,6 +7,22 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
         switch (child.type) {
             case 'paragraph': {
                 const innerNodes = processChildren(child.children ?? [], child.type);
+
+                // Check if any child is a block-level element (image, table, etc.)
+                const hasBlockElements = child.children?.some(node =>
+                    ['image', 'table', 'quote', 'code', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'heading'].includes(node.type)
+                );
+
+                // If paragraph contains block elements, render them as separate elements
+                if (hasBlockElements) {
+                    return (
+                        <React.Fragment key={index}>
+                            {innerNodes}
+                        </React.Fragment>
+                    );
+                }
+
+                // Regular paragraph with only inline elements
                 return (
                     <p
                         key={index}
@@ -19,7 +35,7 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
             case 'text': {
                 const text = child.text || '';
                 let className = '';
-                
+
                 // Apply text formatting
                 if (child.format) {
                     const format = Number(child.format);
@@ -27,9 +43,9 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                     if (format & 2) className += 'italic ';
                     if (format & 4) className += 'underline ';
                     if (format & 8) className += 'line-through ';
-                    if (format & 128) className += 'bg-yellow-200 dark:bg-yellow-800 ';
+                    if (format & 128) className += 'bg-yellow-200';
                 }
-                
+
                 return <span key={index} className={className.trim() || undefined}>{text}</span>;
             }
             case 'hashtag':
@@ -76,8 +92,8 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 );
             case 'list': {
                 const ListTag = child.listType === 'bullet' ? 'ul' : 'ol';
-                const listClassName = child.listType === 'bullet' 
-                    ? 'list-disc space-y-1' 
+                const listClassName = child.listType === 'bullet'
+                    ? 'list-disc space-y-1'
                     : 'list-decimal space-y-1';
                 return (
                     <ListTag key={index} className={`pl-6 my-4 ${listClassName}`}>
@@ -93,11 +109,11 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 );
             case 'link':
                 return (
-                    <a 
-                        key={index} 
-                        href={child.url} 
-                        target="_blank" 
-                        rel="noreferrer" 
+                    <a
+                        key={index}
+                        href={child.url}
+                        target="_blank"
+                        rel="noreferrer"
                         className="text-blue-500 hover:text-blue-700 underline transition-colors"
                     >
                         {processChildren(child.children ?? [], child.type)}
@@ -111,7 +127,7 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                             alt={child.text ?? 'image'}
                             fill
                             sizes="(max-width: 768px) 100vw, 600px"
-                            className="object-contain rounded-lg shadow-md"
+                            className="object-contain"
                         />
                     </div>
                 );
@@ -119,9 +135,9 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 const rows = child.children ?? [];
                 const [headerRow, ...bodyRows] = rows;
                 return (
-                    <div key={index} className="my-6 overflow-x-auto">
-                        <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden shadow-sm">
-                            <thead className="bg-gray-100 dark:bg-gray-800">
+                    <div key={index} className="my-6 overflow-x-auto border border-gray-300 ">
+                        <table className="w-full border-collapse overflow-hidden">
+                            <thead className="bg-gray-100">
                                 {processChildren([headerRow], 'thead')}
                             </thead>
                             <tbody className="bg-white dark:bg-gray-900">
@@ -133,7 +149,7 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
             }
             case 'tablerow':
                 return (
-                    <tr key={index} className="border-b border-gray-200 dark:border-gray-700">
+                    <tr key={index} className="border-b border-gray-200 dark:border-gray-700 last:border-0">
                         {(child.children ?? []).map((cell, cellIndex) =>
                             processChildren([cell], parentType, cellIndex)
                         )}
@@ -145,13 +161,13 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 return (
                     <CellTag
                         key={index}
-                        className={`p-3 border-r border-gray-200 dark:border-gray-700 text-left
-                            ${parentType === 'thead' 
-                                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-semibold' 
-                                : 'bg-white dark:bg-gray-900'
+                        className={`p-3 border-r border-gray-200 dark:border-gray-700 last:border-0 text-left
+                            ${parentType === 'thead'
+                                ? 'bg-gray-100 text-gray-900 font-semibold capitalize'
+                                : 'bg-white'
                             }
-                            ${isFirstColumn && parentType !== 'thead' 
-                                ? 'bg-blue-50 dark:bg-blue-900/20 font-medium' 
+                            ${isFirstColumn && parentType !== 'thead'
+                                ? 'bg-blue-50 font-medium'
                                 : ''
                             }
                         `}
@@ -179,12 +195,12 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 const allowedTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
                 const Tag = allowedTags.includes(tag) ? tag : 'h1';
                 const headingClass = {
-                    h1: "text-4xl font-bold mb-6 mt-8 text-gray-900 dark:text-white",
-                    h2: "text-3xl font-semibold mb-4 mt-6 text-red-600 dark:text-red-400",
-                    h3: "text-2xl font-semibold mb-3 mt-5 text-gray-800 dark:text-gray-200",
-                    h4: "text-xl font-semibold mb-2 mt-4 text-gray-700 dark:text-gray-300",
-                    h5: "text-lg font-semibold mb-2 mt-3 text-gray-600 dark:text-gray-400",
-                    h6: "text-base font-semibold mb-1 mt-2 text-gray-500 dark:text-gray-500",
+                    h1: "text-4xl font-bold mb-6 mt-8 text-gray-900",
+                    h2: "text-3xl font-semibold mb-4 mt-6",
+                    h3: "text-2xl font-semibold mb-3 mt-5",
+                    h4: "text-xl font-semibold mb-2 mt-4",
+                    h5: "text-lg font-semibold mb-2 mt-3",
+                    h6: "text-base font-semibold mb-1 mt-2",
                 }[Tag] || "";
                 return React.createElement(
                     Tag,
