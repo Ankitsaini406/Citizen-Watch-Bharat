@@ -165,9 +165,9 @@ export default function NewsPage() {
                 <LeftBanner />
                 <RightBanner />
                 <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
-                    <h1 className="text-4xl font-bold mb-2 leading-relaxed">{article.title}</h1>
+                    <h1 className="text-2xl md:text-4xl font-bold mb-2 leading-relaxed px-4 lg:px-0">{article.title}</h1>
                     {article.subtitle && (
-                        <h2 className="text-xl text-gray-700 mb-4">{article.subtitle}</h2>
+                        <h2 className="md:text-xl text-gray-700 mb-4 px-4 lg:px-0">{article.subtitle}</h2>
                     )}
                     {firstImage && (
                         <div className="relative w-full h-80 sm:h-[400px]">
@@ -181,7 +181,7 @@ export default function NewsPage() {
                         </div>
                     )}
 
-                    <div className="p-6 lg:px-0">
+                    <div className="p-4 lg:px-0">
                         {/* Category and Date */}
                         <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
                             <span className="uppercase font-semibold tracking-wider text-red-600">
