@@ -85,6 +85,43 @@ function LoginButton({ onClick, fullWidth = false }: { onClick?: () => void; ful
     );
 }
 
+// --- Breadcrumb Component ---
+function Breadcrumb() {
+    const pathname = usePathname();
+    if (!pathname || pathname === "/") return null;
+    const segments = pathname.split("/").filter(Boolean);
+    let path = "";
+    return (
+        <nav className="max-w-7xl mx-auto w-full px-4 py-2 text-sm" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2">
+                <li>
+                    <Link href="/" className="hover:underline font-semibold text-gray-800">Home</Link>
+                </li>
+                {segments.map((seg, idx) => {
+                    path += `/${seg}`;
+                    const isLast = idx === segments.length - 1;
+                    const decoded = decodeURIComponent(seg);
+                    let label = decoded.replace(/-/g, " ");
+                    if (label.length > 20) {
+                        label = label.slice(0, 20) + "...";
+                    }
+                    const isNews = seg === "news";
+                    return (
+                        <li key={path} className="flex items-center">
+                            <span className="mx-1 text-gray-400">/</span>
+                            {isLast || isNews ? (
+                                <span className="text-gray-800 font-semibold capitalize">{label}</span>
+                            ) : (
+                                <Link href={path} className="hover:underline font-semibold text-gray-800 capitalize">{label}</Link>
+                            )}
+                        </li>
+                    );
+                })}
+            </ol>
+        </nav>
+    );
+}
+
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
@@ -253,6 +290,8 @@ export default function Header() {
                     })}
                 </ul>
             </nav>
+            {/* Breadcrumb */}
+            <Breadcrumb />
         </>
     );
 }
