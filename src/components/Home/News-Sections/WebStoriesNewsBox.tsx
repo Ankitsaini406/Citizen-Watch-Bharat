@@ -42,7 +42,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
 
     if (isFirst) {
         return (
-            <div className="bg-white overflow-hidden h-full border border-gray-300">
+            <div className="bg-white overflow-hidden h-full border border-gray-300 min-h-96">
                 <Link href={`/news/${news.slug}`} className="block h-full">
                     <div className="relative h-80 lg:h-full bg-gray-200">
                         <Image

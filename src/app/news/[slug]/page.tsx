@@ -165,7 +165,7 @@ export default function NewsPage() {
                 <LeftBanner />
                 <RightBanner />
                 <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
-                    <h1 className="text-4xl font-bold mb-2 leading-tight">{article.title}</h1>
+                    <h1 className="text-4xl font-bold mb-2 leading-relaxed">{article.title}</h1>
                     {article.subtitle && (
                         <h2 className="text-xl text-gray-700 mb-4">{article.subtitle}</h2>
                     )}
