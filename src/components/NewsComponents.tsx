@@ -19,7 +19,10 @@ type LatestNewsItem = {
     title: string;
     createdAt: string;
     slug: string;
-    category?: { name: string } | null;
+    category?: {
+        name: string;
+        slug: string;
+    } | null;
 };
 
 export function BrakingNews() {
@@ -74,7 +77,9 @@ export function LatestNews() {
                     title: item.title,
                     createdAt: item.createdAt,
                     slug: item.slug,
-                    category: item.category ? { name: item.category.slug } : null
+                    category: item.category
+                        ? { name: item.category.name, slug: item.category.slug }
+                        : null
                 }))
             );
             setLoading(false);
@@ -114,7 +119,7 @@ export function LatestNews() {
                                     </span>
                                 )}
                             </div>
-                            <ButtonLink href={`/news/${item.slug}`} title={item.title} className="line-clamp-2" />
+                            <ButtonLink href={`/news/${item.category?.slug}/${item.slug}`} title={item.title} className="line-clamp-2" />
                         </div>
                     ))
                 )}
