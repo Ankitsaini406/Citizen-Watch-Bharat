@@ -161,9 +161,9 @@ export default function NewsPage() {
 
         return (
             <>
-                <TopBanner />
-                <LeftBanner />
-                <RightBanner />
+                <TopBanner place="Par-News" />
+                <LeftBanner place="Par-News" />
+                <RightBanner place="Par-News" />
                 <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
                     <h1 className="text-2xl md:text-4xl font-bold mb-2 leading-relaxed px-4 lg:px-0">{article.title}</h1>
                     {article.subtitle && (
@@ -247,7 +247,7 @@ export default function NewsPage() {
                         </div>
                     </div>
 
-                    <MiddleBanner />
+                    {((categoryNews?.length ?? 0) > 0 || (relatedNews?.length ?? 0) > 0) && <MiddleBanner place="Par-News" />}
 
                     {/* More from Category Section */}
                     {categoryNews.length > 0 && (
@@ -266,7 +266,7 @@ export default function NewsPage() {
                     )}
 
                 </article>
-                <BottomBanner />
+                <BottomBanner place="Par-News" />
             </>
         );
     }

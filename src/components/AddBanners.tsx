@@ -6,14 +6,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-export function TopBanner() {
+export function TopBanner({ place = 'Home' } : { place?: string; }) {
     const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadAdvertisements = async () => {
             try {
-                const ads = await fetchAdvertisements('top', 'Home');
+                const ads = await fetchAdvertisements('top', place);
                 setAdvertisements(ads);
             } catch (error) {
                 console.error('Error loading top banner:', error);
@@ -23,7 +23,7 @@ export function TopBanner() {
         };
 
         loadAdvertisements();
-    }, []);
+    }, [place]);
 
     if (loading) {
         return (
@@ -69,14 +69,14 @@ export function TopBanner() {
     );
 }
 
-export function LeftBanner() {
+export function LeftBanner({ place = 'Home' } : { place?: string; }) {
     const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadAdvertisements = async () => {
             try {
-                const ads = await fetchAdvertisements('left', 'Home');
+                const ads = await fetchAdvertisements('left', place);
                 setAdvertisements(ads);
             } catch (error) {
                 console.error('Error loading left banner:', error);
@@ -86,7 +86,7 @@ export function LeftBanner() {
         };
 
         loadAdvertisements();
-    }, []);
+    }, [place]);
 
     if (loading) {
         return (
@@ -132,14 +132,14 @@ export function LeftBanner() {
     );
 }
 
-export function RightBanner() {
+export function RightBanner({ place = 'Home' } : { place?: string; }) {
     const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadAdvertisements = async () => {
             try {
-                const ads = await fetchAdvertisements('right', 'Home');
+                const ads = await fetchAdvertisements('right', place);
                 setAdvertisements(ads);
             } catch (error) {
                 console.error('Error loading right banner:', error);
@@ -149,7 +149,7 @@ export function RightBanner() {
         };
 
         loadAdvertisements();
-    }, []);
+    }, [place]);
 
     if (loading) {
         return (
@@ -195,14 +195,14 @@ export function RightBanner() {
     );
 }
 
-export function MiddleBanner() {
+export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
     const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadAdvertisements = async () => {
             try {
-                const ads = await fetchAdvertisements('middle', 'Home');
+                const ads = await fetchAdvertisements('middle', place);
                 setAdvertisements(ads);
             } catch (error) {
                 console.error('Error loading middle banner:', error);
@@ -212,7 +212,7 @@ export function MiddleBanner() {
         };
 
         loadAdvertisements();
-    }, []);
+    }, [place]);
 
     if (loading) {
         return (
@@ -258,14 +258,14 @@ export function MiddleBanner() {
     );
 }
 
-export function BottomBanner() {
+export function BottomBanner({ place = 'Home' } : { place?: string; }) {
     const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadAdvertisements = async () => {
             try {
-                const ads = await fetchAdvertisements('bottom', 'Home');
+                const ads = await fetchAdvertisements('bottom', place);
                 setAdvertisements(ads);
             } catch (error) {
                 console.error('Error loading top banner:', error);
@@ -275,7 +275,7 @@ export function BottomBanner() {
         };
 
         loadAdvertisements();
-    }, []);
+    }, [place]);
 
     if (loading) {
         return (

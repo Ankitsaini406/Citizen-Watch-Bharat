@@ -42,7 +42,7 @@ export default function Page() {
 
   return (
     <>
-      <TopBanner />
+      <TopBanner place="News-Section" />
       <NewsGridWithPagination
         news={news}
         loading={loading}
@@ -52,9 +52,9 @@ export default function Page() {
         PAGE_SIZE={PAGE_SIZE}
         title="International News"
       />
-      <LeftBanner />
-      <RightBanner />
-      <BottomBanner />
+      <LeftBanner place="News-Section" />
+      <RightBanner place="News-Section" />
+      <BottomBanner place="News-Section" />
     </>
   );
 }

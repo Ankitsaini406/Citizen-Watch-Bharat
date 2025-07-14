@@ -52,8 +52,8 @@ export default function StatePage({ params }: { params: Promise<{ slug: string }
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <TopBanner />
-            <LeftBanner />
+            <TopBanner place="News-Section" />
+            <LeftBanner place="News-Section" />
 
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-4xl font-bold text-gray-900 mb-2">{stateInfo.name} News</h1>
@@ -155,14 +155,14 @@ export default function StatePage({ params }: { params: Promise<{ slug: string }
                     {/* Sidebar */}
                     <div className="lg:col-span-1">
                         <div className="sticky top-8">
-                            <MiddleBanner />
+                            <MiddleBanner place="News-Section" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <BottomBanner />
-            <RightBanner />
+            <BottomBanner place="News-Section" />
+            <RightBanner place="News-Section" />
         </div>
     );
 } 
