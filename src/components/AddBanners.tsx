@@ -48,22 +48,33 @@ export function TopBanner({ place = 'Home' } : { place?: string; }) {
     return (
         <div className="container mx-auto my-10 px-10 xl:px-0">
             {advertisements.map((ad) => (
-                <Link
+                <div
                     key={ad.id}
-                    href={ad.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
+                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
                 >
-                    <div className="relative flex justify-center items-center w-full h-60 md:h-40 lg:h-60 overflow-hidden">
-                        <Image
-                            fill
-                            src={ad.imageUrl}
-                            alt={ad.title}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                </Link>
+                    {/* Advertisement Label */}
+                    <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
+                        Advertisement
+                    </span>
+                    <Link
+                        href={ad.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                    >
+                        <div className="relative flex justify-center items-center w-full h-60 md:h-40 lg:h-60 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                            {/* Optional overlay for better contrast */}
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
+                            <Image
+                                fill
+                                src={ad.imageUrl}
+                                alt={ad.title}
+                                className="w-full h-full object-cover"
+                                style={{ zIndex: 0 }}
+                            />
+                        </div>
+                    </Link>
+                </div>
             ))}
         </div>
     );
@@ -91,7 +102,7 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
     if (loading) {
         return (
             <div className="hidden 2xl:block fixed left-0 top-72">
-                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96">
+                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
             </div>
@@ -101,7 +112,7 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
     if (advertisements.length === 0) {
         return (
             <div className="hidden 2xl:block fixed left-0 top-72">
-                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96">
+                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">ADD</h1>
                 </div>
             </div>
@@ -111,22 +122,31 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
     return (
         <div className="hidden 2xl:block fixed left-0 top-72">
             {advertisements.map((ad) => (
-                <Link
+                <div
                     key={ad.id}
-                    href={ad.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
+                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
                 >
-                    <div className="relative flex justify-center items-center w-40 h-96 overflow-hidden">
-                        <Image
-                            fill
-                            src={ad.imageUrl}
-                            alt={ad.title}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                </Link>
+                    <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
+                        Advertisement
+                    </span>
+                    <Link
+                        href={ad.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                    >
+                        <div className="relative flex justify-center items-center w-40 h-96 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
+                            <Image
+                                fill
+                                src={ad.imageUrl}
+                                alt={ad.title}
+                                className="w-full h-full object-cover"
+                                style={{ zIndex: 0 }}
+                            />
+                        </div>
+                    </Link>
+                </div>
             ))}
         </div>
     );
@@ -154,7 +174,7 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
     if (loading) {
         return (
             <div className="hidden 2xl:block fixed right-0 top-72">
-                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96">
+                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
             </div>
@@ -164,7 +184,7 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
     if (advertisements.length === 0) {
         return (
             <div className="hidden 2xl:block fixed right-0 top-72">
-                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96">
+                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">ADD</h1>
                 </div>
             </div>
@@ -174,22 +194,31 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
     return (
         <div className="hidden 2xl:block fixed right-0 top-72">
             {advertisements.map((ad) => (
-                <Link
+                <div
                     key={ad.id}
-                    href={ad.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
+                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
                 >
-                    <div className="relative flex justify-center items-center w-40 h-96 overflow-hidden">
-                        <Image
-                            fill
-                            src={ad.imageUrl}
-                            alt={ad.title}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                </Link>
+                    <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
+                        Advertisement
+                    </span>
+                    <Link
+                        href={ad.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                    >
+                        <div className="relative flex justify-center items-center w-40 h-96 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
+                            <Image
+                                fill
+                                src={ad.imageUrl}
+                                alt={ad.title}
+                                className="w-full h-full object-cover"
+                                style={{ zIndex: 0 }}
+                            />
+                        </div>
+                    </Link>
+                </div>
             ))}
         </div>
     );
@@ -217,7 +246,7 @@ export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
     if (loading) {
         return (
             <div className="my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-40">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-40  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
             </div>
@@ -227,7 +256,7 @@ export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
     if (advertisements.length === 0) {
         return (
             <div className="my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-40">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-40  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Advertisement</h1>
                 </div>
             </div>
@@ -237,22 +266,31 @@ export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
     return (
         <div className="my-10 px-10 xl:px-0">
             {advertisements.map((ad) => (
-                <Link
+                <div
                     key={ad.id}
-                    href={ad.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
+                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
                 >
-                    <div className="relative flex justify-center items-center w-full h-40 overflow-hidden">
-                        <Image
-                            fill
-                            src={ad.imageUrl}
-                            alt={ad.title}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                </Link>
+                    <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
+                        Advertisement
+                    </span>
+                    <Link
+                        href={ad.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                    >
+                        <div className="relative flex justify-center items-center w-full h-40 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
+                            <Image
+                                fill
+                                src={ad.imageUrl}
+                                alt={ad.title}
+                                className="w-full h-full object-cover"
+                                style={{ zIndex: 0 }}
+                            />
+                        </div>
+                    </Link>
+                </div>
             ))}
         </div>
     );
@@ -280,7 +318,7 @@ export function BottomBanner({ place = 'Home' } : { place?: string; }) {
     if (loading) {
         return (
             <div className="container mx-auto my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
             </div>
@@ -290,7 +328,7 @@ export function BottomBanner({ place = 'Home' } : { place?: string; }) {
     if (advertisements.length === 0) {
         return (
             <div className="container mx-auto my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Advertisement</h1>
                 </div>
             </div>
@@ -300,22 +338,31 @@ export function BottomBanner({ place = 'Home' } : { place?: string; }) {
     return (
         <div className="container mx-auto my-10 px-10 xl:px-0">
             {advertisements.map((ad) => (
-                <Link
+                <div
                     key={ad.id}
-                    href={ad.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
+                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
                 >
-                    <div className="relative flex justify-center items-center w-full h-60 md:h-40 lg:h-60 overflow-hidden">
-                        <Image
-                            fill
-                            src={ad.imageUrl}
-                            alt={ad.title}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                </Link>
+                    <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
+                        Advertisement
+                    </span>
+                    <Link
+                        href={ad.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                    >
+                        <div className="relative flex justify-center items-center w-full h-60 md:h-40 lg:h-60 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
+                            <Image
+                                fill
+                                src={ad.imageUrl}
+                                alt={ad.title}
+                                className="w-full h-full object-cover"
+                                style={{ zIndex: 0 }}
+                            />
+                        </div>
+                    </Link>
+                </div>
             ))}
         </div>
     );
