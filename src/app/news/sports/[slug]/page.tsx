@@ -1,7 +1,7 @@
 'use client';
 
 import { LeftBanner, RightBanner, TopBanner, MiddleBanner, BottomBanner } from "@/components/AddBanners";
-import { useState, useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import { fetchNewsBySportsSlug } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import NewsGridWithPagination from "@/components/NewsGridWithPagination";
@@ -14,8 +14,8 @@ const sportsSlugToName: Record<string, string> = {
     // ...add more as needed
 };
 
-export default function SportsSlugPage({ params }: { params: { slug: string } }) {
-    const { slug } = params;
+export default function StatePage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = use(params);
     const [news, setNews] = useState<NewsArticle[]>([]);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({ total: 0, page: 1, totalPages: 0, pageSize: 10 });
