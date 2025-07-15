@@ -45,7 +45,7 @@ export async function GET() {
     });
 
     // Optionally flatten all news for easier consumption
-    const news = categories.flatMap(cat => cat.news);
+    const news = categories.flatMap((cat: { news: typeof categories[number]['news'] }) => cat.news);
 
     return NextResponse.json({ categories, news });
   } catch (error) {
