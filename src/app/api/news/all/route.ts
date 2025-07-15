@@ -5,6 +5,13 @@ export async function GET() {
   try {
     const categories = await prisma.category.findMany({
       include: {
+        subCategories: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
         news: {
           where: { isPublish: true, isDeleted: false },
           orderBy: { createdAt: 'desc' },
@@ -17,6 +24,13 @@ export async function GET() {
             isBreaking: true,
             state: true,
             city: true,
+            subCategory: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+              },
+            },
             category: {
               select: {
                 id: true,

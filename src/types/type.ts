@@ -3,6 +3,7 @@ export type Category = {
     id: string;
     name: string;
     slug: string;
+    subCategories?: SubCategory[];
 };
 
 export type News = {
@@ -10,6 +11,12 @@ export type News = {
     title: string;
     heroImage: string[];
     category?: { slug: string };
+};
+
+export type SubCategory = {
+    id: string;
+    name: string;
+    slug: string;
 };
 
 export interface LexicalNode {
@@ -48,6 +55,7 @@ export interface NewsArticle {
     state: string;
     heroImage: string[];
     subCategoryId?: string;
+    subCategory?: SubCategory;
     pngImage?: string;
     isBreaking: boolean;
 }

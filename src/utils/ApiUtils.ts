@@ -72,4 +72,18 @@ export async function fetchNewsByState(stateSlug: string, page = 1): Promise<{ d
         console.error('Error fetching state news:', error);
         return { data: [], pagination: { total: 0, page: 1, totalPages: 0 } };
     }
+}
+
+export async function fetchNewsBySportsSlug(slug: string, page: number = 1) {
+    try {
+        const res = await fetch(`/api/news/sports/${slug}?page=${page}`);
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.error || 'Failed to fetch sports news');
+        }
+        return await res.json();
+    } catch (error) {
+        console.error("Error in fetchNewsBySportsSlug:", error);
+        throw error;
+    }
 } 
