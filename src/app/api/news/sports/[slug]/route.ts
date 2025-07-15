@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
     try {
         const { slug } = await params;
         if (!slug || typeof slug !== "string") {
