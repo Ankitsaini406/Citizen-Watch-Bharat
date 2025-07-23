@@ -58,6 +58,7 @@ export default function StatePage({ params }: { params: Promise<{ slug: string }
                             setPage={setCurrentPage}
                             PAGE_SIZE={PAGE_SIZE}
                             title={`${sportsName} News`}
+                            href={`/news/sports/${sportsName}/`}
                         />
                     </div>
                     {/* Sidebar */}

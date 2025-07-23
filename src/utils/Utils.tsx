@@ -4,6 +4,16 @@ import { ButtonLink } from "./Buttons";
 import { NewsArticle } from "@/types/type";
 import Image from "next/image";
 
+export function slugify(text: string): string {
+    return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-');
+}
+
 export function extractFirstImage(input: string | string[]): string {
     let firstImage = "";
 
@@ -73,13 +83,13 @@ export const Pagination: React.FC<PaginationProps> = ({ page, totalPages, onPage
 };
 
 // Scrollable News Section Component
-export function ScrollableNewsSection({ 
-    title, 
-    news, 
-    className = "" 
-}: { 
-    title: string; 
-    news: NewsArticle[]; 
+export function ScrollableNewsSection({
+    title,
+    news,
+    className = ""
+}: {
+    title: string;
+    news: NewsArticle[];
     className?: string;
 }) {
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -116,7 +126,7 @@ export function ScrollableNewsSection({
     return (
         <section className={`mt-12 px-6 lg:px-0 ${className}`}>
             <h3 className="text-2xl font-semibold mb-4">{title}</h3>
-            
+
             <div className="relative group">
                 {/* Left Scroll Button */}
                 {canScrollLeft && (
@@ -141,7 +151,7 @@ export function ScrollableNewsSection({
                 )}
 
                 {/* Scrollable Container */}
-                <div 
+                <div
                     ref={scrollRef}
                     className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}

@@ -114,7 +114,7 @@ function SportsOtherSection({ news }: { news: NewsArticle[] }) {
                                     )}
                                 </div>
                                 <ButtonLink
-                                    href={`/news/${article.slug}`}
+                                    href={`/news/sports/${article.slug}`}
                                     title={article.title}
                                     className="text-base font-semibold line-clamp-2 hover:text-red-600 mb-2 text-left"
                                 />

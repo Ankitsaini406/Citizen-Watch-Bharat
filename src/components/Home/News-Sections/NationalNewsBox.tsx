@@ -2,7 +2,7 @@ import { Category, News } from "@/types/type";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { extractFirstImage } from "@/utils/Utils";
+import { extractFirstImage, slugify } from "@/utils/Utils";
 
 // Extend News type locally to include heroImage as string[]
 interface NewsWithImage extends News {
@@ -45,7 +45,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
     if (isFirst) {
         return (
             <div className="bg-white overflow-hidden h-full border border-gray-300 min-h-96">
-                <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
+                <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
                     {/* Full height image with text overlay */}
                     <div className="relative h-80 lg:h-full bg-gray-200">
                         <Image

@@ -61,7 +61,7 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
                                     )}
                                 </div>
                                 <ButtonLink
-                                    href={`/news/national/${article.slug}`}
+                                    href={`/news/national/${state.slug}/${article.slug}`}
                                     title={article.title}
                                     className="text-base font-semibold line-clamp-2 hover:text-red-600 mb-2 text-left"
                                 />

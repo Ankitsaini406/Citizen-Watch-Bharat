@@ -59,6 +59,7 @@ export default function Page() {
                 setPage={setPage}
                 PAGE_SIZE={PAGE_SIZE}
                 title={title}
+                href={`/news/${category}`}
             />
             <LeftBanner place="News-Section" />
             <RightBanner place="News-Section" />

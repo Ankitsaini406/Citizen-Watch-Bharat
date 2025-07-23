@@ -1,27 +1,31 @@
 'use client';
 
 import { LeftBanner, RightBanner, TopBanner, MiddleBanner, BottomBanner } from "@/components/AddBanners";
-import { use, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { fetchNewsByState } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import { indianStatesBySlug } from "@/data/indianStates";
 import NewsGridWithPagination from "@/components/NewsGridWithPagination";
+import { useParams } from "next/navigation";
 
-export default function StatePage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = use(params);
+export default function Page() {
+    const params = useParams();
+    const category = params?.category as string;
     const [news, setNews] = useState<NewsArticle[]>([]);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({ total: 0, page: 1, totalPages: 0, pageSize: 10 });
     const [currentPage, setCurrentPage] = useState(1);
 
     const PAGE_SIZE = 10;
-    const stateInfo = indianStatesBySlug[slug];
+    const stateInfo = indianStatesBySlug[category];
+
+    console.log(`This is : `, stateInfo);
 
     useEffect(() => {
         const loadNews = async () => {
             try {
                 setLoading(true);
-                const result = await fetchNewsByState(slug, currentPage);
+                const result = await fetchNewsByState(category, currentPage);
                 setNews(result.data);
                 setPagination({ ...result.pagination, pageSize: PAGE_SIZE });
             } catch (error) {
@@ -32,14 +36,13 @@ export default function StatePage({ params }: { params: Promise<{ slug: string }
         };
 
         loadNews();
-    }, [slug, currentPage]);
+    }, [category, currentPage]);
 
     return (
         <div className="min-h-screen bg-gray-50">
             <TopBanner place="News-Section" />
             <LeftBanner place="News-Section" />
             <div className="container mx-auto px-4 py-8">
-                <h1 className="text-4xl font-bold text-gray-900 mb-2">{stateInfo.name} News</h1>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
@@ -51,6 +54,7 @@ export default function StatePage({ params }: { params: Promise<{ slug: string }
                             setPage={setCurrentPage}
                             PAGE_SIZE={PAGE_SIZE}
                             title={`${stateInfo.name} News`}
+                            href={`/news/national/${category}`}
                         />
                     </div>
                     {/* Sidebar */}

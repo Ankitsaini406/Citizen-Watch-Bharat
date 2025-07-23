@@ -9,6 +9,7 @@ export type Category = {
 export type News = {
     slug: string;
     title: string;
+    state: string;
     heroImage: string[];
     category?: { slug: string };
 };
