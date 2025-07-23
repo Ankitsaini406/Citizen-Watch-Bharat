@@ -22,17 +22,6 @@ const categories: Category[] = [
     { name: "Web-Stories", slug: "web-stories" },
 ];
 
-const categoryNameHindi: Record<string, string> = {
-    National: "राष्ट्रीय",
-    International: "अंतरराष्ट्रीय",
-    Political: "राजनीति",
-    Business: "व्यापार",
-    Elections: "चुनाव",
-    Entertainment: "मनोरंजन",
-    Sports: "खेल",
-    "Web-Stories": "वेब कहानियाँ",
-};
-
 const commonLinks: NavLink[] = [
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
@@ -50,7 +39,7 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
                 }`}
             aria-current={isActive ? "page" : undefined}
         >
-            {categoryNameHindi[cat.name] || cat.name}
+            {cat.name}
         </Link>
     );
 }
@@ -72,18 +61,18 @@ function NavLinks({ onClick }: { onClick?: () => void }) {
     );
 }
 
-function LoginButton({ onClick, fullWidth = false }: { onClick?: () => void; fullWidth?: boolean }) {
-    return (
-        <Link href="/login" onClick={onClick}>
-            <button
-                className={`bg-black text-white px-4 py-2 rounded-lg border hover:bg-background hover:text-foreground duration-300 ${fullWidth ? "w-full mt-2" : ""
-                    }`}
-            >
-                Log in
-            </button>
-        </Link>
-    );
-}
+// function LoginButton({ onClick, fullWidth = false }: { onClick?: () => void; fullWidth?: boolean }) {
+//     return (
+//         <Link href="/login" onClick={onClick}>
+//             <button
+//                 className={`bg-black text-white px-4 py-2 rounded-lg border hover:bg-background hover:text-foreground duration-300 ${fullWidth ? "w-full mt-2" : ""
+//                     }`}
+//             >
+//                 Log in
+//             </button>
+//         </Link>
+//     );
+// }
 
 // --- Breadcrumb Component ---
 function Breadcrumb() {
@@ -227,7 +216,7 @@ export default function Header() {
                             {/* Desktop Navigation */}
                             <nav className="hidden md:flex items-center space-x-6 font-medium" aria-label="Main Navigation">
                                 <NavLinks />
-                                <LoginButton />
+                                {/* <LoginButton /> */}
                             </nav>
                         </div>
                     </div>
@@ -260,12 +249,12 @@ export default function Header() {
                     </button>
                     <nav className="h-full px-4 pt-16 pb-8 flex flex-col space-y-4 font-semibold divide-y overflow-y-auto" aria-label="Mobile Navigation">
                         <NavLinks onClick={handleCloseMenu} />
-                        <LoginButton onClick={handleCloseMenu} fullWidth />
+                        {/* <LoginButton onClick={handleCloseMenu} fullWidth /> */}
                     </nav>
                 </div>
             </header>
             {/* Desktop Categories */}
-            <nav className="hidden md:flex sticky top-0 justify-center bg-gray-100 shadow-md py-3 z-40" aria-label="Categories">
+            <nav className="hidden lg:flex sticky top-0 justify-center bg-gray-100 shadow-md py-3 z-40" aria-label="Categories">
                 <ul className="flex gap-6 font-bold text-sm lg:text-base">
                     {categories.map((cat) => {
                         const isActive = pathname?.startsWith(`/news/${cat.slug}`);
@@ -278,7 +267,7 @@ export default function Header() {
                 </ul>
             </nav>
             {/* Mobile Categories */}
-            <nav className="md:hidden sticky top-0 bg-white shadow-md z-30" aria-label="Categories">
+            <nav className="lg:hidden sticky top-0 bg-gray-100 shadow-md z-30" aria-label="Categories">
                 <ul className="flex gap-4 px-4 py-2 overflow-x-auto whitespace-nowrap font-bold text-[15px] scrollbar-hide">
                     {categories.map((cat) => {
                         const isActive = pathname?.startsWith(`/news/${cat.slug}`);

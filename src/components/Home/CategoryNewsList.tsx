@@ -15,17 +15,6 @@ import { ButtonSeeMore } from "@/utils/Buttons";
 import { BottomBanner, MiddleBanner } from "../AddBanners";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 
-const categoryNameHindi: Record<string, string> = {
-    "National": "राष्ट्रीय",
-    "International": "अंतरराष्ट्रीय",
-    "Political": "राजनीति",
-    "Business": "व्यापार",
-    "Elections": "चुनाव",
-    "Entertainment": "मनोरंजन",
-    "Sports": "खेल",
-    "Web-Stories": "वेब कहानियाँ",
-};
-
 const categoryPriority: Record<string, number> = {
     "National": 1,
     "International": 2,
@@ -75,14 +64,14 @@ export default function CategoryNewsList() {
                             <div key={cat.name} className="my-5">
                                 {/* Mobile Layout: Stack vertically */}
                                 <div className="lg:hidden space-y-4">
-                                    <NationalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                    <NationalNewsBox key={cat.id} category={cat} />
                                     <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                                     <LatestNews />
                                 </div>
 
                                 {/* Desktop Layout: Grid with 70/30 split */}
                                 <div className="hidden lg:grid lg:grid-cols-[70%_30%] gap-0 xl:gap-5">
-                                    <NationalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                    <NationalNewsBox key={cat.id} category={cat} />
                                     <LatestNews />
                                     <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                                 </div>
@@ -91,14 +80,14 @@ export default function CategoryNewsList() {
                     case "International":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <InternationalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <InternationalNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
                     case "Political":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <PoliticalNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <PoliticalNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                                 <MiddleBanner />
                             </div>
@@ -106,35 +95,35 @@ export default function CategoryNewsList() {
                     case "Business":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <BusinessNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <BusinessNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
                     case "Elections":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <ElectionsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <ElectionsNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
                     case "Entertainment":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <EntertainmentNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <EntertainmentNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
                     case "Sports":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <SportsNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <SportsNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                             </div>
                         );
                     case "Web-Stories":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
-                                <WebStoriesNewsBox key={cat.id} category={cat} categoryNameHindi={categoryNameHindi} />
+                                <WebStoriesNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                                 <BottomBanner />
                             </div>

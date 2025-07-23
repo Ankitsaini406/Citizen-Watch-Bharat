@@ -206,9 +206,12 @@ export default function NewsPage() {
 
                         {/* Tags */}
                         {article.tags && article.tags.length > 0 && (
-                            <div className="mb-6 flex flex-wrap gap-2">
+                            <div className="mb-6 flex gap-x-2">
                                 {article.tags.map(tag => (
-                                    <span key={tag} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                                    <span
+                                        key={tag}
+                                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
+                                    >
                                         #{tag}
                                     </span>
                                 ))}

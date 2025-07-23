@@ -10,17 +10,16 @@ interface NewsWithImage extends News {
 
 interface Props {
   category: Category & { news: News[] };
-  categoryNameHindi: Record<string, string>;
 }
 
-export default function PoliticalNewsBox({ category, categoryNameHindi }: Props) {
+export default function PoliticalNewsBox({ category }: Props) {
   return (
     <div className="mb-1 p-0 md:p-4 xl:p-0 pt-0 pl-0">
       {/* Category Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4 w-full">
           <h1 className="text-xl font-bold text-red-700 whitespace-nowrap">
-            {categoryNameHindi[category.name] || category.name}
+            {category.name}
           </h1>
           <div className="flex-1 border-t-2 border-red-700"></div>
         </div>
