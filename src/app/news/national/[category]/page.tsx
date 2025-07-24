@@ -19,8 +19,6 @@ export default function Page() {
     const PAGE_SIZE = 10;
     const stateInfo = indianStatesBySlug[category];
 
-    console.log(`This is : `, stateInfo);
-
     useEffect(() => {
         const loadNews = async () => {
             try {

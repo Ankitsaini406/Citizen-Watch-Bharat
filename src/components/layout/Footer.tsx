@@ -10,7 +10,7 @@ export default function Footer() {
                     {/* About Section */}
                     <div>
                         {/* Logo (optional) */}
-                        <Image src="/cwb-logo.png" alt="Citizen Watch Bharat Logo" width={120} height={40} className="mb-4 bg-white" />
+                        <Image src="/cwb-footer.png" alt="Citizen Watch Bharat Logo" width={120} height={40} className="mb-4" />
                         <p className="text-gray-400 text-sm leading-relaxed mb-4">
                             Your trusted source for comprehensive news coverage across India.<br />
                             Stay informed with the latest breaking news, politics, business, sports, and entertainment updates.

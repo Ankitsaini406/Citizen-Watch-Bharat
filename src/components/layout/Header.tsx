@@ -189,8 +189,8 @@ export default function Header() {
                             {/* Logo */}
                             <Link href="/" className="flex items-center" aria-label="Home">
                                 <Image
-                                    className="h-18 w-auto"
-                                    src="/cwb-logo.png"
+                                    className="h-14 w-auto"
+                                    src="/cwb-header.png"
                                     alt="Citizen Watch Bharat Logo"
                                     width={100}
                                     height={80}

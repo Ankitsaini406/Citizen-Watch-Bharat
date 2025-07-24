@@ -35,19 +35,22 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
             </header>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
                 {visibleNews.map((article) => {
-                    const imageUrl = extractFirstImage(article.heroImage);
+                    const imageUrl = extractFirstImage(article.heroImage) || "/placeholder.svg";
                     return (
                         <div
                             key={article.slug}
                             className="flex flex-col overflow-hidden border border-gray-200"
                         >
                             {imageUrl && (
-                                <div className="relative w-full h-40">
+                                <div className="relative w-full h-60 bg-gray-300">
                                     <Image
                                         src={imageUrl}
                                         alt={article.title}
                                         fill
                                         className="object-cover"
+                                        priority={true}
+                                        placeholder="blur"
+                                        blurDataURL="/placeholder.svg"
                                     />
                                 </div>
                             )}

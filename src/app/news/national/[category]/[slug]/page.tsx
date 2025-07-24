@@ -157,7 +157,7 @@ export default function NewsPage() {
     // Article page
     if (params?.slug && article) {
         const heroImageRaw = article.heroImage;
-        const firstImage = extractFirstImage(heroImageRaw);
+        const firstImage = extractFirstImage(heroImageRaw) || "/placeholder.svg";
 
         return (
             <>
@@ -176,7 +176,9 @@ export default function NewsPage() {
                                 alt={article.title}
                                 fill
                                 className="object-cover"
-                                priority
+                                priority={true}
+                                placeholder="blur"
+                                blurDataURL="/placeholder.svg"
                             />
                         </div>
                     )}

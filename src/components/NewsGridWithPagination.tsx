@@ -67,30 +67,34 @@ const NewsGridWithPagination: React.FC<NewsGridWithPaginationProps> = ({
                 <div>No news found.</div>
             ) : (
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {news.map((item) => (
-                        <li key={item.id} className="border border-gray-300 overflow-hidden">
-                            {item.heroImage && extractFirstImage(item.heroImage) && (
-                                <div className="relative h-48 w-full bg-gray-300">
-                                    <Image
-                                        src={extractFirstImage(item.heroImage)}
-                                        alt={item.title}
-                                        fill
-                                        className="object-cover"
-                                        sizes="(max-width: 768px) 100vw, 50vw"
-                                        placeholder="blur"
-                                        blurDataURL="/placeholder.svg"
-                                    />
+                    {news.map(item => {
+                        const image = extractFirstImage(item.heroImage) || "/placeholder.svg";
+                        return (
+                            <li key={item.id} className="border border-gray-300 overflow-hidden">
+                                {item.heroImage && extractFirstImage(item.heroImage) && (
+                                    <div className="relative h-60 w-full bg-gray-300">
+                                        <Image
+                                            src={image}
+                                            alt={item.title}
+                                            fill
+                                            className="object-cover"
+                                            sizes="(max-width: 1024px) 100vw, 50vw"
+                                            priority={true}
+                                            placeholder="blur"
+                                            blurDataURL="/placeholder.svg"
+                                        />
+                                    </div>
+                                )}
+                                <div className="p-4 flex flex-col justify-between h-28">
+                                    <ButtonLink href={`${href}/${item.slug}`} title={item.title} />
+                                    <div className="text-xs text-gray-500 mt-2 flex justify-between">
+                                        <span>{item.author?.name ? `By ${item.author.name}` : '\u00A0'}</span>
+                                        <span>{timeAgo(item.createdAt)}</span>
+                                    </div>
                                 </div>
-                            )}
-                            <div className="p-4 flex flex-col justify-between h-28">
-                                <ButtonLink href={`${href}/${item.slug}`} title={item.title} />
-                                <div className="text-xs text-gray-500 mt-2 flex justify-between">
-                                    <span>{item.author?.name ? `By ${item.author.name}` : '\u00A0'}</span>
-                                    <span>{timeAgo(item.createdAt)}</span>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
+                            </li>
+                        );
+                    })}
                 </ul>
             )}
             {/* Pagination Controls */}
