@@ -257,6 +257,7 @@ export default function NewsPage() {
                     {/* More from Category Section */}
                     {categoryNews.length > 0 && (
                         <ScrollableNewsSection
+                            href={`/news/${article.category.slug}`}
                             title={`More from ${article.category?.name}`}
                             news={categoryNews}
                         />
@@ -265,6 +266,7 @@ export default function NewsPage() {
                     {/* Related News Section */}
                     {relatedNews.length > 0 && (
                         <ScrollableNewsSection
+                            href={`/news/${article.category.slug}`}
                             title="Related News"
                             news={relatedNews}
                         />

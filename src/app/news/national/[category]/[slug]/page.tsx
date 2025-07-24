@@ -9,6 +9,7 @@ import { Facebook, X } from "lucide-react";
 import { NewsArticle } from "@/types/type";
 import { extractFirstImage, ScrollableNewsSection, timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
+import { indianStatesBySlug } from "@/data/indianStates";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -158,6 +159,7 @@ export default function NewsPage() {
     if (params?.slug && article) {
         const heroImageRaw = article.heroImage;
         const firstImage = extractFirstImage(heroImageRaw) || "/placeholder.svg";
+        const stateInfo = indianStatesBySlug[article.state];
 
         return (
             <>
@@ -257,6 +259,7 @@ export default function NewsPage() {
                     {/* More from Category Section */}
                     {categoryNews.length > 0 && (
                         <ScrollableNewsSection
+                            href={`/news/national/${stateInfo}`}
                             title={`More from ${article.category?.name}`}
                             news={categoryNews}
                         />
@@ -265,6 +268,7 @@ export default function NewsPage() {
                     {/* Related News Section */}
                     {relatedNews.length > 0 && (
                         <ScrollableNewsSection
+                            href={`/news/national/${stateInfo}`}
                             title="Related News"
                             news={relatedNews}
                         />

@@ -84,10 +84,12 @@ export const Pagination: React.FC<PaginationProps> = ({ page, totalPages, onPage
 
 // Scrollable News Section Component
 export function ScrollableNewsSection({
+    href,
     title,
     news,
     className = ""
 }: {
+    href: string;
     title: string;
     news: NewsArticle[];
     className?: string;
@@ -157,7 +159,7 @@ export function ScrollableNewsSection({
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {news.map(newsItem => {
-                        const imageUrl = extractFirstImage(newsItem.heroImage);
+                        const imageUrl = extractFirstImage(newsItem.heroImage) ||" /placeholder.svg";
                         return (
                             <div key={newsItem.slug} className="flex-shrink-0 w-full sm:w-80 border border-gray-300 overflow-hidden bg-white">
                                 {imageUrl && (
@@ -176,7 +178,7 @@ export function ScrollableNewsSection({
                                 <div className="p-4">
                                     <div className="text-xs text-red-600 font-semibold mb-1">{newsItem.category?.name}</div>
                                     <div className="flex flex-col justify-between h-20">
-                                        <ButtonLink href={`/news/${newsItem.slug}`} title={newsItem.title} />
+                                        <ButtonLink href={`${href}/${newsItem.slug}`} title={newsItem.title} />
                                         <div className="text-xs text-gray-500">{timeAgo(newsItem.createdAt)}</div>
                                     </div>
                                 </div>
