@@ -61,47 +61,65 @@ function NavLinks({ onClick }: { onClick?: () => void }) {
     );
 }
 
-// function LoginButton({ onClick, fullWidth = false }: { onClick?: () => void; fullWidth?: boolean }) {
-//     return (
-//         <Link href="/login" onClick={onClick}>
-//             <button
-//                 className={`bg-black text-white px-4 py-2 rounded-lg border hover:bg-background hover:text-foreground duration-300 ${fullWidth ? "w-full mt-2" : ""
-//                     }`}
-//             >
-//                 Log in
-//             </button>
-//         </Link>
-//     );
-// }
-
 // --- Breadcrumb Component ---
 function Breadcrumb() {
     const pathname = usePathname();
     if (!pathname || pathname === "/") return null;
     const segments = pathname.split("/").filter(Boolean);
     let path = "";
+
     return (
-        <nav className="max-w-7xl mx-auto w-full px-4 py-2 text-sm" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-2">
-                <li>
-                    <Link href="/" className="hover:underline font-semibold text-gray-800">Home</Link>
-                </li>
+        <nav
+            className="max-w-7xl mx-auto w-full px-4 py-2 text-sm"
+            aria-label="Breadcrumb"
+        >
+            <ol className="flex items-center space-x-1 overflow-hidden">
+                {/* Home link intentionally omitted */}
                 {segments.map((seg, idx) => {
                     path += `/${seg}`;
                     const isLast = idx === segments.length - 1;
                     const decoded = decodeURIComponent(seg);
                     let label = decoded.replace(/-/g, " ");
-                    if (label.length > 20) {
-                        label = label.slice(0, 20) + "...";
+                    if (label.length > 24) {
+                        label = label.slice(0, 24) + "...";
                     }
+                    label = label
+                        .split(" ")
+                        .map(
+                            (word) =>
+                                word.charAt(0).toUpperCase() +
+                                word.slice(1).toLowerCase()
+                        )
+                        .join(" ");
+
+                    // Special handling for "news" segment
                     const isNews = seg === "news";
+                    const linkHref = isNews ? "/" : path;
+
                     return (
                         <li key={path} className="flex items-center">
-                            <span className="mx-1 text-gray-400">/</span>
-                            {isLast || isNews ? (
-                                <span className="text-gray-800 font-semibold capitalize">{label}</span>
+                            {idx > 0 && (
+                                <span
+                                    className="mx-1 text-gray-400 select-none"
+                                    aria-hidden="true"
+                                >
+                                    /
+                                </span>
+                            )}
+                            {isLast ? (
+                                <span
+                                    className="text-gray-800 font-semibold capitalize whitespace-nowrap"
+                                    aria-current="page"
+                                >
+                                    {label}
+                                </span>
                             ) : (
-                                <Link href={path} className="hover:underline font-semibold text-gray-800 capitalize">{label}</Link>
+                                <Link
+                                    href={linkHref}
+                                    className="hover:underline font-medium text-gray-700 capitalize whitespace-nowrap transition-colors"
+                                >
+                                    {label}
+                                </Link>
                             )}
                         </li>
                     );
