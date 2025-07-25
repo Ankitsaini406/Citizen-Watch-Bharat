@@ -36,13 +36,7 @@ export function TopBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     if (advertisements.length === 0) {
-        return (
-            <div className="container mx-auto my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60">
-                    <h1 className="text-3xl text-background">Advertisement</h1>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     return (
@@ -110,13 +104,7 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     if (advertisements.length === 0) {
-        return (
-            <div className="hidden 2xl:block fixed left-0 top-72">
-                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
-                    <h1 className="text-3xl text-background">ADD</h1>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     return (
@@ -182,13 +170,7 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     if (advertisements.length === 0) {
-        return (
-            <div className="hidden 2xl:block fixed right-0 top-72">
-                <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
-                    <h1 className="text-3xl text-background">ADD</h1>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     return (
@@ -254,13 +236,7 @@ export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     if (advertisements.length === 0) {
-        return (
-            <div className="my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-40  border-2 border-gray-300 shadow-lg">
-                    <h1 className="text-3xl text-background">Advertisement</h1>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     return (
@@ -326,13 +302,7 @@ export function BottomBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     if (advertisements.length === 0) {
-        return (
-            <div className="container mx-auto my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60  border-2 border-gray-300 shadow-lg">
-                    <h1 className="text-3xl text-background">Advertisement</h1>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     return (
