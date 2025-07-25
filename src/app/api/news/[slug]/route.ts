@@ -20,6 +20,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
                 pngImage: true,
                 facebook_link: true,
                 twitter_link: true,
+                instagram_link: true,
                 heroImage: true,
                 tags: true,
                 createdAt: true,
