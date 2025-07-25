@@ -10,6 +10,7 @@ import { NewsArticle } from "@/types/type";
 import { extractFirstImage, ScrollableNewsSection, timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import { indianStatesBySlug } from "@/data/indianStates";
+import { Instagram } from "lucide-react";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -248,6 +249,17 @@ export default function NewsPage() {
                                         className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-[#1877F3]"
                                     >
                                         <Facebook className="w-5 h-5 text-[#1877F3] group-hover:text-white transition-colors duration-150" />
+                                    </Link>
+                                )}
+                                {article.instagram_link && (
+                                    <Link
+                                        href={article.instagram_link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="View on Instagram"
+                                        className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-[#E1306C]"
+                                    >
+                                        <Instagram className="w-5 h-5 text-[#E1306C] group-hover:text-white transition-colors duration-150" />
                                     </Link>
                                 )}
                             </div>

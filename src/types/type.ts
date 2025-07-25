@@ -51,6 +51,7 @@ export interface NewsArticle {
     views: number;
     twitter_link: string;
     facebook_link: string;
+    instagram_link: string;
     createdAt: string;
     city: string;
     state: string;

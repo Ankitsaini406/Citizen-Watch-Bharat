@@ -61,40 +61,41 @@ model SubCategory {
 }
 
 model News {
-  id            String            @id @default(cuid())
-  title         String
-  slug          String            @unique
-  subtitle      String?
-  tags          String[]
-  categoryId    String
-  content       Json
-  issue         String[]          @default([])
-  authorId      String
-  author_name   String
-  views         Int               @default(0)
-  live          Boolean           @default(false)
-  isReview      Boolean           @default(false)
-  isPublish     Boolean           @default(false)
-  isDeleted     Boolean           @default(false)
-  twitter_link  String
-  facebook_link String
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  city          String
-  state         String
-  status        String            @default("draft")
-  heroImage     String[]
-  editorId      String?
-  editor_name   String?
-  lastEditedAt  DateTime?
-  subCategoryId String?
-  isBreaking    Boolean           @default(false)
-  pngImage      String?
-  author        User              @relation(fields: [authorId], references: [id])
-  category      Category          @relation(fields: [categoryId], references: [id])
-  editor        User?             @relation("NewsEditor", fields: [editorId], references: [id])
-  subCategory   SubCategory?      @relation(fields: [subCategoryId], references: [id])
-  editHistory   NewsEditHistory[]
+  id             String            @id @default(cuid())
+  title          String
+  slug           String            @unique
+  subtitle       String?
+  tags           String[]
+  categoryId     String
+  content        Json
+  issue          String[]          @default([])
+  authorId       String
+  author_name    String
+  views          Int               @default(0)
+  live           Boolean           @default(false)
+  isReview       Boolean           @default(false)
+  isPublish      Boolean           @default(false)
+  isDeleted      Boolean           @default(false)
+  twitter_link   String
+  facebook_link  String
+  instagram_link String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  city           String
+  state          String
+  status         String            @default("Draft")
+  heroImage      String[]
+  editorId       String?
+  editor_name    String?
+  lastEditedAt   DateTime?
+  subCategoryId  String?
+  isBreaking     Boolean           @default(false)
+  pngImage       String?
+  author         User              @relation(fields: [authorId], references: [id])
+  category       Category          @relation(fields: [categoryId], references: [id])
+  editor         User?             @relation("NewsEditor", fields: [editorId], references: [id])
+  subCategory    SubCategory?      @relation(fields: [subCategoryId], references: [id])
+  editHistory    NewsEditHistory[]
 }
 
 model EditHistory {
