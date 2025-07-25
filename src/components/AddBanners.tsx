@@ -95,7 +95,7 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
 
     if (loading) {
         return (
-            <div className="hidden 2xl:block fixed left-0 top-72">
+            <div className="hidden 2xl:block fixed left-0 top-48 h-3/4">
                 <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
@@ -108,23 +108,23 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     return (
-        <div className="hidden 2xl:block fixed left-0 top-72">
+        <div className="hidden 2xl:block fixed left-0 top-48 h-3/4">
             {advertisements.map((ad) => (
                 <div
                     key={ad.id}
-                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
+                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group h-full"
                 >
-                    <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
+                    <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1">
                         Advertisement
                     </span>
                     <Link
                         href={ad.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block"
+                        className="block h-full"
                     >
-                        <div className="relative flex justify-center items-center w-40 h-96 overflow-hidden transition-transform group-hover:scale-105 duration-300">
-                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
+                        <div className="relative flex justify-center items-center w-40 h-full overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10 h-full" />
                             <Image
                                 fill
                                 src={ad.imageUrl}
@@ -161,7 +161,7 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
 
     if (loading) {
         return (
-            <div className="hidden 2xl:block fixed right-0 top-72">
+            <div className="hidden 2xl:block fixed right-0 top-48 h-3/4">
                 <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
@@ -174,11 +174,11 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     return (
-        <div className="hidden 2xl:block fixed right-0 top-72">
+        <div className="hidden 2xl:block fixed right-0 top-48 h-3/4">
             {advertisements.map((ad) => (
                 <div
                     key={ad.id}
-                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
+                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group h-full"
                 >
                     <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
                         Advertisement
@@ -187,10 +187,10 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
                         href={ad.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block"
+                        className="block h-full"
                     >
-                        <div className="relative flex justify-center items-center w-40 h-96 overflow-hidden transition-transform group-hover:scale-105 duration-300">
-                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
+                        <div className="relative flex justify-center items-center w-40 h-full overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10 h-full" />
                             <Image
                                 fill
                                 src={ad.imageUrl}
