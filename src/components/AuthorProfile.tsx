@@ -18,7 +18,7 @@ interface AuthorProfileProps {
 }
 
 export default function AuthorProfile({ author, className = '' }: AuthorProfileProps) {
-    const authorImage = author.image || '/placeholder.svg';
+    const authorImage = author.image || 'https://citizenwatchbharat.com/images/cwb/placeholder.svg';
 
     return (
         <div className={`bg-white shadow-sm border border-border p-6 ${className}`}>
@@ -32,7 +32,7 @@ export default function AuthorProfile({ author, className = '' }: AuthorProfileP
                             fill
                             className="object-cover"
                             placeholder="blur"
-                            blurDataURL="/placeholder.svg"
+                            blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                         />
                     </div>
                 </div>
