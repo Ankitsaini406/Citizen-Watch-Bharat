@@ -1,6 +1,6 @@
 'use client';
 
-import { LeftBanner, RightBanner, TopBanner, MiddleBanner, BottomBanner } from "@/components/AddBanners";
+import { LeftBanner, RightBanner, TopBanner, BottomBanner } from "@/components/AddBanners";
 import { useState, useEffect } from "react";
 import { fetchNewsByState } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
@@ -41,26 +41,18 @@ export default function Page() {
             <TopBanner place="News-Section" />
             <LeftBanner place="News-Section" />
             <div className="container mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1">
                     {/* Main Content */}
-                    <div className="lg:col-span-2">
-                        <NewsGridWithPagination
-                            news={news}
-                            loading={loading}
-                            pagination={pagination}
-                            page={currentPage}
-                            setPage={setCurrentPage}
-                            PAGE_SIZE={PAGE_SIZE}
-                            title={`${stateInfo.name} News`}
-                            href={`/news/national/${category}`}
-                        />
-                    </div>
-                    {/* Sidebar */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-8">
-                            <MiddleBanner place="News-Section" />
-                        </div>
-                    </div>
+                    <NewsGridWithPagination
+                        news={news}
+                        loading={loading}
+                        pagination={pagination}
+                        page={currentPage}
+                        setPage={setCurrentPage}
+                        PAGE_SIZE={PAGE_SIZE}
+                        title={`${stateInfo.name} News`}
+                        href={`/news/national/${category}`}
+                    />
                 </div>
             </div>
             <BottomBanner place="News-Section" />

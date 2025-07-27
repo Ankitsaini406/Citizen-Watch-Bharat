@@ -1,8 +1,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { ButtonLink } from "./Buttons";
 import { NewsArticle } from "@/types/type";
 import Image from "next/image";
+import { useInView } from '@/hooks/useView';
 
 export function slugify(text: string): string {
     return text
@@ -84,27 +85,35 @@ export const Pagination: React.FC<PaginationProps> = ({ page, totalPages, onPage
 
 // Scrollable News Section Component
 export function ScrollableNewsSection({
-    href,
     title,
     news,
-    className = ""
+    className = "",
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage
 }: {
-    href: string;
     title: string;
     news: NewsArticle[];
     className?: string;
+    fetchNextPage: () => void;
+    isFetchingNextPage: boolean;
+    hasNextPage: boolean;
 }) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
+    const [loaderRef, inView] = useInView({
+        threshold: 0.1,
+        triggerOnce: false
+    });
 
-    const checkScrollButtons = () => {
+    const checkScrollButtons = useCallback(() => {
         if (scrollRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
             setCanScrollLeft(scrollLeft > 0);
             setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
         }
-    };
+    }, []);
 
     useEffect(() => {
         checkScrollButtons();
@@ -113,12 +122,19 @@ export function ScrollableNewsSection({
             scrollElement.addEventListener('scroll', checkScrollButtons);
             return () => scrollElement.removeEventListener('scroll', checkScrollButtons);
         }
-    }, [news]);
+    }, [checkScrollButtons, news]);
+
+    useEffect(() => {
+        if (inView && hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+        }
+    }, [inView, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollRef.current) {
-            const scrollAmount = scrollRef.current.clientWidth;
-            const newScrollLeft = scrollRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+            const scrollAmount = scrollRef.current.clientWidth * 0.8;
+            const newScrollLeft = scrollRef.current.scrollLeft +
+                (direction === 'left' ? -scrollAmount : scrollAmount);
             scrollRef.current.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
         }
     };
@@ -130,7 +146,6 @@ export function ScrollableNewsSection({
             <h3 className="text-2xl font-semibold mb-4">{title}</h3>
 
             <div className="relative group">
-                {/* Left Scroll Button */}
                 {canScrollLeft && (
                     <button
                         onClick={() => scroll('left')}
@@ -141,7 +156,6 @@ export function ScrollableNewsSection({
                     </button>
                 )}
 
-                {/* Right Scroll Button */}
                 {canScrollRight && (
                     <button
                         onClick={() => scroll('right')}
@@ -152,16 +166,26 @@ export function ScrollableNewsSection({
                     </button>
                 )}
 
-                {/* Scrollable Container */}
                 <div
                     ref={scrollRef}
-                    className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
+                    className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                    {news.map(newsItem => {
-                        const imageUrl = extractFirstImage(newsItem.heroImage) ||" /placeholder.svg";
+                    {news.map((newsItem, index) => {
+                        const isLastItem = index === news.length - 1;
+                        const imageUrl = extractFirstImage(newsItem.heroImage) || "/placeholder.svg";
+
+                        console.log(`This is state info : `, newsItem.state);
+                        const href = newsItem.category?.name?.toLowerCase() === 'national'
+                            ? `/news/${newsItem.category?.slug}/${newsItem.state}/${newsItem.slug}` // For national, use the baseHref which includes state
+                            : `/news/${newsItem.category?.slug}/${newsItem.slug}`; // For others, use standard path
+
                         return (
-                            <div key={newsItem.slug} className="flex-shrink-0 w-full sm:w-80 border border-gray-300 overflow-hidden bg-white">
+                            <div
+                                key={`${newsItem.slug}-${index}`}
+                                className="flex-shrink-0 w-full sm:w-80 border border-gray-300 overflow-hidden bg-white snap-start"
+                                ref={isLastItem ? loaderRef : null}
+                            >
                                 {imageUrl && (
                                     <div className="relative w-full h-40 bg-gray-200">
                                         <Image
@@ -176,15 +200,25 @@ export function ScrollableNewsSection({
                                     </div>
                                 )}
                                 <div className="p-4">
-                                    <div className="text-xs text-red-600 font-semibold mb-1">{newsItem.category?.name}</div>
+                                    <div className="text-xs text-red-600 font-semibold mb-1">
+                                        {newsItem.category?.name}
+                                    </div>
                                     <div className="flex flex-col justify-between h-20">
-                                        <ButtonLink href={`${href}/${newsItem.slug}`} title={newsItem.title} />
-                                        <div className="text-xs text-gray-500">{timeAgo(newsItem.createdAt)}</div>
+                                        <ButtonLink href={href} title={newsItem.title} />
+                                        <div className="text-xs text-gray-500">
+                                            {timeAgo(newsItem.createdAt)}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         );
                     })}
+
+                    {isFetchingNextPage && (
+                        <div className="flex-shrink-0 w-full sm:w-80 flex items-center justify-center">
+                            <div className="animate-pulse">Loading more news...</div>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>

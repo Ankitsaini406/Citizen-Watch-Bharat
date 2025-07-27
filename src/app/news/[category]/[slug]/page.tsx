@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
@@ -11,7 +11,7 @@ import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
 import AuthorProfile from '@/components/AuthorProfile';
 
 // Error state component
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+function ErrorState({ message }: { message: string; }) {
     return (
         <div className="flex flex-col items-center justify-center h-64 text-center text-red-600">
             <svg className="w-12 h-12 mb-3" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
@@ -19,12 +19,6 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
             </svg>
             <div className="mb-2 text-lg font-semibold">{message}</div>
             <div className="flex gap-4 mt-2">
-                <button
-                    onClick={onRetry}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
-                >
-                    Retry
-                </button>
                 <Link href="/" className="underline text-blue-600 px-4 py-2">Go Home</Link>
             </div>
         </div>
@@ -75,136 +69,150 @@ function NewsSkeleton() {
 export default function NewsPage() {
     const params = useParams();
     const slug = params?.slug as string;
-    const category = params?.category as string;
 
     // Fetch main article data
-    const { 
-        data: articleData, 
-        isLoading: articleLoading, 
-        error: articleError,
-        refetch: refetchArticle 
-    } = useArticle(slug);
+    const { data: articleData, isLoading, error } = useArticle(slug);
 
     // Fetch related news
-    const { data: relatedNews = [] } = useRelatedNews(slug, articleData?.tags);
+    const {
+        data: relatedNewsData,
+        fetchNextPage: fetchNextRelatedPage,
+        isFetchingNextPage: isFetchingNextRelated,
+        hasNextPage: hasNextRelatedPage
+    } = useRelatedNews(slug, articleData?.tags);
 
     // Fetch category news
-    const { data: categoryNews = [] } = useCategoryNews(category);
+    const {
+        data: categoryNewsData,
+        fetchNextPage: fetchNextCategoryPage,
+        isFetchingNextPage: isFetchingNextCategory,
+        hasNextPage: hasNextCategoryPage
+    } = useCategoryNews(articleData?.category?.slug, slug);
 
-    const handleRetry = () => {
-        refetchArticle();
-    };
+    // Flatten the paginated data
+    const relatedNews = useMemo(() =>
+        relatedNewsData?.pages.flatMap(page => page.data) || [],
+        [relatedNewsData]
+    );
 
-    if (articleLoading) {
-        return <NewsSkeleton />;
+    const categoryNews = useMemo(() =>
+        categoryNewsData?.pages.flatMap(page => page.data) || [],
+        [categoryNewsData]
+    );
+
+    if (isLoading) return <NewsSkeleton />;
+    if (error) return <ErrorState message={error.message} />;
+    if (!articleData) return <ErrorState message="Article not found" />;
+
+    if (!articleData) {
+        return <ErrorState message="Article not found" />;
     }
-    
-    if (articleError) {
-        return <ErrorState message={articleError.message} onRetry={handleRetry} />;
-    }
 
-    // Article page
-    if (params?.slug && articleData) {
-        const heroImageRaw = articleData.heroImage;
-        const firstImage = extractFirstImage(heroImageRaw) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+    const heroImageRaw = articleData.heroImage;
+    const firstImage = extractFirstImage(heroImageRaw) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
-        return (
-            <>
-                <TopBanner place="Par-News" />
-                <LeftBanner place="Par-News" />
-                <RightBanner place="Par-News" />
-                <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
-                    <h1 className="text-2xl md:text-4xl font-bold mb-2 leading-relaxed px-4 lg:px-0">{articleData.title}</h1>
-                    {articleData.subtitle && (
-                        <h2 className="md:text-xl text-gray-700 mb-4 px-4 lg:px-0">{articleData.subtitle}</h2>
-                    )}
-                    {firstImage && (
-                        <div className="relative w-full h-80 sm:h-[400px]">
-                            <Image
-                                src={firstImage}
-                                alt={articleData.title}
-                                fill
-                                className="object-cover"
-                                priority={true}
-                                placeholder="blur"
-                                blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
-                            />
-                        </div>
-                    )}
 
-                    <div className="p-4 lg:px-0">
-                        {/* Category and Date */}
-                        <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
-                            <span className="uppercase font-semibold tracking-wider text-red-600">
-                                {articleData.category.name}
-                            </span>
-                            <div className="flex gap-5">
-                                <span>{timeAgo(articleData.createdAt)}</span>
-                                {articleData.city && (
-                                    <span>{articleData.city}, {articleData.state}</span>
-                                )}
-                            </div>
-                        </div>
+    return (
+        <>
+            <TopBanner place="Par-News" />
+            <LeftBanner place="Par-News" />
+            <RightBanner place="Par-News" />
+            <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
+                <h1 className="text-2xl md:text-4xl font-bold mb-2 leading-relaxed px-4 lg:px-0">{articleData.title}</h1>
+                {articleData.subtitle && (
+                    <h2 className="md:text-xl text-gray-700 mb-4 px-4 lg:px-0">{articleData.subtitle}</h2>
+                )}
+                {firstImage && (
+                    <div className="relative w-full h-80 sm:h-[400px]">
+                        <Image
+                            src={firstImage}
+                            alt={articleData.title}
+                            fill
+                            className="object-cover"
+                            priority={true}
+                            placeholder="blur"
+                            blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
+                        />
+                    </div>
+                )}
 
-                        {/* Main Content */}
-                        <div className="prose max-w-none mb-8">
-                            {articleData.content && typeof articleData.content === "object" ? (
-                                <RichTextPreview lexicalJson={articleData.content} />
-                            ) : (
-                                <span className="text-gray-400">No content</span>
+                <div className="p-4 lg:px-0">
+                    {/* Category and Date */}
+                    <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
+                        <span className="uppercase font-semibold tracking-wider text-red-600">
+                            {articleData.category?.name}
+                        </span>
+                        <div className="flex gap-5">
+                            <span>{timeAgo(articleData.createdAt)}</span>
+                            {articleData.city && (
+                                <span>{articleData.city}, {articleData.state}</span>
                             )}
-                        </div>
-
-                        {/* Tags */}
-                        {articleData.tags && articleData.tags.length > 0 && (
-                            <div className="mb-6 flex flex-wrap gap-2.5">
-                                {articleData.tags.map((tag: string) => (
-                                    <span
-                                        key={tag}
-                                        className="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 hover:text-foreground cursor-pointer"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Author Profile */}
-                        <div className="mb-8">
-                            <AuthorProfile 
-                                author={{
-                                    ...articleData.author,
-                                    twitter_link: articleData.twitter_link,
-                                    facebook_link: articleData.facebook_link,
-                                    instagram_link: articleData.instagram_link,
-                                }} 
-                            />
                         </div>
                     </div>
 
-                    {((categoryNews?.length ?? 0) > 0 || (relatedNews?.length ?? 0) > 0) && <MiddleBanner place="Par-News" />}
+                    {/* Main Content */}
+                    <div className="prose max-w-none mb-8">
+                        {articleData.content && typeof articleData.content === "object" ? (
+                            <RichTextPreview lexicalJson={articleData.content} />
+                        ) : (
+                            <span className="text-gray-400">No content</span>
+                        )}
+                    </div>
 
-                    {/* More from Category Section */}
-                    {categoryNews.length > 0 && (
-                        <ScrollableNewsSection
-                            href={`/news/${articleData.category.slug}`}
-                            title={`More from ${articleData.category?.name}`}
-                            news={categoryNews}
-                        />
+                    {/* Tags */}
+                    {articleData.tags && articleData.tags.length > 0 && (
+                        <div className="mb-6 flex flex-wrap gap-2.5">
+                            {articleData.tags.map((tag: string) => (
+                                <span
+                                    key={tag}
+                                    className="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 hover:text-foreground cursor-pointer"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
                     )}
 
-                    {/* Related News Section */}
-                    {relatedNews.length > 0 && (
-                        <ScrollableNewsSection
-                            href={`/news/${articleData.category.slug}`}
-                            title="Related News"
-                            news={relatedNews}
+                    {/* Author Profile */}
+                    <div className="mb-8">
+                        <AuthorProfile
+                            author={{
+                                ...articleData.author,
+                                twitter_link: articleData.twitter_link,
+                                facebook_link: articleData.facebook_link,
+                                instagram_link: articleData.instagram_link,
+                            }}
                         />
-                    )}
+                    </div>
+                </div>
 
-                </article>
-                <BottomBanner place="Par-News" />
-            </>
-        );
-    }
-} 
+                {(categoryNews.length > 0 || relatedNews.length > 0) && <MiddleBanner place="Par-News" />}
+
+                {/* More from Category Section */}
+                {categoryNews.length > 0 && (
+                    <ScrollableNewsSection
+                        // href={`/news/${articleData.category?.slug}`}
+                        title={`More from ${articleData.category?.name}`}
+                        news={categoryNews}
+                        fetchNextPage={fetchNextCategoryPage}
+                        isFetchingNextPage={isFetchingNextCategory}
+                        hasNextPage={hasNextCategoryPage}
+                    />
+                )}
+
+                {/* Related News Section */}
+                {relatedNews.length > 0 && (
+                    <ScrollableNewsSection
+                        // href={`/news/${articleData.category.slug}`}
+                        title="Related News"
+                        news={relatedNews}
+                        fetchNextPage={fetchNextRelatedPage}
+                        isFetchingNextPage={isFetchingNextRelated}
+                        hasNextPage={hasNextRelatedPage}
+                    />
+                )}
+            </article>
+            <BottomBanner place="Par-News" />
+        </>
+    );
+}

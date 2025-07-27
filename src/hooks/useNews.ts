@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { NewsArticle } from '@/types/type';
 import { NewsItem, PaginationProps } from "@/components/NewsGridWithPagination";
 
@@ -19,33 +19,67 @@ export const useArticle = (slug: string) => {
     });
 };
 
-// Fetch related news by tags
+// useRelatedNews hook
 export const useRelatedNews = (slug: string, tags?: string[]) => {
-    return useQuery({
+    return useInfiniteQuery({
         queryKey: ['related-news', slug, tags],
-        queryFn: async (): Promise<NewsArticle[]> => {
-            if (!tags || tags.length === 0) return [];
+        queryFn: async ({ pageParam = 1 }) => {
+            if (!tags || tags.length === 0) {
+                return {
+                    data: [],
+                    pagination: {
+                        total: 0,
+                        page: 1,
+                        pageSize: 6,
+                        hasMore: false
+                    }
+                };
+            }
 
-            const res = await fetch(`/api/news/related?tags=${tags.join(",")}&exclude=${slug}`);
-            const data = await res.json();
-            return data.success ? data.data || [] : [];
+            const res = await fetch(
+                `/api/news/related?tags=${tags.join(",")}&exclude=${slug}&page=${pageParam}`
+            );
+            if (!res.ok) throw new Error('Failed to fetch related news');
+            return res.json();
+        },
+        getNextPageParam: (lastPage) => {
+            return lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined;
         },
         enabled: !!slug && !!tags && tags.length > 0,
+        initialPageParam: 1,
     });
 };
 
-// Fetch category news
-export const useCategoryNews = (slug: string) => {
-    return useQuery({
-        queryKey: ['category-news', slug],
-        queryFn: async (): Promise<NewsArticle[]> => {
-            const res = await fetch(`/api/news/sports?exclude=${slug}`);
-            const data = await res.json();
-            return data.success ? data.data || [] : [];
+// useCategoryNews hook
+export const useCategoryNews = (categorySlug?: string, excludeSlug?: string) => {
+    return useInfiniteQuery({
+        queryKey: ['category-news', categorySlug, excludeSlug],
+        queryFn: async ({ pageParam = 1 }) => {
+            if (!categorySlug) {
+                return {
+                    data: [],
+                    pagination: {
+                        total: 0,
+                        page: 1,
+                        pageSize: 6,
+                        hasMore: false
+                    }
+                };
+            }
+
+            const res = await fetch(
+                `/api/news/category/${categorySlug}?exclude=${excludeSlug}&page=${pageParam}`
+            );
+            if (!res.ok) throw new Error('Failed to fetch category news');
+            return res.json();
         },
-        enabled: !!slug,
+        getNextPageParam: (lastPage) => {
+            return lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined;
+        },
+        enabled: !!categorySlug,
+        initialPageParam: 1,
     });
-}; 
+};
 
 interface CategoryNewsResponse {
     data: NewsItem[];

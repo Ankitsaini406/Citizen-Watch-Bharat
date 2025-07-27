@@ -1,4 +1,5 @@
-// List of Indian states and union territories with their slugs
+// states.ts
+
 export const indianStates = [
     { name: "Andhra Pradesh", slug: "andhra-pradesh" },
     { name: "Arunachal Pradesh", slug: "arunachal-pradesh" },
@@ -38,7 +39,12 @@ export const indianStates = [
     { name: "Lakshadweep", slug: "lakshadweep" }
 ];
 
-// For quick lookup by slug (optional, if needed)
+// Optional: map by slug
 export const indianStatesBySlug = Object.fromEntries(
-    indianStates.map(state => [state.slug, { name: state.name, slug: state.slug }])
-); 
+    indianStates.map(state => [state.slug, state])
+);
+
+// Optional: map by name
+export const indianStatesByName = Object.fromEntries(
+    indianStates.map(state => [state.name, state])
+);

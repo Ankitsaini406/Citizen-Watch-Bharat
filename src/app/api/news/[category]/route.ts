@@ -1,30 +1,36 @@
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
 
-export async function GET(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const tags = searchParams.get("tags")?.split(",") || [];
-    const exclude = searchParams.get("exclude");
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const pageSize = parseInt(searchParams.get("pageSize") || "6", 10);
-
-    if (tags.length === 0) {
-        return NextResponse.json(
-            { success: false, message: "No tags provided" },
-            { status: 400 }
-        );
-    }
-
+export async function GET(request: NextRequest, { params }: { params: Promise<{ category: string }> }) {
     try {
+        const { searchParams } = new URL(request.url)
+        const excludeSlug = searchParams.get('exclude')
+        const page = parseInt(searchParams.get('page') || '1', 10)
+        const pageSize = 6 
+
+        const { category } = await params;
+
+        const categoryExists = await prisma.category.findUnique({
+            where: { slug: category },
+            select: { id: true } // Only fetch what we need for validation
+        })
+
+        if (!categoryExists) {
+            return NextResponse.json(
+                { success: false, message: 'Category not found' },
+                { status: 404 }
+            )
+        }
+
         const [news, total] = await Promise.all([
             prisma.news.findMany({
                 where: {
-                    tags: { hasSome: tags },
+                    category: { slug: category },
                     isDeleted: false,
                     isPublish: true,
-                    ...(exclude ? { slug: { not: exclude } } : {}),
+                    ...(excludeSlug ? { slug: { not: excludeSlug } } : {})
                 },
-                orderBy: { createdAt: "desc" },
+                orderBy: { createdAt: 'desc' },
                 skip: (page - 1) * pageSize,
                 take: pageSize,
                 select: {
@@ -53,16 +59,16 @@ export async function GET(req: NextRequest) {
             }),
             prisma.news.count({
                 where: {
-                    tags: { hasSome: tags },
+                    category: { slug: category },
                     isDeleted: false,
                     isPublish: true,
-                    ...(exclude ? { slug: { not: exclude } } : {}),
+                    ...(excludeSlug ? { slug: { not: excludeSlug } } : {})
                 }
             })
-        ]);
+        ])
 
-        return NextResponse.json({ 
-            success: true, 
+        return NextResponse.json({
+            success: true,
             data: news,
             pagination: {
                 total,
@@ -70,14 +76,17 @@ export async function GET(req: NextRequest) {
                 pageSize,
                 hasMore: page * pageSize < total
             }
-        });
+        })
+
     } catch (error) {
+        console.error('Error fetching category news:', error)
         return NextResponse.json(
             { 
                 success: false, 
-                message: `Error fetching related news: ${error instanceof Error ? error.message : error}` 
+                message: 'Failed to fetch category news',
+                error: error instanceof Error ? error.message : String(error)
             },
             { status: 500 }
-        );
+        )
     }
 }

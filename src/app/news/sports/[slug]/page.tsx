@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
@@ -85,10 +85,31 @@ export default function SportsNewsPage() {
     } = useArticle(slug);
 
     // Fetch related news
-    const { data: relatedNews = [] } = useRelatedNews(slug, articleData?.tags);
+    const {
+        data: relatedNewsData,
+        fetchNextPage: fetchNextRelatedPage,
+        isFetchingNextPage: isFetchingNextRelated,
+        hasNextPage: hasNextRelatedPage
+    } = useRelatedNews(slug, articleData?.tags);
 
     // Fetch category news
-    const { data: categoryNews = [] } = useCategoryNews(slug);
+    const {
+        data: categoryNewsData,
+        fetchNextPage: fetchNextCategoryPage,
+        isFetchingNextPage: isFetchingNextCategory,
+        hasNextPage: hasNextCategoryPage
+    } = useCategoryNews(articleData?.category?.slug, slug);
+
+    // Flatten the paginated data
+    const relatedNews = useMemo(() =>
+        relatedNewsData?.pages.flatMap(page => page.data) || [],
+        [relatedNewsData]
+    );
+
+    const categoryNews = useMemo(() =>
+        categoryNewsData?.pages.flatMap(page => page.data) || [],
+        [categoryNewsData]
+    );
 
     const handleRetry = () => {
         refetchArticle();
@@ -170,13 +191,13 @@ export default function SportsNewsPage() {
 
                         {/* Author Profile */}
                         <div className="mb-8">
-                            <AuthorProfile 
+                            <AuthorProfile
                                 author={{
                                     ...articleData.author,
                                     twitter_link: articleData.twitter_link,
                                     facebook_link: articleData.facebook_link,
                                     instagram_link: articleData.instagram_link,
-                                }} 
+                                }}
                             />
                         </div>
                     </div>
@@ -186,18 +207,24 @@ export default function SportsNewsPage() {
                     {/* More Sports News Section */}
                     {categoryNews.length > 0 && (
                         <ScrollableNewsSection
-                            href="/news/sports"
-                            title="More Sports News"
+                            // href={`/news/sports/${articleData.category?.slug}`}
+                            title={`More from ${articleData.category?.name}`}
                             news={categoryNews}
+                            fetchNextPage={fetchNextCategoryPage}
+                            isFetchingNextPage={isFetchingNextCategory}
+                            hasNextPage={hasNextCategoryPage}
                         />
                     )}
 
                     {/* Related News Section */}
                     {relatedNews.length > 0 && (
                         <ScrollableNewsSection
-                            href="/news/sports"
+                            // href="/news/sports"
                             title="Related News"
                             news={relatedNews}
+                            fetchNextPage={fetchNextRelatedPage}
+                            isFetchingNextPage={isFetchingNextRelated}
+                            hasNextPage={hasNextRelatedPage}
                         />
                     )}
 
