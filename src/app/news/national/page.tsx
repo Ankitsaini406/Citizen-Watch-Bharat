@@ -21,7 +21,7 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
     const visibleNews = stateNews.slice(0, 6);
 
     return (
-        <section aria-labelledby={`state-${state.slug}-heading`} className="p-6">
+        <section aria-labelledby={`state-${state.slug}-heading`}>
             <header className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4 w-full">
                     <h2

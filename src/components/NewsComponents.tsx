@@ -19,6 +19,7 @@ type LatestNewsItem = {
     title: string;
     createdAt: string;
     slug: string;
+    state: string;
     category?: {
         name: string;
         slug: string;
@@ -77,6 +78,7 @@ export function LatestNews() {
                     title: item.title,
                     createdAt: item.createdAt,
                     slug: item.slug,
+                    state: item.state,
                     category: item.category
                         ? { name: item.category.name, slug: item.category.slug }
                         : null
@@ -119,7 +121,11 @@ export function LatestNews() {
                                     </span>
                                 )}
                             </div>
-                            <ButtonLink href={`/news/${item.category?.slug}/${item.slug}`} title={item.title} className="line-clamp-2" />
+                            <ButtonLink
+                                href={`/news/${item.category?.slug}${item.category?.slug === 'national' ? `/${item.state}` : ''}/${item.slug}`}
+                                title={item.title}
+                                className="line-clamp-2"
+                            />
                         </div>
                     ))
                 )}
