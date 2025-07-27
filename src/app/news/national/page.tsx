@@ -35,7 +35,7 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
             </header>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
                 {visibleNews.map((article) => {
-                    const imageUrl = extractFirstImage(article.heroImage) || "/placeholder.svg";
+                    const imageUrl = extractFirstImage(article.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
                     return (
                         <div
                             key={article.slug}
@@ -50,7 +50,7 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
                                         className="object-cover"
                                         priority={true}
                                         placeholder="blur"
-                                        blurDataURL="/placeholder.svg"
+                                        blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                                     />
                                 </div>
                             )}

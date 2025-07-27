@@ -158,7 +158,7 @@ export default function NewsPage() {
     // Article page
     if (params?.slug && article) {
         const heroImageRaw = article.heroImage;
-        const firstImage = extractFirstImage(heroImageRaw) || "/placeholder.svg";
+        const firstImage = extractFirstImage(heroImageRaw) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
         const stateInfo = indianStatesBySlug[article.state];
 
         return (
@@ -180,7 +180,7 @@ export default function NewsPage() {
                                 className="object-cover"
                                 priority={true}
                                 placeholder="blur"
-                                blurDataURL="/placeholder.svg"
+                                blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                             />
                         </div>
                     )}

@@ -67,7 +67,7 @@ const NewsGridWithPagination: React.FC<NewsGridWithPaginationProps> = ({
             ) : (
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {news.map(item => {
-                        const image = extractFirstImage(item.heroImage) || "/placeholder.svg";
+                        const image = extractFirstImage(item.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
                         return (
                             <li key={item.id} className="border border-border overflow-hidden">
                                 {item.heroImage && extractFirstImage(item.heroImage) && (
@@ -80,7 +80,7 @@ const NewsGridWithPagination: React.FC<NewsGridWithPaginationProps> = ({
                                             sizes="(max-width: 1024px) 100vw, 50vw"
                                             priority={true}
                                             placeholder="blur"
-                                            blurDataURL="/placeholder.svg"
+                                            blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                                         />
                                     </div>
                                 )}

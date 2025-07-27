@@ -39,7 +39,7 @@ export default function NationalNewsBox({ category }: Props) {
 
 function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithImage; isFirst?: boolean; showImage?: boolean }) {
     // Use extractFirstImage utility to get the image URL
-    const imageUrl = extractFirstImage(news.heroImage) || "/placeholder.svg";
+    const imageUrl = extractFirstImage(news.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
     if (isFirst) {
         return (
@@ -59,7 +59,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                             sizes="(max-width: 1024px) 100vw, 50vw"
                             priority={true}
                             placeholder="blur"
-                            blurDataURL="/placeholder.svg"
+                            blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                         />
                         {/* Text overlay at bottom */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
@@ -90,7 +90,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                             className="object-cover"
                             sizes="(max-width: 1024px) 100vw, 50vw"
                             placeholder="blur"
-                            blurDataURL="/placeholder.svg"
+                            blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                         />
                     </div>
                     <div className="pt-4">

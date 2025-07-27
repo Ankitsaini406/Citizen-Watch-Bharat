@@ -105,7 +105,7 @@ export default function SportsNewsPage() {
     // Article page
     if (params?.slug && articleData) {
         const heroImageRaw = articleData.heroImage;
-        const firstImage = extractFirstImage(heroImageRaw) || "/placeholder.svg";
+        const firstImage = extractFirstImage(heroImageRaw) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
         return (
             <>
@@ -126,7 +126,7 @@ export default function SportsNewsPage() {
                                 className="object-cover"
                                 priority={true}
                                 placeholder="blur"
-                                blurDataURL="/placeholder.svg"
+                                blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                             />
                         </div>
                     )}
