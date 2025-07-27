@@ -68,7 +68,7 @@ export const useCategoryNews = (categorySlug?: string, excludeSlug?: string) => 
             }
 
             const res = await fetch(
-                `/api/news/category/${categorySlug}?exclude=${excludeSlug}&page=${pageParam}`
+                `/api/news/related/${categorySlug}?exclude=${excludeSlug}&page=${pageParam}`
             );
             if (!res.ok) throw new Error('Failed to fetch category news');
             return res.json();
