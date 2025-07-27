@@ -56,21 +56,21 @@ export default function CategoryNewsList() {
         });
 
     return (
-        <div className="container mx-auto px-4 xl:px-0 py-8">
+        <div className="container mx-auto px-4 xl:px-0">
             {newsByCategory.map((cat) => {
                 switch (cat.name) {
                     case "National":
                         return (
                             <div key={cat.name} className="my-5">
                                 {/* Mobile Layout: Stack vertically */}
-                                <div className="lg:hidden space-y-4">
+                                <div className="xl:hidden space-y-4">
                                     <NationalNewsBox key={cat.id} category={cat} />
                                     <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
                                     <LatestNews />
                                 </div>
 
                                 {/* Desktop Layout: Grid with 70/30 split */}
-                                <div className="hidden lg:grid lg:grid-cols-[70%_30%] gap-0 xl:gap-5">
+                                <div className="hidden xl:grid xl:grid-cols-[70%_30%] gap-0 xl:gap-5">
                                     <NationalNewsBox key={cat.id} category={cat} />
                                     <LatestNews />
                                     <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />

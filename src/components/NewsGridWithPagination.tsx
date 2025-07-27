@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { extractFirstImage, timeAgo } from "@/utils/Utils";
 import { ButtonLink } from "@/utils/Buttons";
-import { Pagination } from "@/utils/Utils";
+import { extractFirstImage, timeAgo, Pagination } from "@/utils/Utils";
 
 export interface NewsItem {
     id: string;
@@ -79,6 +78,7 @@ const NewsGridWithPagination: React.FC<NewsGridWithPaginationProps> = ({
                                             fill
                                             className="object-cover"
                                             sizes="(max-width: 1024px) 100vw, 50vw"
+                                            priority={true}
                                             placeholder="blur"
                                             blurDataURL="/placeholder.svg"
                                         />

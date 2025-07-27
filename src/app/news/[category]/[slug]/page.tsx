@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
-import { NewsArticle } from "@/types/type";
 import { extractFirstImage, ScrollableNewsSection, timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
-import AuthorProfile from "@/components/AuthorProfile";
+import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
+import AuthorProfile from '@/components/AuthorProfile';
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -74,89 +74,38 @@ function NewsSkeleton() {
 
 export default function NewsPage() {
     const params = useParams();
-    const [article, setArticle] = useState<NewsArticle | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [retryKey, setRetryKey] = useState(0);
+    const slug = params?.slug as string;
+    const category = params?.category as string;
 
-    // New states for related and category news
-    const [relatedNews, setRelatedNews] = useState<NewsArticle[]>([]);
-    const [categoryNews, setCategoryNews] = useState<NewsArticle[]>([]);
+    // Fetch main article data
+    const { 
+        data: articleData, 
+        isLoading: articleLoading, 
+        error: articleError,
+        refetch: refetchArticle 
+    } = useArticle(slug);
 
-    useEffect(() => {
-        const fetchNews = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await fetch(`/api/news/${params.slug}`);
-                const data = await res.json();
-                if (data.success) {
-                    setArticle(data.data.news);
-                } else {
-                    setError("Article not found");
-                }
-            } catch {
-                setError("Failed to load news");
-            } finally {
-                setLoading(false);
-            }
-        };
+    // Fetch related news
+    const { data: relatedNews = [] } = useRelatedNews(slug, articleData?.tags);
 
-        fetchNews();
-    }, [params?.slug, retryKey]);
-
-    // Fetch related and category news after article is loaded
-    useEffect(() => {
-        if (!article) return;
-
-        async function fetchRelatedAndCategoryNews() {
-            // Fetch related news by tags
-            if (article && article.tags && article.tags.length > 0) {
-                try {
-                    const res = await fetch(`/api/news/related?tags=${article.tags.join(",")}&exclude=${params.slug}`);
-                    const data = await res.json();
-                    console.log('Related news data:', data);
-                    if (data.success) setRelatedNews(data.data || []);
-                    else setRelatedNews([]);
-                } catch {
-                    setRelatedNews([]);
-                }
-            } else {
-                setRelatedNews([]);
-            }
-
-            // Fetch more news from the same category
-            if (article) {
-                try {
-                    const res = await fetch(`/api/news/category/${article.category.slug}?exclude=${params.slug}`);
-                    const data = await res.json();
-                    if (data.success) setCategoryNews(data.data || []);
-                    else setCategoryNews([]);
-                } catch {
-                    setCategoryNews([]);
-                }
-            } else {
-                setCategoryNews([]);
-            }
-        }
-
-        fetchRelatedAndCategoryNews();
-    }, [article, params.slug]);
+    // Fetch category news
+    const { data: categoryNews = [] } = useCategoryNews(category);
 
     const handleRetry = () => {
-        setRetryKey(prev => prev + 1);
+        refetchArticle();
     };
 
-    if (loading) {
+    if (articleLoading) {
         return <NewsSkeleton />;
     }
-    if (error) {
-        return <ErrorState message={error} onRetry={handleRetry} />;
+    
+    if (articleError) {
+        return <ErrorState message={articleError.message} onRetry={handleRetry} />;
     }
 
     // Article page
-    if (params?.slug && article) {
-        const heroImageRaw = article.heroImage;
+    if (params?.slug && articleData) {
+        const heroImageRaw = articleData.heroImage;
         const firstImage = extractFirstImage(heroImageRaw) || "/placeholder.svg";
 
         return (
@@ -165,15 +114,15 @@ export default function NewsPage() {
                 <LeftBanner place="Par-News" />
                 <RightBanner place="Par-News" />
                 <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
-                    <h1 className="text-2xl md:text-4xl font-bold mb-2 leading-relaxed px-4 lg:px-0">{article.title}</h1>
-                    {article.subtitle && (
-                        <h2 className="md:text-xl text-gray-700 mb-4 px-4 lg:px-0">{article.subtitle}</h2>
+                    <h1 className="text-2xl md:text-4xl font-bold mb-2 leading-relaxed px-4 lg:px-0">{articleData.title}</h1>
+                    {articleData.subtitle && (
+                        <h2 className="md:text-xl text-gray-700 mb-4 px-4 lg:px-0">{articleData.subtitle}</h2>
                     )}
                     {firstImage && (
                         <div className="relative w-full h-80 sm:h-[400px]">
                             <Image
                                 src={firstImage}
-                                alt={article.title}
+                                alt={articleData.title}
                                 fill
                                 className="object-cover"
                                 priority={true}
@@ -187,29 +136,29 @@ export default function NewsPage() {
                         {/* Category and Date */}
                         <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
                             <span className="uppercase font-semibold tracking-wider text-red-600">
-                                {article.category.name}
+                                {articleData.category.name}
                             </span>
                             <div className="flex gap-5">
-                                <span>{timeAgo(article.createdAt)}</span>
-                                {article.city && (
-                                    <span>{article.city}, {article.state}</span>
+                                <span>{timeAgo(articleData.createdAt)}</span>
+                                {articleData.city && (
+                                    <span>{articleData.city}, {articleData.state}</span>
                                 )}
                             </div>
                         </div>
 
                         {/* Main Content */}
                         <div className="prose max-w-none mb-8">
-                            {article.content && typeof article.content === "object" ? (
-                                <RichTextPreview lexicalJson={article.content} />
+                            {articleData.content && typeof articleData.content === "object" ? (
+                                <RichTextPreview lexicalJson={articleData.content} />
                             ) : (
                                 <span className="text-gray-400">No content</span>
                             )}
                         </div>
 
                         {/* Tags */}
-                        {article.tags && article.tags.length > 0 && (
+                        {articleData.tags && articleData.tags.length > 0 && (
                             <div className="mb-6 flex flex-wrap gap-2.5">
-                                {article.tags.map(tag => (
+                                {articleData.tags.map((tag: string) => (
                                     <span
                                         key={tag}
                                         className="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 hover:text-foreground cursor-pointer"
@@ -224,10 +173,10 @@ export default function NewsPage() {
                         <div className="mb-8">
                             <AuthorProfile 
                                 author={{
-                                    ...article.author,
-                                    twitter_link: article.twitter_link,
-                                    facebook_link: article.facebook_link,
-                                    instagram_link: article.instagram_link,
+                                    ...articleData.author,
+                                    twitter_link: articleData.twitter_link,
+                                    facebook_link: articleData.facebook_link,
+                                    instagram_link: articleData.instagram_link,
                                 }} 
                             />
                         </div>
@@ -238,8 +187,8 @@ export default function NewsPage() {
                     {/* More from Category Section */}
                     {categoryNews.length > 0 && (
                         <ScrollableNewsSection
-                            href={`/news/${article.category.slug}`}
-                            title={`More from ${article.category?.name}`}
+                            href={`/news/${articleData.category.slug}`}
+                            title={`More from ${articleData.category?.name}`}
                             news={categoryNews}
                         />
                     )}
@@ -247,7 +196,7 @@ export default function NewsPage() {
                     {/* Related News Section */}
                     {relatedNews.length > 0 && (
                         <ScrollableNewsSection
-                            href={`/news/${article.category.slug}`}
+                            href={`/news/${articleData.category.slug}`}
                             title="Related News"
                             news={relatedNews}
                         />

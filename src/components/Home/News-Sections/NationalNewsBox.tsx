@@ -43,7 +43,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
 
     if (isFirst) {
         return (
-            <div className="bg-white overflow-hidden h-full border border-gray-300 min-h-96">
+            <div className="bg-white overflow-hidden h-full border border-gray-300 md:min-h-96">
                 <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
                     {/* Full height image with text overlay */}
                     <div className="relative h-80 lg:h-full bg-gray-200">

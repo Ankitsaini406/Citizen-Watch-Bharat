@@ -74,7 +74,7 @@ function SportsOtherSection({ news }: { news: NewsArticle[] }) {
     if (news.length === 0) return null;
     const visibleNews = news.slice(0, 6);
     return (
-        <section aria-labelledby="sports-other-heading" className="p-6">
+        <section aria-labelledby="sports-other-heading">
             <header className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4 w-full">
                     <h2
