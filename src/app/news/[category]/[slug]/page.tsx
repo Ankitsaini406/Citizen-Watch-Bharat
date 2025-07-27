@@ -5,10 +5,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
-import { Facebook, Instagram, X } from "lucide-react";
 import { NewsArticle } from "@/types/type";
 import { extractFirstImage, ScrollableNewsSection, timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
+import AuthorProfile from "@/components/AuthorProfile";
 
 // Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
@@ -220,46 +220,16 @@ export default function NewsPage() {
                             </div>
                         )}
 
-                        {/* Author and Social */}
-                        <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
-                            <div className="flex items-center gap-2">
-                                <span className="font-medium text-gray-800">By {article.author.name}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                {article.twitter_link && (
-                                    <Link
-                                        href={article.twitter_link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="View on X"
-                                        className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-black/90"
-                                    >
-                                        <X className="w-5 h-5 text-black group-hover:text-white transition-colors duration-150" />
-                                    </Link>
-                                )}
-                                {article.facebook_link && (
-                                    <Link
-                                        href={article.facebook_link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="View on Facebook"
-                                        className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-[#1877F3]"
-                                    >
-                                        <Facebook className="w-5 h-5 text-[#1877F3] group-hover:text-white transition-colors duration-150" />
-                                    </Link>
-                                )}
-                                {article.instagram_link && (
-                                    <Link
-                                        href={article.instagram_link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="View on Instagram"
-                                        className="group rounded-full p-2 transition-all duration-150 bg-gray-100 hover:bg-[#E1306C]"
-                                    >
-                                        <Instagram className="w-5 h-5 text-[#E1306C] group-hover:text-white transition-colors duration-150" />
-                                    </Link>
-                                )}
-                            </div>
+                        {/* Author Profile */}
+                        <div className="mb-8">
+                            <AuthorProfile 
+                                author={{
+                                    ...article.author,
+                                    twitter_link: article.twitter_link,
+                                    facebook_link: article.facebook_link,
+                                    instagram_link: article.instagram_link,
+                                }} 
+                            />
                         </div>
                     </div>
 

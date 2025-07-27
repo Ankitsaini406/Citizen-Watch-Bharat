@@ -70,7 +70,7 @@ const NewsGridWithPagination: React.FC<NewsGridWithPaginationProps> = ({
                     {news.map(item => {
                         const image = extractFirstImage(item.heroImage) || "/placeholder.svg";
                         return (
-                            <li key={item.id} className="border border-gray-300 overflow-hidden">
+                            <li key={item.id} className="border border-border overflow-hidden">
                                 {item.heroImage && extractFirstImage(item.heroImage) && (
                                     <div className="relative h-60 w-full bg-gray-300">
                                         <Image
@@ -79,7 +79,6 @@ const NewsGridWithPagination: React.FC<NewsGridWithPaginationProps> = ({
                                             fill
                                             className="object-cover"
                                             sizes="(max-width: 1024px) 100vw, 50vw"
-                                            priority={true}
                                             placeholder="blur"
                                             blurDataURL="/placeholder.svg"
                                         />

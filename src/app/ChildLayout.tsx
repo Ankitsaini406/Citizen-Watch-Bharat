@@ -5,10 +5,10 @@ import TailwindIndicator from "@/lib/TailwindIndicator";
 export default function ChildLayout({ children }: { children: React.ReactNode }) {
     return(
         <>
-        <Header />
-        {children}
-        <TailwindIndicator />
-        <Footer />
+            <Header />
+            {children}
+            <TailwindIndicator />
+            <Footer />
         </>
     )
 }

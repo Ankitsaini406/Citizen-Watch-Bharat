@@ -20,6 +20,7 @@ const categories: Category[] = [
     { name: "Entertainment", slug: "entertainment" },
     { name: "Sports", slug: "sports" },
     { name: "Web-Stories", slug: "web-stories" },
+    { name: "Lifestyle", slug: "lifestyle" },
 ];
 
 const commonLinks: NavLink[] = [

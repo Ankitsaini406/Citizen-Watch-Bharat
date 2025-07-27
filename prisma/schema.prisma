@@ -28,6 +28,9 @@ model User {
   updatedAt      DateTime          @updatedAt
   managerId      String?
   isActive       Boolean           @default(false)
+  department     String?
+  description    String?
+  intro          String?
   editedUsers    EditHistory[]     @relation("EditorUser")
   editHistory    EditHistory[]
   news           News[]
@@ -78,7 +81,6 @@ model News {
   isDeleted      Boolean           @default(false)
   twitter_link   String
   facebook_link  String
-  instagram_link String?
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
   city           String
@@ -91,6 +93,7 @@ model News {
   subCategoryId  String?
   isBreaking     Boolean           @default(false)
   pngImage       String?
+  instagram_link String?
   author         User              @relation(fields: [authorId], references: [id])
   category       Category          @relation(fields: [categoryId], references: [id])
   editor         User?             @relation("NewsEditor", fields: [editorId], references: [id])
