@@ -1,6 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { NewsArticle } from '@/types/type';
-import { NewsItem, PaginationProps } from "@/components/NewsGridWithPagination";
 
 // Fetch single article by slug
 export const useArticle = (slug: string) => {
@@ -81,27 +80,118 @@ export const useCategoryNews = (categorySlug?: string, excludeSlug?: string) => 
     });
 };
 
-interface CategoryNewsResponse {
-    data: NewsItem[];
-    pagination: PaginationProps;
+interface InfiniteCategoryNewsResponse {
+    data: NewsArticle[];
+    pagination: {
+        total: number;
+        page: number;
+        pageSize: number;
+        hasMore: boolean;
+    };
 }
 
-export const useNewsCategory = (category: string, page: number) => {
-    return useQuery<CategoryNewsResponse>({
-        queryKey: ['categoryNews', category, page],
-        queryFn: async () => {
-            const res = await fetch(`/api/news/category/${category}?page=${page}`);
-            const data = await res.json();
-            if (!res.ok) {
-                throw new Error(data.error || 'Failed to fetch category news');
+export const useNewsCategory = (category?: string) => {
+    return useInfiniteQuery<InfiniteCategoryNewsResponse>({
+        queryKey: ['categoryNews', category],
+        queryFn: async ({ pageParam = 1 }) => {
+            if (!category) {
+                return {
+                    data: [],
+                    pagination: {
+                        total: 0,
+                        page: 1,
+                        pageSize: 9,
+                        hasMore: false
+                    }
+                };
             }
+
+            const res = await fetch(`/api/news/category/${category}?page=${pageParam}&limit=9`);
+            if (!res.ok) throw new Error('Failed to fetch category news');
+            
+            const data = await res.json();
             return {
-                data: data.data.slice(0, 10), // Keep your PAGE_SIZE logic
-                pagination: data.pagination
+                data: data.data,
+                pagination: {
+                    ...data.pagination,
+                    pageSize: 9, 
+                    hasMore: data.data.length >= 9
+                }
             };
         },
+        getNextPageParam: (lastPage) => {
+            return lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined;
+        },
         enabled: !!category,
-        placeholderData: (previousData) => previousData, // This replaces keepPreviousData
-        staleTime: 1000 * 60 * 2, // 2 minutes
+        initialPageParam: 1,
+    });
+};
+
+// useStateNews hook
+export const useStateNews = (stateSlug?: string) => {
+    return useInfiniteQuery({
+        queryKey: ['state-news', stateSlug],
+        queryFn: async ({ pageParam = 1 }) => {
+            if (!stateSlug) {
+                return {
+                    data: [],
+                    pagination: {
+                        total: 0,
+                        page: 1,
+                        pageSize: 10,
+                        hasMore: false
+                    }
+                };
+            }
+
+            const res = await fetch(
+                `/api/news/state/${stateSlug}?page=${pageParam}`
+            );
+            if (!res.ok) throw new Error('Failed to fetch state news');
+            return res.json();
+        },
+        getNextPageParam: (lastPage) => {
+            return lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined;
+        },
+        enabled: !!stateSlug,
+        initialPageParam: 1,
+    });
+};
+
+export const useInfiniteNewsCategory = (category: string) => {
+    return useInfiniteQuery({
+        queryKey: ['category-news', category],
+        queryFn: async ({ pageParam = 1 }) => {
+            try {
+                const res = await fetch(`/api/news/state/${category}?page=${pageParam}`);
+                
+                if (!res.ok) {
+                    throw new Error(`Failed to fetch news: ${res.statusText}`);
+                }
+
+                const data = await res.json();
+                
+                // Ensure consistent response structure
+                return {
+                    data: data.data || [],
+                    pagination: data.pagination || {
+                        total: 0,
+                        page: pageParam,
+                        pageSize: 10,
+                        hasMore: false
+                    }
+                };
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                throw error;
+            }
+        },
+        getNextPageParam: (lastPage) => {
+            return lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined;
+        },
+        enabled: !!category,
+        initialPageParam: 1,
+        staleTime: 5 * 60 * 1000,
+        retry: 2,
     });
 };

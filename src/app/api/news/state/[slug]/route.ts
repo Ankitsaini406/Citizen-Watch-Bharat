@@ -40,20 +40,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
                 title: true,
                 subtitle: true,
                 slug: true,
-                content: true,
-                tags: true,
                 state: true,
                 city: true,
                 views: true,
                 heroImage: true,
                 createdAt: true,
-                updatedAt: true,
                 author: {
                     select: {
                         id: true,
                         name: true,
                         image: true,
-                        role: true,
                     },
                 },
                 category: {
