@@ -62,11 +62,13 @@ function NavLinks({ onClick }: { onClick?: () => void }) {
     );
 }
 
-// --- Breadcrumb Component ---
 function Breadcrumb() {
     const pathname = usePathname();
-    if (!pathname || pathname === "/") return null;
+    if (!pathname || pathname === "/") return null;    
     const segments = pathname.split("/").filter(Boolean);
+
+    if (segments.length <= 1) return null;
+
     let path = "";
 
     return (
@@ -75,15 +77,18 @@ function Breadcrumb() {
             aria-label="Breadcrumb"
         >
             <ol className="flex items-center space-x-1 overflow-hidden">
-                {/* Home link intentionally omitted */}
                 {segments.map((seg, idx) => {
                     path += `/${seg}`;
                     const isLast = idx === segments.length - 1;
                     const decoded = decodeURIComponent(seg);
                     let label = decoded.replace(/-/g, " ");
+                    
+                    // Truncate long labels
                     if (label.length > 24) {
                         label = label.slice(0, 24) + "...";
                     }
+                    
+                    // Capitalize each word
                     label = label
                         .split(" ")
                         .map(
@@ -203,7 +208,7 @@ export default function Header() {
             {/* Top Navbar */}
             <header className="relative bg-white text-black border-b border-black/30 z-50" role="banner">
                 <div className="border-b border-gray-100">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="px-2 md:px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">
                             {/* Logo */}
                             <Link href="/" className="flex items-center" aria-label="Home">
