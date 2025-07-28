@@ -47,6 +47,10 @@ export interface NewsArticle {
     content: { root: { children: LexicalNode[] } };
     author: {
         name: string;
+        twitter_link?: string;
+        facebook_link?: string;
+        instagram_link?: string;
+        linkedin_link?: string;
     };
     views: number;
     twitter_link: string;

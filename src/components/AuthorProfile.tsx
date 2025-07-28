@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Facebook, Instagram, X } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, X } from 'lucide-react';
 
 interface AuthorProfileProps {
     author: {
@@ -13,6 +13,7 @@ interface AuthorProfileProps {
         twitter_link?: string;
         facebook_link?: string;
         instagram_link?: string;
+        linkedin_link?: string;
     };
     className?: string;
 }
@@ -78,6 +79,18 @@ export default function AuthorProfile({ author, className = '' }: AuthorProfileP
                                     className="group flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gradient-to-r hover:from-[#E1306C] hover:to-[#C13584] text-gray-700 hover:text-white rounded-full text-sm font-medium transition-all duration-200"
                                 >
                                     <Instagram className="w-4 h-4" />
+                                </Link>
+                            )}
+
+                            {author.linkedin_link && (
+                                <Link
+                                    href={author.linkedin_link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={`Follow ${author.name} on Instagram`}
+                                    className="group flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-[#1877F3] text-gray-700 hover:text-white rounded-full text-sm font-medium transition-all duration-200"
+                                >
+                                    <Linkedin className="w-4 h-4" />
                                 </Link>
                             )}
                         </div>

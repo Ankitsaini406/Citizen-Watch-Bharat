@@ -31,10 +31,10 @@ model User {
   department     String?
   description    String?
   intro          String?
-  twitter_link   String?
   facebook_link  String?
   instagram_link String?
   linkedin_link  String?
+  twitter_link   String?
   editedUsers    EditHistory[]     @relation("EditorUser")
   editHistory    EditHistory[]
   news           News[]
@@ -148,12 +148,12 @@ model UserAttendance {
 }
 
 model Content {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
   email     String
   subject   String
   message   String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime?
 }
 

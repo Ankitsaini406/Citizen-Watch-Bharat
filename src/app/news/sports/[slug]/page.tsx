@@ -194,9 +194,6 @@ export default function SportsNewsPage() {
                             <AuthorProfile
                                 author={{
                                     ...articleData.author,
-                                    twitter_link: articleData.twitter_link,
-                                    facebook_link: articleData.facebook_link,
-                                    instagram_link: articleData.instagram_link,
                                 }}
                             />
                         </div>

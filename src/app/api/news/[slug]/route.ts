@@ -32,6 +32,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
                         image: true,
                         intro: true,
                         description: true,
+                        instagram_link: true,
+                        facebook_link: true,
+                        linkedin_link: true,
+                        twitter_link: true,
                     },
                 },
                 category: {
