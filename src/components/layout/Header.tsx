@@ -262,6 +262,7 @@ export default function Header() {
                         }`}
                     role="dialog"
                     aria-modal="true"
+                    aria-labelledby="mobile-menu-title"
                     tabIndex={-1}
                 >
                     <button

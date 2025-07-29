@@ -2,10 +2,9 @@ import { Category, News } from "@/types/type";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { extractFirstImage } from "@/utils/Utils";
 
 interface NewsWithImage extends News {
-  heroImage: string[];
+  heroImage: string;
 }
 
 interface Props {
@@ -37,7 +36,7 @@ export default function InternationalNewsBox({ category }: Props) {
 }
 
 function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithImage; isFirst?: boolean; showImage?: boolean }) {
-  const imageUrl = extractFirstImage(news.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+  const imageUrl = news.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
   if (isFirst) {
     return (

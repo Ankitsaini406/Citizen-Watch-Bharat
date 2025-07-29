@@ -2,11 +2,11 @@ import { Category, News } from "@/types/type";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { extractFirstImage, slugify } from "@/utils/Utils";
+import { slugify } from "@/utils/Utils";
 
 // Extend News type locally to include heroImage as string[]
 interface NewsWithImage extends News {
-    heroImage: string[];
+    heroImage: string;
 }
 
 interface Props {
@@ -39,7 +39,7 @@ export default function NationalNewsBox({ category }: Props) {
 
 function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithImage; isFirst?: boolean; showImage?: boolean }) {
     // Use extractFirstImage utility to get the image URL
-    const imageUrl = extractFirstImage(news.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+    const imageUrl = news.heroImage|| "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
     if (isFirst) {
         return (

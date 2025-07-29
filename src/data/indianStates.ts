@@ -30,7 +30,7 @@ export const indianStates = [
     { name: "Uttarakhand", slug: "uttarakhand" },
     { name: "West Bengal", slug: "west-bengal" },
     { name: "Delhi", slug: "delhi" },
-    { name: "Jammu and Kashmir", slug: "jammu-kashmir" },
+    { name: "Jammu Kashmir", slug: "jammu-kashmir" },
     { name: "Ladakh", slug: "ladakh" },
     { name: "Chandigarh", slug: "chandigarh" },
     { name: "Puducherry", slug: "puducherry" },
@@ -40,6 +40,6 @@ export const indianStates = [
 ];
 
 // Optional: map by slug
-export const indianStatesBySlug = Object.fromEntries(
-    indianStates.map(state => [state.slug, state])
-);
+// export const indianStatesBySlug = Object.fromEntries(
+//     indianStates.map(state => [state.slug, state])
+// );

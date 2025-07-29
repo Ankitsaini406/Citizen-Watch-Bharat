@@ -90,7 +90,7 @@ model News {
   city           String
   state          String
   status         String            @default("Draft")
-  heroImage      String[]
+  heroImage      String
   editorId       String?
   editor_name    String?
   lastEditedAt   DateTime?
@@ -98,6 +98,7 @@ model News {
   isBreaking     Boolean           @default(false)
   pngImage       String?
   instagram_link String?
+  country        String?
   author         User              @relation(fields: [authorId], references: [id])
   category       Category          @relation(fields: [categoryId], references: [id])
   editor         User?             @relation("NewsEditor", fields: [editorId], references: [id])

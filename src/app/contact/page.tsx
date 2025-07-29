@@ -117,7 +117,7 @@ export default function ContactUs() {
                                         <h3 className="text-lg font-semibold text-gray-800">Newsroom Address</h3>
                                         <p className="text-gray-600">WeBrain Tech Academy Complex</p>
                                         <p className="text-gray-600">Opp. Mangal Transport, Near Chandpole Gate</p>
-                                        <p className="text-gray-600">Sikat (Raj.) - 332001</p>
+                                        <p className="text-gray-600">Sikar (Raj.) - 332001</p>
                                         <p className="text-sm text-gray-500 mt-1">Visits by appointment only</p>
                                     </div>
                                 </div>

@@ -30,6 +30,8 @@ export default function CategoryNewsList() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [news, setNews] = useState<News[]>([]);
 
+    console.log(`This is page news : `, news);
+
     useEffect(() => {
         const fetchData = async () => {
             const { categories, news } = await fetchAllCategoriesAndNews();
@@ -38,6 +40,8 @@ export default function CategoryNewsList() {
         };
         fetchData();
     }, []);
+
+    console.log(`This is page news : `, news);
 
     if (!categories.length || !news.length) {
         return <div>No data loaded</div>;

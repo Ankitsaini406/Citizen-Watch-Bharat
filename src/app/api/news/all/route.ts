@@ -47,6 +47,8 @@ export async function GET() {
     // Optionally flatten all news for easier consumption
     const news = categories.flatMap((cat: { news: typeof categories[number]['news'] }) => cat.news);
 
+    console.log(`This is api all news : `, news, categories);
+
     return NextResponse.json({ categories, news });
   } catch (error) {
     return NextResponse.json({ error: `Failed to fetch data ${error}` }, { status: 500 });

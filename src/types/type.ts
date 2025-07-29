@@ -10,7 +10,7 @@ export type News = {
     slug: string;
     title: string;
     state: string;
-    heroImage: string[];
+    heroImage: string;
     category?: { slug: string };
 };
 
@@ -59,7 +59,7 @@ export interface NewsArticle {
     createdAt: string;
     city: string;
     state: string;
-    heroImage: string[];
+    heroImage: string;
     subCategoryId?: string;
     subCategory?: SubCategory;
     pngImage?: string;

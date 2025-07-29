@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import { ButtonLink, ButtonSeeMore } from "@/utils/Buttons";
-import { extractFirstImage, timeAgo } from "@/utils/Utils";
+import { timeAgo } from "@/utils/Utils";
 import { indianStates } from "@/data/indianStates";
 import Image from "next/image";
 
@@ -35,7 +35,7 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
             </header>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
                 {visibleNews.map((article) => {
-                    const imageUrl = extractFirstImage(article.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+                    const imageUrl = article.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
                     return (
                         <div
                             key={article.slug}
@@ -129,6 +129,8 @@ export default function NationalPage() {
 
         loadNews();
     }, []);
+
+    console.log(`This is news : `, news);
 
     if (loading) {
         return (

@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
-import { extractFirstImage, ScrollableNewsSection, timeAgo } from "@/utils/Utils";
+import { ScrollableNewsSection, timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import AuthorProfile from "@/components/AuthorProfile";
 import { useArticle, useCategoryNews, useRelatedNews } from "@/hooks/useNews";
@@ -91,7 +91,7 @@ export default function NewsPage() {
     // Article page
     if (params?.slug && articleData) {
         const heroImageRaw = articleData.heroImage;
-        const firstImage = extractFirstImage(heroImageRaw) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+        const firstImage = heroImageRaw || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
         return (
             <>
