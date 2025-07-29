@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { ButtonLink } from "@/utils/Buttons";
 import { NewsArticle } from "@/types/type";
-import { extractFirstImage, timeAgo } from "@/utils/Utils";
+import { timeAgo } from "@/utils/Utils";
 
 export interface NewsGridWithInfiniteScrollProps {
     news: NewsArticle[];
@@ -66,10 +66,10 @@ export function NewsGridWithInfiniteScroll({
             ) : (
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {news.map(item => {
-                        const image = extractFirstImage(item.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+                        const image = item.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
                         return (
                             <li key={item.id} className="border border-border overflow-hidden">
-                                {item.heroImage && extractFirstImage(item.heroImage) && (
+                                {item.heroImage && item.heroImage && (
                                     <div className="relative h-60 w-full bg-gray-300">
                                         <Image
                                             src={image}
