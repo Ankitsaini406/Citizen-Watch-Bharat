@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind&display=swap');
 @import "tailwindcss";
 
 * {
@@ -7,6 +8,8 @@
 @theme {
   --color-background: #ffffff;
   --color-foreground: #171717;
+  --color-primary: #f87171;
+  --color-primary-hover: #dc2626;
   --color-border: var(--color-gray-300)
 
   --font-sans: var(--font-geist-sans);
@@ -86,9 +89,9 @@ button {
   100% { transform: translateX(-100%); }
 }
 
-@font-face {
+/* @font-face {
   font-family: 'Hind';
   src: url('/fonts/Hind-Regular.ttf') format('truetype');
   font-style: normal;
-}
+} */
 /* Repeat for other weights/styles */

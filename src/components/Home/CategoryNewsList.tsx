@@ -65,7 +65,7 @@ export default function CategoryNewsList() {
                                 {/* Mobile Layout: Stack vertically */}
                                 <div className="xl:hidden space-y-4">
                                     <NationalNewsBox key={cat.id} category={cat} />
-                                    <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                    <ButtonSeeMore href={`/news/${cat.slug}`} title="National News" />
                                     <LatestNews />
                                 </div>
 
@@ -73,7 +73,7 @@ export default function CategoryNewsList() {
                                 <div className="hidden xl:grid xl:grid-cols-[70%_30%] gap-0 xl:gap-5">
                                     <NationalNewsBox key={cat.id} category={cat} />
                                     <LatestNews />
-                                    <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                    <ButtonSeeMore href={`/news/${cat.slug}`} title="National News" />
                                 </div>
                             </div>
                         );
@@ -81,14 +81,14 @@ export default function CategoryNewsList() {
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <InternationalNewsBox key={cat.id} category={cat} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="International News" />
                             </div>
                         );
                     case "Political":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <PoliticalNewsBox key={cat.id} category={cat} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="Political News" />
                                 <MiddleBanner />
                             </div>
                         );
@@ -96,36 +96,36 @@ export default function CategoryNewsList() {
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <BusinessNewsBox key={cat.id} category={cat} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="Business News" />
                             </div>
                         );
                     case "Elections":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <ElectionsNewsBox key={cat.id} category={cat} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="Elections News" />
                             </div>
                         );
                     case "Entertainment":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <EntertainmentNewsBox key={cat.id} category={cat} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="Entertainment News" />
                             </div>
                         );
                     case "Sports":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <SportsNewsBox key={cat.id} category={cat} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="Sports News" />
+                                <BottomBanner />
                             </div>
                         );
                     case "Web-Stories":
                         return (
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <WebStoriesNewsBox key={cat.id} category={cat} />
-                                <ButtonSeeMore href={`/news/${cat.slug}`} title="See More" />
-                                <BottomBanner />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="Web-Stories News" />
                             </div>
                         );
                     default:

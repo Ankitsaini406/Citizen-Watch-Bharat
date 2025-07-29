@@ -12,6 +12,7 @@ export default function StateNewsPage() {
     const params = useParams();
     const category = params?.category as string;
     const [ref, inView] = useInView();
+    
     const stateInfo = indianStatesBySlug[category];
     const PAGE_SIZE = 10
 

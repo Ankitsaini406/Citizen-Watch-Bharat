@@ -53,7 +53,7 @@ function NavLinks({ onClick }: { onClick?: () => void }) {
                     key={label}
                     href={href}
                     onClick={onClick}
-                    className="py-2 hover:text-red-600"
+                    className="py-2 hover:text-red-600 font-semibold"
                 >
                     {label}
                 </Link>

@@ -3,27 +3,25 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET() {
     try {
-        const now = new Date();
-        const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-
         const news = await prisma.news.findMany({
             where: {
                 isDeleted: false,
                 isPublish: true,
-                createdAt: {
-                    gte: twentyFourHoursAgo,
-                },
             },
             select: {
                 id: true,
                 title: true,
+                slug: true,
                 createdAt: true,
+                state: true,
                 category: {
                     select: {
                         name: true,
+                        slug: true,
                     },
                 },
             },
+            take: 8,
             orderBy: { createdAt: 'desc' },
         });
 

@@ -4,6 +4,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const nextConfig: NextConfig = {
+  icons: {
+    icon: '/favicon.ico',
+  },
+
   images: {
     domains: ['citizenwatchbharat.com'],
   },

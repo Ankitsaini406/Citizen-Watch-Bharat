@@ -1,11 +1,11 @@
 "use client";
 
-import { ButtonLeft, ButtonLink } from "@/utils/Buttons";
+import { ButtonLink } from "@/utils/Buttons";
 import { useEffect, useState } from "react";
 import { fetchBreakingNews, fetchLatestNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import { LatestLoading } from "@/utils/Loading";
-import { timeAgo } from "@/utils/Utils";
+import { slugify, timeAgo } from "@/utils/Utils";
 
 type BreakingNewsItem = {
     title: string;
@@ -122,7 +122,7 @@ export function LatestNews() {
                                 )}
                             </div>
                             <ButtonLink
-                                href={`/news/${item.category?.slug}${item.category?.slug === 'national' ? `/${item.state}` : ''}/${item.slug}`}
+                                href={`/news/${item.category?.slug}${item.category?.slug === 'national' ? `/${slugify(item.state)}` : ''}/${item.slug}`}
                                 title={item.title}
                                 className="line-clamp-2"
                             />
@@ -130,9 +130,9 @@ export function LatestNews() {
                     ))
                 )}
             </div>
-            <div className="mt-6">
+            {/* <div className="mt-6">
                 <ButtonLeft href="/news" title="READ MORE STORIES" className="text-xs" />
-            </div>
+            </div> */}
         </div>
     );
 }

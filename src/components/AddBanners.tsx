@@ -27,8 +27,8 @@ export function TopBanner({ place = 'Home' } : { place?: string; }) {
 
     if (loading) {
         return (
-            <div className="container mx-auto my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60">
+            <div className="container mx-auto my-10 px-10 xl:px-0 w-full">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-30 md:h-40 lg:h-60">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
             </div>
@@ -40,11 +40,11 @@ export function TopBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     return (
-        <div className="container mx-auto my-10 px-10 xl:px-0">
+        <div className="container mx-auto my-10 px-5 xl:px-0 w-full h-30 md:h-40 lg:h-60">
             {advertisements.map((ad) => (
                 <div
                     key={ad.id}
-                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
+                    className="relative mb-6 w-full h-30 md:h-40 lg:h-60 border-2 border-gray-300 shadow-lg overflow-hidden group"
                 >
                     {/* Advertisement Label */}
                     <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
@@ -56,7 +56,7 @@ export function TopBanner({ place = 'Home' } : { place?: string; }) {
                         rel="noopener noreferrer"
                         className="block"
                     >
-                        <div className="relative flex justify-center items-center w-full h-60 md:h-40 lg:h-60 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                        <div className="relative flex justify-center items-center w-full h-30 md:h-40 lg:h-60 overflow-hidden transition-transform group-hover:scale-105 duration-300">
                             {/* Optional overlay for better contrast */}
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
                             <Image
@@ -227,8 +227,8 @@ export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
 
     if (loading) {
         return (
-            <div className="my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-40  border-2 border-gray-300 shadow-lg">
+            <div className="my-10 px-10 xl:px-0 w-full">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 border-2 border-gray-300 shadow-lg h-30 md:h-40 lg:h-60">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
             </div>
@@ -240,11 +240,11 @@ export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     return (
-        <div className="my-10 px-10 xl:px-0">
+        <div className="container mt-5 px-2 xl:px-0">
             {advertisements.map((ad) => (
                 <div
                     key={ad.id}
-                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
+                    className="relative border-2 border-gray-300 shadow-lg overflow-hidden group h-30 md:h-40 lg:h-60"
                 >
                     <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
                         Advertisement
@@ -255,13 +255,13 @@ export function MiddleBanner({ place = 'Home' } : { place?: string; }) {
                         rel="noopener noreferrer"
                         className="block"
                     >
-                        <div className="relative flex justify-center items-center w-full h-40 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                        <div className="relative flex justify-center items-center w-full h-30 md:h-40 lg:h-60 overflow-hidden transition-transform group-hover:scale-105 duration-300">
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
                             <Image
                                 fill
                                 src={ad.imageUrl}
                                 alt={ad.title}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-left"
                                 style={{ zIndex: 0 }}
                             />
                         </div>
@@ -294,7 +294,7 @@ export function BottomBanner({ place = 'Home' } : { place?: string; }) {
     if (loading) {
         return (
             <div className="container mx-auto my-10 px-10 xl:px-0">
-                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 h-60 md:h-40 lg:h-60  border-2 border-gray-300 shadow-lg">
+                <div className="flex justify-center items-center w-full bg-gradient-to-l from-gray-500 to-gray-400 border-2 border-gray-300 shadow-lg h-30 md:h-40 lg:h-60">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
             </div>
@@ -306,11 +306,11 @@ export function BottomBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     return (
-        <div className="container mx-auto my-10 px-10 xl:px-0">
+        <div className="container mx-auto mt-5 px-2 xl:px-0 h-30 md:h-40 lg:h-60">
             {advertisements.map((ad) => (
                 <div
                     key={ad.id}
-                    className="relative mb-6  border-2 border-gray-300 shadow-lg overflow-hidden group"
+                    className="relative border-2 border-gray-300 shadow-lg overflow-hidden group"
                 >
                     <span className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1 ">
                         Advertisement
@@ -321,7 +321,7 @@ export function BottomBanner({ place = 'Home' } : { place?: string; }) {
                         rel="noopener noreferrer"
                         className="block"
                     >
-                        <div className="relative flex justify-center items-center w-full h-60 md:h-40 lg:h-60 overflow-hidden transition-transform group-hover:scale-105 duration-300">
+                        <div className="relative flex justify-center items-center w-full h-30 md:h-40 lg:h-60 overflow-hidden transition-transform group-hover:scale-105 duration-300">
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-300 z-10" />
                             <Image
                                 fill

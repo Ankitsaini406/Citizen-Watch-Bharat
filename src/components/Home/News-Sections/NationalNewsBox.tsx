@@ -76,7 +76,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
     if (showImage) {
         return (
             <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-                <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
+                <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
                     {/* Image or Placeholder */}
                     <div className="relative h-48 bg-gray-200">
                         <Image
@@ -106,7 +106,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
 
     return (
         <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-            <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
+            <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
                 {/* Title only - no image */}
                 <h4 className="font-semibold text-gray-900 leading-tight mb-4 line-clamp-2 hover:underline underline-offset-2">
                     {news.title}

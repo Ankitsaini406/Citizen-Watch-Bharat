@@ -47,15 +47,15 @@ export async function fetchBreakingNews(): Promise<NewsArticle[]> {
     }
 }
 
-export async function fetchLatestNews(limit = 6): Promise<NewsArticle[]> {
+export async function fetchLatestNews(): Promise<NewsArticle[]> {
 
     try {
-        const response = await fetch(`${baseUrl}api/news/all`, { next: { revalidate: 1 } });
+        const response = await fetch(`${baseUrl}api/news/latest`, { next: { revalidate: 1 } });
         if (!response.ok) throw new Error('Failed to fetch latest news');
-        const { news } = await response.json();
-        return news
-            .sort((a: NewsArticle, b: NewsArticle) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-            .slice(0, limit);
+        const news = await response.json();
+        return news.data.sort((a: NewsArticle, b: NewsArticle) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
     } catch (error) {
         console.error('Error fetching latest news:', error);
         return [];

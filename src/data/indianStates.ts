@@ -43,8 +43,3 @@ export const indianStates = [
 export const indianStatesBySlug = Object.fromEntries(
     indianStates.map(state => [state.slug, state])
 );
-
-// Optional: map by name
-export const indianStatesByName = Object.fromEntries(
-    indianStates.map(state => [state.name, state])
-);
