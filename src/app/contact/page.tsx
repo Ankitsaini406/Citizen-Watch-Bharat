@@ -1,6 +1,7 @@
 "use client";
 
 import { LocateFixed, Mail, MessageSquare, Newspaper, Phone, Send } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function ContactUs() {
@@ -52,7 +53,10 @@ export default function ContactUs() {
     };
 
     return (
-        <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen py-6 md:py-12 px-4 sm:px-6 lg:px-8">
+            <div className='relative w-full h-[20vh] md:h-[25vh] lg:h-[30vh] xl:h-[40vh] mb-10'>
+                <Image src='/cover.webp' alt='Cover Photo' fill />
+            </div>
             <div className="max-w-7xl mx-auto">
                 {/* Page Header with News Theme */}
                 <div className="text-center mb-12">
