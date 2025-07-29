@@ -39,7 +39,7 @@ export default function NationalNewsBox({ category }: Props) {
 
 function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithImage; isFirst?: boolean; showImage?: boolean }) {
     // Use extractFirstImage utility to get the image URL
-    const imageUrl = news.heroImage|| "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+    const imageUrl = news.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
     if (isFirst) {
         return (
