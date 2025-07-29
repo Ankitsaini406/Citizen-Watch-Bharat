@@ -60,7 +60,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     // apple: "/apple-touch-icon.png",
   },
-  themeColor: "#dc2626", // Tailwind red-600 or your brand color
 };
 
 export default function RootLayout({

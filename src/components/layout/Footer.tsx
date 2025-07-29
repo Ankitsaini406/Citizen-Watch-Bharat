@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image'; // If you have a logo
-import { Facebook, Instagram, X, Youtube } from 'lucide-react';
 
 export default function Footer() {
     return (
@@ -59,24 +58,24 @@ export default function Footer() {
                     <div>
                         <h4 className="text-lg font-semibold mb-4 text-white">Follow Us</h4>
                         <div className="flex space-x-4">
-                            <Link href="https://www.facebook.com/citizenwatchbharat" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors" aria-label="Facebook">
-                            <Facebook />
+                            <Link href="https://www.facebook.com/citizenwatchbharat" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <Image src='/facebook.webp' alt='Facebook Logo' width={24} height={24} className="opacity-80 hover:opacity-100 transition-opacity"/>
                             </Link>
-                            <Link href="https://x.com/cwbofficials" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+                            <Link href="https://x.com/cwbofficials" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                                 {/* Twitter SVG */}
-                                <X />
+                                <Image src='/twitter.webp' alt='Twitter Logo' width={24} height={24} className="opacity-80 hover:opacity-100 transition-opacity"/>
                             </Link>
-                            <Link href="https://www.instagram.com/citizenwatchbharat" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-400 transition-colors" aria-label="Instagram">
+                            <Link href="https://www.instagram.com/citizenwatchbharat" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                                 {/* Instagram SVG */}
-                                <Instagram />
+                                <Image src='/instagram.webp' alt='Instagram Logo' width={24} height={24} className="opacity-80 hover:opacity-100 transition-opacity"/>
                             </Link>
-                            <Link href="https://youtube.com/@citizenwatchbharat" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors" aria-label="YouTube">
+                            <Link href="https://youtube.com/@citizenwatchbharat" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
                                 {/* YouTube SVG */}
-                                <Youtube />
+                                <Image src='/youtube.webp' alt='YouTube Logo' width={24} height={24} className="opacity-80 hover:opacity-100 transition-opacity"/>
                             </Link>
-                            <Link href="https://www.threads.com/@citizenwatchbharat" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors" aria-label="T">
+                            <Link href="https://www.threads.com/@citizenwatchbharat" target="_blank" rel="noopener noreferrer" aria-label="Threads">
                                 {/* YouTube SVG */}
-                                @
+                                <Image src='/threads.webp' alt='Threads Logo' width={24} height={24} className="opacity-80 hover:opacity-100 transition-opacity"/>
                             </Link>
                         </div>
                     </div>
