@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 import { NewsArticle, SubCategory, Category } from "@/types/type";
 import { ButtonLink, ButtonSeeMore } from "@/utils/Buttons";
-import { extractFirstImage, timeAgo } from "@/utils/Utils";
+import { timeAgo } from "@/utils/Utils";
 import Image from "next/image";
 
 function SportsSubcategorySection({ subcategory, news }: { subcategory: SubCategory; news: NewsArticle[] }) {
@@ -26,7 +26,7 @@ function SportsSubcategorySection({ subcategory, news }: { subcategory: SubCateg
             </header>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
                 {visibleNews.map((article) => {
-                    const imageUrl = extractFirstImage(article.heroImage) || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+                    const imageUrl = article.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
                     return (
                         <div
                             key={article.slug}
@@ -91,7 +91,7 @@ function SportsOtherSection({ news }: { news: NewsArticle[] }) {
             </header>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
                 {visibleNews.map((article) => {
-                    const imageUrl = extractFirstImage(article.heroImage);
+                    const imageUrl = article.heroImage;
                     return (
                         <div
                             key={article.slug}
@@ -104,6 +104,8 @@ function SportsOtherSection({ news }: { news: NewsArticle[] }) {
                                         alt={article.title}
                                         fill
                                         className="object-cover"
+                                        placeholder="blur"
+                                        blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                                     />
                                 </div>
                             )}
