@@ -1,6 +1,6 @@
 'use client';
 
-import { LeftBanner, RightBanner, TopBanner, MiddleBanner, BottomBanner } from "@/components/AddBanners";
+import { LeftBanner, RightBanner, TopBanner, MiddleBanner } from "@/components/AddBanners";
 import { useState, useEffect } from "react";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
@@ -195,7 +195,6 @@ export default function NationalPage() {
                 </div>
             </div>
 
-            <BottomBanner place="News-Section" />
             <RightBanner place="News-Section" />
         </div>
     );

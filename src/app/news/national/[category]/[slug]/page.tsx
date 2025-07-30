@@ -4,10 +4,11 @@ import React, { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
-import { ScrollableNewsSection, timeAgo } from "@/utils/Utils";
+import { timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import AuthorProfile from "@/components/AuthorProfile";
 import { useArticle, useCategoryNews, useRelatedNews } from "@/hooks/useNews";
+import { ScrollableNewsSection } from "@/utils/ScrollAnimation";
 
 // Shimmering skeleton loader for news article
 function NewsSkeleton() {

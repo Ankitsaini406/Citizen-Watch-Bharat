@@ -5,10 +5,11 @@ import React, { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
-import { ScrollableNewsSection, timeAgo } from "@/utils/Utils";
+import { timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
 import AuthorProfile from '@/components/AuthorProfile';
+import { ScrollableNewsSection } from "@/utils/ScrollAnimation";
 
 // Error state component
 function ErrorState({ message }: { message: string; }) {

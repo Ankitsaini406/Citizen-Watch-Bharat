@@ -7,12 +7,7 @@ import { useStateNews } from "@/hooks/useNews";
 import { useInView } from "@/hooks/useView";
 import { LeftBanner, RightBanner, TopBanner, BottomBanner } from "@/components/AddBanners";
 import { NewsGridWithInfiniteScroll } from "@/components/NewsGrid";
-
-function slugToName(slug: string) {
-    return slug
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase());
-}
+import { slugToName } from "@/utils/Utils";
 
 export default function StateNewsPage() {
     const params = useParams();
@@ -35,8 +30,6 @@ export default function StateNewsPage() {
 
     // Combine all pages of articles into a single array
     const newsArticles = data?.pages.flatMap(page => page.data) || [];
-
-    console.log(`This is news : `, category);
 
     // Handle infinite scroll
     useEffect(() => {
