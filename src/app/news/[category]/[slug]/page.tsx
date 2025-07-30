@@ -145,9 +145,11 @@ export default function NewsPage() {
                         </span>
                         <div className="flex gap-5">
                             <span>{timeAgo(articleData.createdAt)}</span>
-                            {articleData.city && (
-                                <span>{articleData.city}, {articleData.state}</span>
-                            )}
+                            <span>
+                                {[articleData.city, articleData.state, articleData.country]
+                                    .filter(Boolean)
+                                    .join(', ')}
+                            </span>
                         </div>
                     </div>
 

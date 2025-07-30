@@ -59,6 +59,7 @@ export interface NewsArticle {
     createdAt: string;
     city: string;
     state: string;
+    country?: string;
     heroImage: string;
     subCategoryId?: string;
     subCategory?: SubCategory;

@@ -58,32 +58,32 @@ export default function NewsPage() {
     // Fetch main article data
     const { data: articleData, isLoading } = useArticle(slug);
 
-        // Fetch related news
-        const {
-            data: relatedNewsData,
-            fetchNextPage: fetchNextRelatedPage,
-            isFetchingNextPage: isFetchingNextRelated,
-            hasNextPage: hasNextRelatedPage
-        } = useRelatedNews(slug, articleData?.tags);
-    
-        // Fetch category news
-        const {
-            data: categoryNewsData,
-            fetchNextPage: fetchNextCategoryPage,
-            isFetchingNextPage: isFetchingNextCategory,
-            hasNextPage: hasNextCategoryPage
-        } = useCategoryNews(articleData?.category?.slug, slug);
-    
-        // Flatten the paginated data
-        const relatedNews = useMemo(() =>
-            relatedNewsData?.pages.flatMap(page => page.data) || [],
-            [relatedNewsData]
-        );
-    
-        const categoryNews = useMemo(() =>
-            categoryNewsData?.pages.flatMap(page => page.data) || [],
-            [categoryNewsData]
-        );
+    // Fetch related news
+    const {
+        data: relatedNewsData,
+        fetchNextPage: fetchNextRelatedPage,
+        isFetchingNextPage: isFetchingNextRelated,
+        hasNextPage: hasNextRelatedPage
+    } = useRelatedNews(slug, articleData?.tags);
+
+    // Fetch category news
+    const {
+        data: categoryNewsData,
+        fetchNextPage: fetchNextCategoryPage,
+        isFetchingNextPage: isFetchingNextCategory,
+        hasNextPage: hasNextCategoryPage
+    } = useCategoryNews(articleData?.category?.slug, slug);
+
+    // Flatten the paginated data
+    const relatedNews = useMemo(() =>
+        relatedNewsData?.pages.flatMap(page => page.data) || [],
+        [relatedNewsData]
+    );
+
+    const categoryNews = useMemo(() =>
+        categoryNewsData?.pages.flatMap(page => page.data) || [],
+        [categoryNewsData]
+    );
 
     if (isLoading) {
         return <NewsSkeleton />;
@@ -126,9 +126,11 @@ export default function NewsPage() {
                             </span>
                             <div className="flex gap-5">
                                 <span>{timeAgo(articleData.createdAt)}</span>
-                                {articleData.city && (
-                                    <span>{articleData.city}, {articleData.state}</span>
-                                )}
+                                <span>
+                                    {[articleData.city, articleData.state, articleData.country]
+                                        .filter(Boolean)
+                                        .join(', ')}
+                                </span>
                             </div>
                         </div>
 
