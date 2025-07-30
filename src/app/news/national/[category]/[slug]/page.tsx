@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
-import { timeAgo } from "@/utils/Utils";
+import { slugToName, timeAgo } from "@/utils/Utils";
 import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import AuthorProfile from "@/components/AuthorProfile";
 import { useArticle, useCategoryNews, useRelatedNews } from "@/hooks/useNews";
@@ -128,8 +128,9 @@ export default function NewsPage() {
                                 <span>{timeAgo(articleData.createdAt)}</span>
                                 <span>
                                     {[articleData.city, articleData.state, articleData.country]
-                                        .filter(Boolean)
-                                        .join(', ')}
+                                        .filter((part): part is string => Boolean(part))
+                                        .map(slugToName)
+                                        .join(', ') || null}
                                 </span>
                             </div>
                         </div>
