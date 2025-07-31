@@ -106,6 +106,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 lastModified: new Date(),
                 changeFrequency: 'monthly' as const
             },
+            {
+                url: `${baseUrl}code-of-ethics`,
+                lastModified: new Date(),
+                changeFrequency: 'monthly' as const
+            },
         ]
 
         return [
