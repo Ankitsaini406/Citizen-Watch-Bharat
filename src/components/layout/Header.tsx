@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -7,7 +8,6 @@ import { usePathname } from "next/navigation";
 
 // --- Types ---
 type Category = { name: string; slug: string };
-
 type NavLink = { label: string; href: string };
 
 // --- Data ---
@@ -34,10 +34,11 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
     return (
         <Link
             href={`/news/${cat.slug}`}
-            className={`px-2 py-1 transition-all border-b-2 text-foreground duration-300 focus-visible:underline ${isActive
-                ? "text-red-600 border-red-600"
-                : "border-transparent hover:border-red-600 hover:text-red-600"
-                }`}
+            className={`px-2 py-1 transition-all border-b-2 text-foreground duration-300 focus-visible:underline ${
+                isActive
+                    ? "text-red-600 border-red-600"
+                    : "border-transparent hover:border-red-600 hover:text-red-600"
+            }`}
             aria-current={isActive ? "page" : undefined}
         >
             {cat.name}
@@ -64,7 +65,7 @@ function NavLinks({ onClick }: { onClick?: () => void }) {
 
 function Breadcrumb() {
     const pathname = usePathname();
-    if (!pathname || pathname === "/") return null;    
+    if (!pathname || pathname === "/") return null;
     const segments = pathname.split("/").filter(Boolean);
 
     if (segments.length <= 1) return null;
@@ -83,12 +84,10 @@ function Breadcrumb() {
                     const decoded = decodeURIComponent(seg);
                     let label = decoded.replace(/-/g, " ");
                     
-                    // Truncate long labels
                     if (label.length > 24) {
                         label = label.slice(0, 24) + "...";
                     }
                     
-                    // Capitalize each word
                     label = label
                         .split(" ")
                         .map(
@@ -98,7 +97,6 @@ function Breadcrumb() {
                         )
                         .join(" ");
 
-                    // Special handling for "news" segment
                     const isNews = seg === "news";
                     const linkHref = isNews ? "/" : path;
 
@@ -157,7 +155,6 @@ export default function Header() {
         document.addEventListener("mousedown", handleOutsideClick);
         document.addEventListener("keydown", handleEscape);
 
-        // Always clean up overflow on state change
         if (isOpen) {
             document.body.classList.add("overflow-hidden");
         } else {
@@ -170,16 +167,18 @@ export default function Header() {
         };
     }, [isOpen]);
 
-
     // Keyboard navigation: trap focus inside mobile menu
     useEffect(() => {
         if (!isOpen || !menuRef.current) return;
+        
         const focusable = menuRef.current.querySelectorAll<HTMLElement>(
             'a[href], button:not([disabled])'
         );
         if (focusable.length === 0) return;
+        
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
+        
         function trapFocus(e: KeyboardEvent) {
             if (e.key !== "Tab") return;
             if (e.shiftKey) {
@@ -194,13 +193,13 @@ export default function Header() {
                 }
             }
         }
+        
         menuRef.current.addEventListener("keydown", trapFocus);
-        // return () => {
-        //     menuRef.current?.removeEventListener("keydown", trapFocus);
-        // }
+        return () => {
+            menuRef.current?.removeEventListener("keydown", trapFocus);
+        };
     }, [isOpen]);
 
-    // Memoized close handler for passing to children
     const handleCloseMenu = useCallback(() => setIsOpen(false), []);
 
     return (
@@ -223,24 +222,18 @@ export default function Header() {
                             </Link>
                             {/* Mobile Menu Toggle */}
                             <button
-                                onClick={() => {
-                                    if (isOpen) {
-                                        setIsOpen(false);
-                                    } else {
-                                        setIsOpen(true);
-                                    }
-                                }}
-                                aria-label="Open Menu"
+                                onClick={() => setIsOpen(!isOpen)}
+                                aria-label={isOpen ? "Close menu" : "Open menu"}
                                 aria-expanded={isOpen}
                                 aria-controls="mobile-menu-panel"
+                                aria-haspopup="dialog"
                                 className="text-2xl block md:hidden"
                             >
-                                ☰
+                                {isOpen ? "✖" : "☰"}
                             </button>
                             {/* Desktop Navigation */}
                             <nav className="hidden md:flex items-center space-x-6 font-medium" aria-label="Main Navigation">
                                 <NavLinks />
-                                {/* <LoginButton /> */}
                             </nav>
                         </div>
                     </div>
@@ -258,28 +251,30 @@ export default function Header() {
                 <div
                     ref={menuRef}
                     id="mobile-menu-panel"
-                    className={`fixed top-0 right-0 bottom-0 w-3/4 z-50 bg-white transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
-                        }`}
+                    className={`fixed top-0 right-0 bottom-0 w-3/4 z-50 bg-white transform transition-transform duration-500 ease-in-out ${
+                        isOpen ? "translate-x-0" : "translate-x-full"
+                    }`}
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="mobile-menu-title"
+                    aria-label="Mobile navigation menu"
                     tabIndex={-1}
                 >
+                    <h2 id="mobile-menu-title" className="sr-only">Mobile navigation menu</h2>
                     <button
                         onClick={handleCloseMenu}
-                        aria-label="Close Menu"
+                        aria-label="Close menu"
                         className="absolute top-4 right-4 text-3xl z-[60] focus:outline-none"
                     >
                         ✖
                     </button>
                     <nav className="h-full px-4 pt-16 pb-8 flex flex-col space-y-4 font-semibold divide-y overflow-y-auto" aria-label="Mobile Navigation">
                         <NavLinks onClick={handleCloseMenu} />
-                        {/* <LoginButton onClick={handleCloseMenu} fullWidth /> */}
                     </nav>
                 </div>
             </header>
             {/* Desktop Categories */}
-            <nav className="hidden lg:flex sticky top-0 justify-center bg-gray-100 shadow-md py-3 z-40" aria-label="Categories">
+            <nav className="hidden lg:flex sticky top-0 justify-center bg-gray-100 shadow-md py-3 z-40" aria-label="News Categories">
                 <ul className="flex gap-6 font-bold text-sm lg:text-base">
                     {categories.map((cat) => {
                         const isActive = pathname?.startsWith(`/news/${cat.slug}`);
@@ -292,7 +287,7 @@ export default function Header() {
                 </ul>
             </nav>
             {/* Mobile Categories */}
-            <nav className="lg:hidden sticky top-0 bg-gray-100 shadow-md z-30" aria-label="Categories">
+            <nav className="lg:hidden sticky top-0 bg-gray-100 shadow-md z-30" aria-label="News Categories">
                 <ul className="flex gap-4 px-4 py-2 overflow-x-auto whitespace-nowrap font-bold text-[15px] scrollbar-hide">
                     {categories.map((cat) => {
                         const isActive = pathname?.startsWith(`/news/${cat.slug}`);

@@ -2,9 +2,7 @@ import { Category, News } from "@/types/type";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { slugify } from "@/utils/Utils";
 
-// Extend News type locally to include heroImage as string[]
 interface NewsWithImage extends News {
     heroImage: string;
 }
@@ -13,7 +11,7 @@ interface Props {
     category: Category & { news: News[] };
 }
 
-export default function NationalNewsBox({ category }: Props) {
+export default function LifestyleNewsBox({ category }: Props) {
     return (
         <div className="mb-1 p-0 md:p-4 xl:p-0 pt-0 pl-0">
             {/* Category Header */}
@@ -38,14 +36,12 @@ export default function NationalNewsBox({ category }: Props) {
 }
 
 function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithImage; isFirst?: boolean; showImage?: boolean }) {
-    // Use extractFirstImage utility to get the image URL
     const imageUrl = news.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
     if (isFirst) {
         return (
-            <div className="bg-white overflow-hidden h-full border border-gray-300 md:min-h-96">
-                <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
-                    {/* Full height image with text overlay */}
+            <div className="bg-white overflow-hidden h-full border border-gray-300 lg:min-h-96">
+                <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
                     <div className="relative h-80 lg:h-full bg-gray-200">
                         <Image
                             src={imageUrl}
@@ -61,7 +57,6 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                             placeholder="blur"
                             blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                         />
-                        {/* Text overlay at bottom */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
                             <h2 className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2">
                                 {news.title}
@@ -76,8 +71,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
     if (showImage) {
         return (
             <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-                <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
-                    {/* Image or Placeholder */}
+                <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
                     <div className="relative h-48 bg-gray-200">
                         <Image
                             src={imageUrl}
@@ -88,13 +82,12 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
                             }
                             fill
                             className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            sizes="(max-width: 1024px) 100vw, 33vw"
                             placeholder="blur"
                             blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
                         />
                     </div>
                     <div className="pt-4">
-                        {/* Title */}
                         <h3 className="font-semibold text-gray-900 text-base mb-4 line-clamp-2 hover:underline underline-offset-2">
                             {news.title}
                         </h3>
@@ -106,8 +99,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
 
     return (
         <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-            <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
-                {/* Title only - no image */}
+            <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
                 <h4 className="font-semibold text-gray-900 mb-4 line-clamp-2 hover:underline underline-offset-2">
                     {news.title}
                 </h4>

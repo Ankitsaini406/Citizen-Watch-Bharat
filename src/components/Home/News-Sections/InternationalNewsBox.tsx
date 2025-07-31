@@ -58,7 +58,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
               blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
-              <h2 className="font-semibold text-white text-2xl line-clamp-3 hover:underline underline-offset-2">
+              <h2 className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2">
                 {news.title}
               </h2>
             </div>

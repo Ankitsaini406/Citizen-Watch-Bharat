@@ -4,7 +4,7 @@ import { ButtonLink } from "@/utils/Buttons";
 import { useEffect, useState } from "react";
 import { fetchBreakingNews, fetchLatestNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
-import { LatestLoading } from "@/utils/Loading";
+import { SkeletonLatest } from "@/utils/Loading";
 import { slugify, timeAgo } from "@/utils/Utils";
 
 type BreakingNewsItem = {
@@ -93,7 +93,7 @@ export function LatestNews() {
             <h2 className="text-3xl font-extrabold text-red-700 mb-6">Latest News</h2>
             <div className="relative pl-6">
                 {loading ? (
-                    <LatestLoading />
+                    <SkeletonLatest />
                 ) : news.length === 0 ? (
                     <div>No latest news.</div>
                 ) : (

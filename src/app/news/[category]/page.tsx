@@ -36,9 +36,8 @@ export default function Page() {
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     return (
-        <>
-            <TopBanner place="News-Section" />
             <div className="container mx-auto px-4 py-8">
+            <TopBanner place="News-Section" />
                 <NewsGridWithInfiniteScroll
                     news={news}
                     loading={isLoading}
@@ -60,10 +59,9 @@ export default function Page() {
                         <></>
                     ) : null}
                 </div>
-            </div>
             <LeftBanner place="News-Section" />
             <RightBanner place="News-Section" />
             <BottomBanner place="News-Section" />
-        </>
+            </div>
     );
 }

@@ -14,6 +14,8 @@ import { LatestNews } from "../NewsComponents";
 import { ButtonSeeMore } from "@/utils/Buttons";
 import { BottomBanner, MiddleBanner } from "../AddBanners";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
+import LifestyleNewsBox from "./News-Sections/LifestyleNewsBox";
+import { SkeletonNewsBox } from "@/utils/Loading";
 
 const categoryPriority: Record<string, number> = {
     "National": 1,
@@ -24,23 +26,36 @@ const categoryPriority: Record<string, number> = {
     "Entertainment": 6,
     "Sports": 7,
     "Web-Stories": 8,
+    "Lifestyle": 9,
 };
 
 export default function CategoryNewsList() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [news, setNews] = useState<News[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            const { categories, news } = await fetchAllCategoriesAndNews();
-            setCategories(categories);
-            setNews(news);
+            try {
+                setLoading(true);
+                const { categories, news } = await fetchAllCategoriesAndNews();
+                setCategories(categories);
+                setNews(news);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
         };
         fetchData();
     }, []);
 
-    if (!categories.length || !news.length) {
-        return <div>No data loaded</div>;
+    if (loading) {
+        return (
+            <div className="container mx-auto px-4 xl:px-0">
+                <SkeletonNewsBox />
+            </div>
+        );
     }
 
     const newsByCategory = categories
@@ -126,6 +141,13 @@ export default function CategoryNewsList() {
                             <div key={cat.name} className="my-10 flex flex-col gap-4">
                                 <WebStoriesNewsBox key={cat.id} category={cat} />
                                 <ButtonSeeMore href={`/news/${cat.slug}`} title="Web-Stories News" />
+                            </div>
+                        );
+                    case "Lifestyle":
+                        return (
+                            <div key={cat.name} className="my-10 flex flex-col gap-4">
+                                <LifestyleNewsBox key={cat.id} category={cat} />
+                                <ButtonSeeMore href={`/news/${cat.slug}`} title="Lifestyle News" />
                             </div>
                         );
                     default:

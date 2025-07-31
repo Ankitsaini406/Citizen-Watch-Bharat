@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
-    // apple: "/apple-touch-icon.png",
+    apple: "/icons/apple-touch-icon.png",
   },
 };
 
@@ -69,11 +69,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Preconnect for critical third-party origins */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
       <body
         className={`${hinduTitleFont.variable} ${hinduBodyFont.variable} antialiased flex flex-col min-h-screen`}
       >

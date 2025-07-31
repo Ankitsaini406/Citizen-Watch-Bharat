@@ -55,7 +55,7 @@ export default function StateNewsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen pb-5">
             <TopBanner place="News-Section" />
             <LeftBanner place="News-Section" />
 
