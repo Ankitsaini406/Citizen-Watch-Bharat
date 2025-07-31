@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Page() {
     return (
-        <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
             <header className="mb-8 text-center">
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
                     Terms of Services

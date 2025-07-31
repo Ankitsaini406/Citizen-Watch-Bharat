@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 export default function Page() {
     return (
-        <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
             <header className="mb-8 text-center">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                    CITIZEN WATCH BHARAT PRIVACY POLICY
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    Privacy Policy
                 </h1>
                 <p className="text-gray-600 italic">
                     RNI Registered Monthly Newspaper, Committed to Universal Ethics & Protocol of Civic Journalism

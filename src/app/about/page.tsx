@@ -44,12 +44,12 @@ const socialMedia = [
 
 export default function Page() {
     return (
-        <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
             <header className="mb-12 text-center">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                    About Us – Citizen Watch Bharat
+                    About Us
                 </h1>
-                <p className="text-xl text-gray-600 font-medium">
+                <p className="text-gray-600  italic">
                     Journalism for People. By People. With Integrity.
                 </p>
             </header>

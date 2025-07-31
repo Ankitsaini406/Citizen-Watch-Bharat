@@ -3,9 +3,9 @@ import React from 'react';
 
 export default function Page() {
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            <header className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Citizen Watch Bharat – Code of Ethics for Journalism</h1>
+        <div className="max-w-5xl mx-auto px-4 py-8">
+            <header className="mb-8 text-center">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Code of Ethics for Journalism</h1>
             </header>
 
             <section className="mb-8">
