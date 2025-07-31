@@ -130,8 +130,6 @@ export default function NationalPage() {
         loadNews();
     }, []);
 
-    console.log(`This is news : `, news);
-
     if (loading) {
         return (
             <div className="min-h-screen">
