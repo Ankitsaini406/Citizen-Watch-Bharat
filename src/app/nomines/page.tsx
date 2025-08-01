@@ -190,8 +190,7 @@ export default function NominationForm() {
             }
 
             const nominee = await response.json();
-            console.log('Nominee created:', nominee);
-            alert('Form submitted successfully!');
+            alert(`${nominee.name} nomination form submitted successfully!`);
 
             // Reset form
             setFormData({
