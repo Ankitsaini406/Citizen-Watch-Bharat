@@ -158,6 +158,33 @@ model Content {
   updatedAt DateTime?
 }
 
+model Nominees {
+  id                 String   @id @default(cuid())
+  award              String
+  name               String
+  age                String?
+  phoneNumber        String
+  email              String
+  address            String
+  currentOccupation  String
+  organizationName   String?
+  linkdin            String?
+  facebook           String?
+  instagram          String?
+  twitter            String?
+  background         String
+  journey            String?
+  impactArea         String
+  keyAchievements    String
+  challengesOvercome String
+  recognitionReason  String
+  photos             String?
+  videos             String?
+  mediaCoverage      String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
 enum Role {
   USER
   ADMIN

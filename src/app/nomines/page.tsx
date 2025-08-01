@@ -3,36 +3,30 @@
 import { useState } from 'react';
 
 export default function Page() {
-    const [activeSection, setActiveSection] = useState<'her-story' | 'changemakers' | 'founders-story'>('her-story');
+    const [activeSection, setActiveSection] = useState<'her-story-her-impact' | 'changemakers-award' | 'founders-story'>('her-story-her-impact');
     const [formData, setFormData] = useState({
         // Personal Information
-        fullName: '',
+        name: '',
         age: '',
-        contactNumber: '',
-        emailAddress: '',
-        cityState: '',
-
-        // Professional/Social Identity
+        phoneNumber: '',
+        email: '',
+        address: '',
         currentOccupation: '',
         organizationName: '',
-        socialMediaHandles: '',
-
-        // Story of Impact
+        linkdin: '',
+        facebook: '',
+        instagram: '',
+        twitter: '',
         background: '',
         journey: '',
         impactArea: '',
         keyAchievements: '',
         challengesOvercome: '',
-
-        // Why Deserves Recognition
         recognitionReason: '',
-
-        // Supporting Evidence
         photos: null as FileList | null,
         videos: null as FileList | null,
         mediaCoverage: null as FileList | null,
 
-        // Consent
         consent: false
     });
 
@@ -50,19 +44,117 @@ export default function Page() {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        alert('Form submitted successfully!');
+
+        try {
+            // 1. Upload files
+            const uploadFiles = async (files: FileList | null) => {
+                if (!files) return null;
+                const uploadResults = await Promise.all(
+                    Array.from(files).map(async (file) => {
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('folder', "nomination");
+                        const response = await fetch('/api/upload', {
+                            method: 'POST',
+                            body: formData,
+                        });
+                        if (!response.ok) throw new Error('File upload failed');
+                        const result = await response.json();
+                        return result.url;
+                    })
+                );
+                return uploadResults.join(',');
+            };
+
+            // 2. Upload all files
+            const [photos, videos, mediaCoverage] = await Promise.all([
+                uploadFiles(formData.photos),
+                uploadFiles(formData.videos),
+                uploadFiles(formData.mediaCoverage),
+            ]);
+
+            // 3. Prepare data for API
+            const submissionData = {
+                award: activeSection,
+                name: formData.name,
+                age: formData.age,
+                phoneNumber: formData.phoneNumber,
+                email: formData.email,
+                address: formData.address,
+                currentOccupation: formData.currentOccupation,
+                organizationName: formData.organizationName,
+                linkdin: formData.linkdin,
+                facebook: formData.facebook,
+                instagram: formData.instagram,
+                twitter: formData.twitter,
+                background: formData.background,
+                journey: formData.journey,
+                impactArea: formData.impactArea,
+                keyAchievements: formData.keyAchievements,
+                challengesOvercome: formData.challengesOvercome,
+                recognitionReason: formData.recognitionReason,
+                photos,
+                videos,
+                mediaCoverage,
+            };
+
+            // 4. Submit to API route
+            const response = await fetch('/api/nominees', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(submissionData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Submission failed');
+            }
+
+            const nominee = await response.json();
+            console.log('Nominee created:', nominee);
+            alert('Form submitted successfully!');
+
+            // 5. Reset form
+            setFormData({
+                name: '',
+                age: '',
+                phoneNumber: '',
+                email: '',
+                address: '',
+                currentOccupation: '',
+                organizationName: '',
+                linkdin: '',
+                facebook: '',
+                instagram: '',
+                twitter: '',
+                background: '',
+                journey: '',
+                impactArea: '',
+                keyAchievements: '',
+                challengesOvercome: '',
+                recognitionReason: '',
+                photos: null,
+                videos: null,
+                mediaCoverage: null,
+                consent: false
+            });
+
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(error instanceof Error ? error.message : 'Error submitting form. Please try again.');
+        }
     };
 
     const sectionDescriptions = {
-        'her-story': {
+        'her-story-her-impact': {
             title: "Her Story Her Impact",
             description: "This category celebrates woman who have overcome challenges and driven meaningful change through their work-whether in education, healthcare, business, social justice, or beyond.",
             submitText: "Submit Nomination"
         },
-        'changemakers': {
+        'changemakers-award': {
             title: "The Changemakers Award",
             description: "Join our network of individuals driving social change. Whether you're an activist, volunteer, or community leader, this platform connects you with like-minded changemakers.",
             submitText: "Join Awards"
@@ -95,9 +187,9 @@ export default function Page() {
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">Select Category</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {Object.entries(sectionDescriptions).map(([key, { title, description }]) => (
-                            <div 
+                            <div
                                 key={key}
-                                onClick={() => setActiveSection(key as "her-story" | "changemakers" | "founders-story")}
+                                onClick={() => setActiveSection(key as "her-story-her-impact" | "changemakers-award" | "founders-story")}
                                 className={`p-6 rounded-xl cursor-pointer transition-all ${activeSection === key ? 'bg-white shadow-lg border-2 border-primary' : 'bg-gray-100 hover:bg-gray-200'}`}
                             >
                                 <h3 className="text-lg font-semibold mb-2">{title}</h3>
@@ -132,8 +224,8 @@ export default function Page() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                                         <input
                                             type="text"
-                                            name="fullName"
-                                            value={formData.fullName}
+                                            name="name"
+                                            value={formData.name}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
                                             required
@@ -153,8 +245,8 @@ export default function Page() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Contact Number *</label>
                                         <input
                                             type="tel"
-                                            name="contactNumber"
-                                            value={formData.contactNumber}
+                                            name="phoneNumber"
+                                            value={formData.phoneNumber}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
                                             required
@@ -164,19 +256,19 @@ export default function Page() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                                         <input
                                             type="email"
-                                            name="emailAddress"
-                                            value={formData.emailAddress}
+                                            name="email"
+                                            value={formData.email}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
                                             required
                                         />
                                     </div>
                                     <div className="md:col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">City & State *</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Address *</label>
                                         <input
                                             type="text"
-                                            name="cityState"
-                                            value={formData.cityState}
+                                            name="address"
+                                            value={formData.address}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
                                             required
@@ -214,14 +306,47 @@ export default function Page() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Social Media Handles</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Linkdin</label>
                                         <input
                                             type="text"
-                                            name="socialMediaHandles"
-                                            value={formData.socialMediaHandles}
+                                            name="linkdin"
+                                            value={formData.linkdin}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
-                                            placeholder="LinkedIn, Instagram, Twitter, etc."
+                                            placeholder="LinkedIn"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Instagram</label>
+                                        <input
+                                            type="text"
+                                            name="instagram"
+                                            value={formData.instagram}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
+                                            placeholder="Instagram"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Twitter</label>
+                                        <input
+                                            type="text"
+                                            name="twitter"
+                                            value={formData.twitter}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
+                                            placeholder="Twitter"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Facebook</label>
+                                        <input
+                                            type="text"
+                                            name="facebook"
+                                            value={formData.facebook}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
+                                            placeholder="Facebook"
                                         />
                                     </div>
                                 </div>
@@ -232,39 +357,36 @@ export default function Page() {
                                 <div className="flex items-center">
                                     <div className="flex items-center justify-center w-10 h-10 bg-primary text-white rounded-full mr-4 text-lg font-bold">3</div>
                                     <h3 className="text-xl font-semibold text-gray-800">
-                                        {activeSection === 'her-story' ? "Story of Impact" : "Your Story"}
+                                        {activeSection === 'her-story-her-impact' ? "Story of Impact" : "Your Story"}
                                     </h3>
                                 </div>
                                 <div className="space-y-6">
-                                    {activeSection === 'her-story' && (
-                                        <>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">Background (Early life & challenges) *</label>
-                                                <textarea
-                                                    name="background"
-                                                    value={formData.background}
-                                                    onChange={handleChange}
-                                                    rows={5}
-                                                    className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">Journey (Key milestones & achievements) *</label>
-                                                <textarea
-                                                    name="journey"
-                                                    value={formData.journey}
-                                                    onChange={handleChange}
-                                                    rows={5}
-                                                    className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
-                                                    required
-                                                />
-                                            </div>
-                                        </>
-                                    )}
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Background (Early life & challenges) (250 words) *</label>
+                                        <textarea
+                                            name="background"
+                                            value={formData.background}
+                                            onChange={handleChange}
+                                            rows={5}
+                                            className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Journey (Key milestones & achievements) (250 words) *</label>
+                                        <textarea
+                                            name="journey"
+                                            value={formData.journey}
+                                            onChange={handleChange}
+                                            rows={5}
+                                            className="w-full px-4 py-3 border border-border outline-0 rounded-lg focus:ring-1 focus:ring-primary focus:border-transparent"
+                                            required
+                                        />
+                                    </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {activeSection === 'her-story' ? "Impact Area (Education, health, etc.) *" : "Area of Impact *"}
+                                            {activeSection === 'her-story-her-impact' ? "Impact Area (Education, Health, etc.) *" : "Area of Impact *"}
                                         </label>
                                         <input
                                             type="text"
@@ -276,7 +398,7 @@ export default function Page() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Key Achievements *</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Key Achievements (250 words) *</label>
                                         <textarea
                                             name="keyAchievements"
                                             value={formData.keyAchievements}
@@ -287,7 +409,7 @@ export default function Page() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Challenges Overcome *</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Challenges Overcome (250 words) *</label>
                                         <textarea
                                             name="challengesOvercome"
                                             value={formData.challengesOvercome}
@@ -299,7 +421,7 @@ export default function Page() {
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            {activeSection === 'her-story' ? "Why You Deserve Recognition (250-500 words) *" : "Your Motivation *"}
+                                            {activeSection === 'her-story-her-impact' ? "Why You Deserve Recognition (250 words) *" : "Your Motivation (250 words) *"}
                                         </label>
                                         <textarea
                                             name="recognitionReason"
@@ -314,97 +436,95 @@ export default function Page() {
                             </div>
 
                             {/* Supporting Documents Section - Only for Her Story */}
-                            {activeSection === 'her-story' && (
-                                <div className="space-y-6 p-8 ">
-                                    <div className="flex items-center">
-                                        <div className="flex items-center justify-center w-10 h-10 bg-primary text-white rounded-full mr-4 text-lg font-bold">4</div>
-                                        <h3 className="text-xl font-semibold text-gray-800">Supporting Documents</h3>
+                            <div className="space-y-6 p-8 ">
+                                <div className="flex items-center">
+                                    <div className="flex items-center justify-center w-10 h-10 bg-primary text-white rounded-full mr-4 text-lg font-bold">4</div>
+                                    <h3 className="text-xl font-semibold text-gray-800">Supporting Documents</h3>
+                                </div>
+                                <div className="space-y-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Photos (Professional/Work-in-action)</label>
+                                        <div className="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-lg">
+                                            <div className="space-y-2 text-center">
+                                                <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                                <div className="flex text-sm text-gray-600 justify-center">
+                                                    <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-dark focus-within:outline-none">
+                                                        <span>Upload files</span>
+                                                        <input
+                                                            type="file"
+                                                            name="photos"
+                                                            onChange={handleChange}
+                                                            className="sr-only"
+                                                            multiple
+                                                            accept="image/*"
+                                                        />
+                                                    </label>
+                                                    <p className="pl-1">or drag and drop</p>
+                                                </div>
+                                                <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="space-y-6">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Photos (Professional/Work-in-action)</label>
-                                            <div className="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-lg">
-                                                <div className="space-y-2 text-center">
-                                                    <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <div className="flex text-sm text-gray-600 justify-center">
-                                                        <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-dark focus-within:outline-none">
-                                                            <span>Upload files</span>
-                                                            <input
-                                                                type="file"
-                                                                name="photos"
-                                                                onChange={handleChange}
-                                                                className="sr-only"
-                                                                multiple
-                                                                accept="image/*"
-                                                            />
-                                                        </label>
-                                                        <p className="pl-1">or drag and drop</p>
-                                                    </div>
-                                                    <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Videos (if available)</label>
+                                        <div className="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-lg">
+                                            <div className="space-y-2 text-center">
+                                                <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                    <path d="M16 16v16h16V16H16z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M4 20v8a4 4 0 004 4h12m16-12v8a4 4 0 01-4 4H16" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                                <div className="flex text-sm text-gray-600 justify-center">
+                                                    <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-dark focus-within:outline-none">
+                                                        <span>Upload files</span>
+                                                        <input
+                                                            type="file"
+                                                            name="videos"
+                                                            onChange={handleChange}
+                                                            className="sr-only"
+                                                            multiple
+                                                            accept="video/*"
+                                                        />
+                                                    </label>
+                                                    <p className="pl-1">or drag and drop</p>
                                                 </div>
+                                                <p className="text-xs text-gray-500">MP4, MOV up to 50MB</p>
                                             </div>
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Videos (if available)</label>
-                                            <div className="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-lg">
-                                                <div className="space-y-2 text-center">
-                                                    <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                        <path d="M16 16v16h16V16H16z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                        <path d="M4 20v8a4 4 0 004 4h12m16-12v8a4 4 0 01-4 4H16" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <div className="flex text-sm text-gray-600 justify-center">
-                                                        <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-dark focus-within:outline-none">
-                                                            <span>Upload files</span>
-                                                            <input
-                                                                type="file"
-                                                                name="videos"
-                                                                onChange={handleChange}
-                                                                className="sr-only"
-                                                                multiple
-                                                                accept="video/*"
-                                                            />
-                                                        </label>
-                                                        <p className="pl-1">or drag and drop</p>
-                                                    </div>
-                                                    <p className="text-xs text-gray-500">MP4, MOV up to 50MB</p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Media Coverage or Testimonials (optional)</label>
+                                        <div className="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-lg">
+                                            <div className="space-y-2 text-center">
+                                                <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                                <div className="flex text-sm text-gray-600 justify-center">
+                                                    <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-dark focus-within:outline-none">
+                                                        <span>Upload files</span>
+                                                        <input
+                                                            type="file"
+                                                            name="mediaCoverage"
+                                                            onChange={handleChange}
+                                                            className="sr-only"
+                                                            multiple
+                                                        />
+                                                    </label>
+                                                    <p className="pl-1">or drag and drop</p>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Media Coverage or Testimonials (optional)</label>
-                                            <div className="mt-1 flex justify-center px-6 pt-8 pb-8 border-2 border-gray-300 border-dashed rounded-lg">
-                                                <div className="space-y-2 text-center">
-                                                    <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <div className="flex text-sm text-gray-600 justify-center">
-                                                        <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-dark focus-within:outline-none">
-                                                            <span>Upload files</span>
-                                                            <input
-                                                                type="file"
-                                                                name="mediaCoverage"
-                                                                onChange={handleChange}
-                                                                className="sr-only"
-                                                                multiple
-                                                            />
-                                                        </label>
-                                                        <p className="pl-1">or drag and drop</p>
-                                                    </div>
-                                                    <p className="text-xs text-gray-500">PDF, DOCX up to 10MB</p>
-                                                </div>
+                                                <p className="text-xs text-gray-500">PDF, DOCX up to 10MB</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            )}
+                            </div>
 
                             {/* Consent Section */}
                             <div className="space-y-6 p-8">
                                 <div className="flex items-center">
                                     <div className="flex items-center justify-center w-10 h-10 bg-primary text-white rounded-full mr-4 text-lg font-bold">
-                                        {activeSection === 'her-story' ? '5' : '4'}
+                                        {activeSection === 'her-story-her-impact' ? '5' : '4'}
                                     </div>
                                     <h3 className="text-xl font-semibold text-gray-800">Consent & Verification</h3>
                                 </div>
@@ -438,21 +558,6 @@ export default function Page() {
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-
-            {/* Footer */}
-            <div className="bg-gray-800 text-white py-8">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row justify-between items-center">
-                        <div className="mb-4 md:mb-0">
-                            <h3 className="text-xl font-bold">Citizen Watch Bharat</h3>
-                            <p className="text-gray-400">Celebrating Impact, Inspiring Change</p>
-                        </div>
-                        <div className="text-gray-400 text-sm">
-                            © {new Date().getFullYear()} Citizen Watch Bharat. All rights reserved.
-                        </div>
                     </div>
                 </div>
             </div>

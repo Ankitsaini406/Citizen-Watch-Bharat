@@ -48,7 +48,7 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
 function NomineButton() {
     return (
         <Link href="/nomines" className="bg-foreground border text-background px-2.5 py-1.5 hover:text-foreground hover:bg-background duration-300 rounded-md w-fit font-semibold">
-            Nominee Form
+            Nomination Form
         </Link>
     )
 }
