@@ -24,6 +24,12 @@ export async function GET() {
             isBreaking: true,
             state: true,
             city: true,
+            author: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
             subCategory: {
               select: {
                 id: true,

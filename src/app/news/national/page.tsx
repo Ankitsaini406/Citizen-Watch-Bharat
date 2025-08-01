@@ -56,7 +56,6 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
                             )}
                             <div className="flex-1 flex flex-col p-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span className="text-xs text-gray-400">{timeAgo(article.createdAt)}</span>
                                     {article.category && (
                                         <span className="bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full">
                                             {article.category.name}
@@ -68,6 +67,10 @@ function StateNewsSection({ state, news }: { state: { name: string; slug: string
                                     title={article.title}
                                     className="text-base font-semibold line-clamp-2 hover:text-red-600 mb-2 text-left"
                                 />
+                                    <div className="text-xs text-gray-500 mt-2 flex justify-between">
+                                        <span>{article.author?.name ? `By ${article.author.name}` : '\u00A0'}</span>
+                                        <span>{timeAgo(article.createdAt)}</span>
+                                    </div>
                             </div>
                         </div>
                     );
