@@ -68,7 +68,7 @@ export default function Page() {
             submitText: "Join Awards"
         },
         'founders-story': {
-            title: "The Founder's Connect",
+            title: "Founder's Connect",
             description: "Meet the vision behind the mission. Connect directly with our founder to share ideas, discuss challenges, or explore happens when passionate minds work together.",
             submitText: "Send Message"
         }
