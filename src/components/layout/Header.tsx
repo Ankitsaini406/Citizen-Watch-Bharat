@@ -34,16 +34,23 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
     return (
         <Link
             href={`/news/${cat.slug}`}
-            className={`px-2 py-1 transition-all border-b-2 text-foreground duration-300 focus-visible:underline ${
-                isActive
+            className={`px-2 py-1 transition-all border-b-2 text-foreground duration-300 focus-visible:underline ${isActive
                     ? "text-red-600 border-red-600"
                     : "border-transparent hover:border-red-600 hover:text-red-600"
-            }`}
+                }`}
             aria-current={isActive ? "page" : undefined}
         >
             {cat.name}
         </Link>
     );
+}
+
+function NomineButton() {
+    return (
+        <Link href="/nomines" className="bg-foreground border text-background px-2.5 py-1.5 hover:text-foreground hover:bg-background duration-300 rounded-md w-fit">
+            Nomines
+        </Link>
+    )
 }
 
 function NavLinks({ onClick }: { onClick?: () => void }) {
@@ -83,11 +90,11 @@ function Breadcrumb() {
                     const isLast = idx === segments.length - 1;
                     const decoded = decodeURIComponent(seg);
                     let label = decoded.replace(/-/g, " ");
-                    
+
                     if (label.length > 24) {
                         label = label.slice(0, 24) + "...";
                     }
-                    
+
                     label = label
                         .split(" ")
                         .map(
@@ -170,15 +177,15 @@ export default function Header() {
     // Keyboard navigation: trap focus inside mobile menu
     useEffect(() => {
         if (!isOpen || !menuRef.current) return;
-        
+
         const focusable = menuRef.current.querySelectorAll<HTMLElement>(
             'a[href], button:not([disabled])'
         );
         if (focusable.length === 0) return;
-        
+
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
-        
+
         function trapFocus(e: KeyboardEvent) {
             if (e.key !== "Tab") return;
             if (e.shiftKey) {
@@ -193,7 +200,7 @@ export default function Header() {
                 }
             }
         }
-        
+
         menuRef.current.addEventListener("keydown", trapFocus);
         return () => {
             menuRef.current?.removeEventListener("keydown", trapFocus);
@@ -234,6 +241,7 @@ export default function Header() {
                             {/* Desktop Navigation */}
                             <nav className="hidden md:flex items-center space-x-6 font-medium" aria-label="Main Navigation">
                                 <NavLinks />
+                                <NomineButton />
                             </nav>
                         </div>
                     </div>
@@ -251,9 +259,8 @@ export default function Header() {
                 <div
                     ref={menuRef}
                     id="mobile-menu-panel"
-                    className={`fixed top-0 right-0 bottom-0 w-3/4 z-50 bg-white transform transition-transform duration-500 ease-in-out ${
-                        isOpen ? "translate-x-0" : "translate-x-full"
-                    }`}
+                    className={`fixed top-0 right-0 bottom-0 w-3/4 z-50 bg-white transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
+                        }`}
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="mobile-menu-title"
@@ -270,6 +277,7 @@ export default function Header() {
                     </button>
                     <nav className="h-full px-4 pt-16 pb-8 flex flex-col space-y-4 font-semibold divide-y overflow-y-auto" aria-label="Mobile Navigation">
                         <NavLinks onClick={handleCloseMenu} />
+                        <NomineButton />
                     </nav>
                 </div>
             </header>
