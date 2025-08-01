@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 
-export default function Page() {
-    const [activeSection, setActiveSection] = useState<'her-story-her-impact' | 'changemakers-award' | 'founders-story'>('her-story-her-impact');
+export default function NominationForm() {
+    const [activeSection, setActiveSection] = useState<
+        'her-story-her-impact' | 'changemakers-award' | 'founders-story'
+    >('her-story-her-impact');
+
     const [formData, setFormData] = useState({
         // Personal Information
         name: '',
@@ -26,9 +29,17 @@ export default function Page() {
         photos: null as FileList | null,
         videos: null as FileList | null,
         mediaCoverage: null as FileList | null,
-
         consent: false
     });
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+
+    // File size limits
+    const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50MB
+    const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10MB
+    const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10MB
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target as HTMLInputElement;
@@ -38,44 +49,108 @@ export default function Page() {
             setFormData(prev => ({ ...prev, [name]: checked }));
         } else if (type === 'file') {
             const files = (e.target as HTMLInputElement).files;
-            setFormData(prev => ({ ...prev, [name]: files }));
+
+            // Validate file sizes before setting state
+            if (files) {
+                let isValid = true;
+
+                if (name === 'videos') {
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].size > MAX_VIDEO_SIZE) {
+                            setUploadError(`Video ${files[i].name} exceeds 50MB limit`);
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+                else if (name === 'photos') {
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].size > MAX_PHOTO_SIZE) {
+                            setUploadError(`Photo ${files[i].name} exceeds 10MB limit`);
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+                else if (name === 'mediaCoverage') {
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].size > MAX_DOC_SIZE) {
+                            setUploadError(`Document ${files[i].name} exceeds 10MB limit`);
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (isValid) {
+                    setUploadError(null);
+                    setFormData(prev => ({ ...prev, [name]: files }));
+                }
+            }
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
     };
 
+    const uploadFiles = async (files: FileList | null,) => {
+        if (!files) return null;
+
+        const uploadResults = await Promise.all(
+            Array.from(files).map(async (file) => {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('folder', "nomination");
+
+                return new Promise<string>((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+
+                    xhr.upload.addEventListener('progress', (event) => {
+                        if (event.lengthComputable) {
+                            const percentComplete = Math.round((event.loaded / event.total) * 100);
+                            setUploadProgress(prev => Math.max(prev, percentComplete));
+                        }
+                    });
+
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const result = JSON.parse(xhr.responseText);
+                                resolve(result.url);
+                            } else {
+                                reject(new Error(xhr.statusText || 'Upload failed'));
+                            }
+                        }
+                    };
+
+                    xhr.open('POST', '/api/upload', true);
+                    xhr.send(formData);
+                });
+            })
+        );
+
+        return uploadResults.join(',');
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!formData.consent) {
+            alert('Please agree to the consent terms');
+            return;
+        }
+
+        setIsSubmitting(true);
+        setUploadProgress(0);
+        setUploadError(null);
 
         try {
-            // 1. Upload files
-            const uploadFiles = async (files: FileList | null) => {
-                if (!files) return null;
-                const uploadResults = await Promise.all(
-                    Array.from(files).map(async (file) => {
-                        const formData = new FormData();
-                        formData.append('file', file);
-                        formData.append('folder', "nomination");
-                        const response = await fetch('/api/upload', {
-                            method: 'POST',
-                            body: formData,
-                        });
-                        if (!response.ok) throw new Error('File upload failed');
-                        const result = await response.json();
-                        return result.url;
-                    })
-                );
-                return uploadResults.join(',');
-            };
-
-            // 2. Upload all files
+            // Upload files with progress tracking
             const [photos, videos, mediaCoverage] = await Promise.all([
                 uploadFiles(formData.photos),
                 uploadFiles(formData.videos),
                 uploadFiles(formData.mediaCoverage),
             ]);
 
-            // 3. Prepare data for API
+            // Prepare data for API
             const submissionData = {
                 award: activeSection,
                 name: formData.name,
@@ -98,9 +173,10 @@ export default function Page() {
                 photos,
                 videos,
                 mediaCoverage,
+                consent: formData.consent
             };
 
-            // 4. Submit to API route
+            // Submit to API route
             const response = await fetch('/api/nominees', {
                 method: 'POST',
                 headers: {
@@ -117,7 +193,7 @@ export default function Page() {
             console.log('Nominee created:', nominee);
             alert('Form submitted successfully!');
 
-            // 5. Reset form
+            // Reset form
             setFormData({
                 name: '',
                 age: '',
@@ -144,7 +220,9 @@ export default function Page() {
 
         } catch (error) {
             console.error('Error submitting form:', error);
-            alert(error instanceof Error ? error.message : 'Error submitting form. Please try again.');
+            setUploadError(error instanceof Error ? error.message : 'Error submitting form. Please try again.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -163,11 +241,42 @@ export default function Page() {
             title: "Founder's Connect",
             description: "Meet the vision behind the mission. Connect directly with our founder to share ideas, discuss challenges, or explore happens when passionate minds work together.",
             submitText: "Send Message"
-        }
+        },
     };
 
     return (
         <div className="min-h-screen bg-gray-50">
+            {/* Loading overlay */}
+            {isSubmitting && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg max-w-md w-full">
+                        <h3 className="text-lg font-medium mb-4">Submitting your nomination...</h3>
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div
+                                className="bg-primary h-2.5 rounded-full"
+                                style={{ width: `${uploadProgress}%` }}
+                            ></div>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-600">
+                            {uploadProgress}% complete - Please don&apos;t close this window
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {/* Error message */}
+            {uploadError && (
+                <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+                    <span className="block sm:inline">{uploadError}</span>
+                    <button
+                        className="absolute top-0 right-0 px-2 py-1"
+                        onClick={() => setUploadError(null)}
+                    >
+                        ×
+                    </button>
+                </div>
+            )}
+
             {/* Hero Section */}
             <div className="bg-primary py-16 text-white">
                 <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -208,8 +317,12 @@ export default function Page() {
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                     <div className="p-8">
                         <div className="mb-8">
-                            <h2 className="text-3xl font-bold text-gray-900 mb-2">{sectionDescriptions[activeSection].title}</h2>
-                            <p className="text-lg text-gray-600">{sectionDescriptions[activeSection].description}</p>
+                            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                                {sectionDescriptions[activeSection].title}
+                            </h2>
+                            <p className="text-lg text-gray-600">
+                                {sectionDescriptions[activeSection].description}
+                            </p>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-8">
@@ -552,9 +665,23 @@ export default function Page() {
                             <div className="flex justify-end">
                                 <button
                                     type="submit"
-                                    className="px-8 py-4 bg-primary text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 transform"
+                                    disabled={isSubmitting}
+                                    className={`px-8 py-4 bg-primary text-white font-bold rounded-lg shadow-lg transition-all ${isSubmitting
+                                            ? 'opacity-70 cursor-not-allowed'
+                                            : 'hover:shadow-xl hover:scale-105'
+                                        }`}
                                 >
-                                    {sectionDescriptions[activeSection].submitText}
+                                    {isSubmitting ? (
+                                        <span className="flex items-center">
+                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Processing...
+                                        </span>
+                                    ) : (
+                                        sectionDescriptions[activeSection].submitText
+                                    )}
                                 </button>
                             </div>
                         </form>
