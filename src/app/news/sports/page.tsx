@@ -46,6 +46,11 @@ function SportsSubcategorySection({ subcategory, news }: { subcategory: SubCateg
                                 </div>
                             )}
                             <div className="flex-1 flex flex-col p-4">
+                                <ButtonLink
+                                    href={`/news/${article.slug}`}
+                                    title={article.title}
+                                    className="text-base font-semibold line-clamp-2 hover:text-red-600 mb-2 text-left"
+                                />
                                 <div className="flex items-center gap-2 mb-2">
                                     <span className="text-xs text-gray-400">{timeAgo(article.createdAt)}</span>
                                     {article.category && (
@@ -54,11 +59,6 @@ function SportsSubcategorySection({ subcategory, news }: { subcategory: SubCateg
                                         </span>
                                     )}
                                 </div>
-                                <ButtonLink
-                                    href={`/news/${article.slug}`}
-                                    title={article.title}
-                                    className="text-base font-semibold line-clamp-2 hover:text-red-600 mb-2 text-left"
-                                />
                             </div>
                         </div>
                     );
@@ -123,6 +123,10 @@ function SportsOtherSection({ news }: { news: NewsArticle[] }) {
                                     title={article.title}
                                     className="text-base font-semibold line-clamp-2 hover:text-red-600 mb-2 text-left"
                                 />
+                                <div className="text-xs text-gray-500 mt-2 flex justify-between">
+                                    <span>{article.author?.name ? `By ${article.author.name}` : '\u00A0'}</span>
+                                    <span>{timeAgo(article.createdAt)}</span>
+                                </div>
                             </div>
                         </div>
                     );

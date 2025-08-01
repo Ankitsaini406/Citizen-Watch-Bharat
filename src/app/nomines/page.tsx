@@ -59,17 +59,17 @@ export default function Page() {
     const sectionDescriptions = {
         'her-story': {
             title: "Her Story Her Impact",
-            description: "Nominate an inspiring woman who has made significant contributions to her community. This category celebrates women who have overcome challenges and created positive change through their work in any field.",
+            description: "This category celebrates woman who have overcome challenges and driven meaningful change through their work-whether in education, healthcare, business, social justice, or beyond.",
             submitText: "Submit Nomination"
         },
         'changemakers': {
-            title: "The Changemakers Awards",
+            title: "The Changemakers Award",
             description: "Join our network of individuals driving social change. Whether you're an activist, volunteer, or community leader, this platform connects you with like-minded changemakers.",
             submitText: "Join Awards"
         },
         'founders-story': {
             title: "The Founder's Story",
-            description: "Connect with the founder of this initiative to share ideas, ask questions, or explore collaboration opportunities for creating greater impact together.",
+            description: "Meet the vision behind the mission. Connect directly with our founder to share ideas, discuss challenges, or explore happens when passionate minds work together.",
             submitText: "Send Message"
         }
     };
@@ -83,7 +83,7 @@ export default function Page() {
                         Citizen Watch Bharat Impact Platform
                     </h1>
                     <p className="text-xl max-w-3xl">
-                        Celebrating and connecting individuals who are making a difference in communities across India.
+                        Celebrating and connecting changemakers driving positive impact across India.
                     </p>
                 </div>
             </div>
