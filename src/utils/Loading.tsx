@@ -109,3 +109,19 @@ export function SkeletonNewsBox() {
         </div>
     );
 };
+
+export function SkeletonSocialNewsBox() {
+    return (
+        <div className="container mx-auto py-5 px-1 xl:px-0">
+            <div className="grid grid-cols-3 lg:grid-cols-4 gap-1">
+                {[...Array(30)].map((_, idx) => (
+                    <div key={idx}>
+                        <div className="bg-white overflow-hidden h-32 md:h-48 lg:h-64 border-b border-gray-300 animate-pulse">
+                            <div className="relative h-48 bg-gray-200"></div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};

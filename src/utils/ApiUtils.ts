@@ -62,6 +62,25 @@ export async function fetchLatestNews(): Promise<NewsArticle[]> {
     }
 }
 
+export async function fetchSocialNews(): Promise<NewsArticle[]> {
+    try {
+        const response = await fetch(`${baseUrl}api/news/social`, { 
+            next: { revalidate: 1 } 
+        });        
+        if (!response.ok) {
+            throw new Error(`Failed to fetch social news. Status: ${response.status}`);
+        }
+        const result = await response.json();        
+        if (!result.data) {
+            throw new Error('Invalid response format: missing data property');
+        }
+        return result.data;
+    } catch (error) {
+        console.error('Error fetching social news:', error);
+        return [];
+    }
+}
+
 export async function fetchNewsByState(stateSlug: string, page = 1): Promise<{ data: NewsArticle[]; pagination: { total: number; page: number; totalPages: number } }> {
     try {
         const response = await fetch(`${baseUrl}api/news/state/${stateSlug}?page=${page}`, { next: { revalidate: 1 } });

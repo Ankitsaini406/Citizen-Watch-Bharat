@@ -108,13 +108,13 @@ export const useNewsCategory = (category?: string) => {
 
             const res = await fetch(`/api/news/category/${category}?page=${pageParam}&limit=9`);
             if (!res.ok) throw new Error('Failed to fetch category news');
-            
+
             const data = await res.json();
             return {
                 data: data.data,
                 pagination: {
                     ...data.pagination,
-                    pageSize: 9, 
+                    pageSize: 9,
                     hasMore: data.data.length >= 9
                 }
             };
@@ -164,13 +164,13 @@ export const useInfiniteNewsCategory = (category: string) => {
         queryFn: async ({ pageParam = 1 }) => {
             try {
                 const res = await fetch(`/api/news/state/${category}?page=${pageParam}`);
-                
+
                 if (!res.ok) {
                     throw new Error(`Failed to fetch news: ${res.statusText}`);
                 }
 
                 const data = await res.json();
-                
+
                 // Ensure consistent response structure
                 return {
                     data: data.data || [],
@@ -193,5 +193,21 @@ export const useInfiniteNewsCategory = (category: string) => {
         initialPageParam: 1,
         staleTime: 5 * 60 * 1000,
         retry: 2,
+    });
+};
+
+export const useSocialNews = () => {
+    return useInfiniteQuery({
+        queryKey: ['socialNews'],
+        queryFn: async ({ pageParam = 1 }) => {
+            const res = await fetch(`/api/news/social?page=${pageParam}&limit=9`);
+            if (!res.ok) throw new Error('Failed to fetch');
+            return res.json();
+        },
+        getNextPageParam: (lastPage) => {
+            // Ensure your API returns hasMore boolean
+            return lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined;
+        },
+        initialPageParam: 1,
     });
 };
