@@ -3,6 +3,7 @@ import "./globals.css";
 import { Tiro_Devanagari_Hindi, Hind } from "next/font/google";
 import ChildLayout from "./ChildLayout";
 import QueryProvider from "@/lib/queryClient";
+import GoogleTagManagerAndAnalytics from "./GoolgeAnalytics";
 
 const hinduTitleFont = Tiro_Devanagari_Hindi({
   variable: "--font-hindu-title",
@@ -72,6 +73,7 @@ export default function RootLayout({
       <body
         className={`${hinduTitleFont.variable} ${hinduBodyFont.variable} antialiased flex flex-col min-h-screen`}
       >
+        <GoogleTagManagerAndAnalytics />
         <QueryProvider>
           <ChildLayout>
             <main className="min-h-screen">
