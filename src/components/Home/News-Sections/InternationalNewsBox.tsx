@@ -36,7 +36,7 @@ export default function InternationalNewsBox({ category }: Props) {
 }
 
 function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithImage; isFirst?: boolean; showImage?: boolean }) {
-  const imageUrl = news.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
+  const imageUrl = news.heroImage || "/placeholder.svg";
 
   if (isFirst) {
     return (
@@ -55,7 +55,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority={true}
               placeholder="blur"
-              blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
+              blurDataURL="/placeholder.svg"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
               <h2 className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2">
