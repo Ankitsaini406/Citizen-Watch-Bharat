@@ -3,14 +3,14 @@ import ContactUs from './ContactPage';
 
 export const metadata: Metadata = {
     title: 'Contact Us ',
-    description: 'Reach our editorial team with news tips, corrections, or feedback. Your voice matters to us.',
+    description: 'Contact Citizen Watch Bharat (CWB) for collaborations, news tips, or feedback. Reach out to our team for ethical journalism partnerships, advertising inquiries, or civic issue reporting. We value transparency and public participation—connect with us via email, phone, or social media.',
     keywords: [
-        'contact citizen watch bharat',
-        'news tips submission',
-        'editorial contact',
-        'journalism feedback',
-        'report news to media',
-        'citizen journalism contact'
+        'Contact citizen journalism India',
+        'CWB news team contact',
+        'Report civic issues to media',
+        'Journalism collaboration India',
+        'Ethical news portal contact',
+        'Citizen Watch Bharat emai',
     ],
     openGraph: {
         title: 'Contact Our News Team | Citizen Watch Bharat',

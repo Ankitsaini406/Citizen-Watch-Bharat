@@ -44,14 +44,16 @@ const socialMedia = [
 
 export const metadata: Metadata = {
     title: 'About Us',
-    description: 'Learn about Citizen Watch Bharat - Our mission, editorial philosophy, core values, and impact in civic journalism.',
+    description: 'Citizen Watch Bharat (CWB) is India’s leading civic journalism platform, dedicated to ethical news reporting, public accountability, and citizen empowerment. As an RNI-registered monthly newspaper and digital news portal, we bridge the gap between journalism and social change. Our mission is to promote transparency, truth, and participatory democracy through impact-driven journalism.',
     keywords: [
-        'citizen journalism',
-        'ethical reporting',
-        'civic accountability',
-        'independent media',
+        'Ethical news reporting platform',
+        'Independent media',
+        'Public accountability news',
         'Indian news platform',
-        'public service journalism'
+        'Civic empowerment in India',
+        'Best independent journalism website',
+        'RNI-registered newspaper',
+        'Impact-driven journalism',
     ],
     openGraph: {
         title: 'About Citizen Watch Bharat',

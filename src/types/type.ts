@@ -78,3 +78,29 @@ export interface Advertisement {
     updatedAt: string;
     page: string;
 }
+
+export interface CategoryMetadata {
+    title: string;
+    description: string;
+    keywords: string[];
+    path: string;
+}
+
+export interface CommonMetadata {
+    siteName: string;
+    images: {
+        default: string;
+        sizes: {
+            width: number;
+            height: number;
+        };
+    };
+    twitterHandle: string;
+    locale: string;
+    type: string;
+}
+
+export interface MetadataConfig {
+    [key: string]: CategoryMetadata;
+    // common: CommonMetadata;
+}
