@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import ChildLayout from "./ChildLayout";
 import QueryProvider from "@/lib/queryClient";
@@ -73,13 +73,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   }
-}
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 }
 
 export default function RootLayout({

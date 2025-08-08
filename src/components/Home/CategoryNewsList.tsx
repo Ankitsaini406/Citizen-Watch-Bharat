@@ -1,7 +1,4 @@
-"use client";
 
-import { Category, News } from "@/types/type";
-import React, { useEffect, useState } from "react";
 import NationalNewsBox from "./News-Sections/NationalNewsBox";
 import InternationalNewsBox from "./News-Sections/InternationalNewsBox";
 import PoliticalNewsBox from "./News-Sections/PoliticalNewsBox";
@@ -15,7 +12,6 @@ import { ButtonSeeMore } from "@/utils/Buttons";
 import { BottomBanner, MiddleBanner } from "../AddBanners";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 import LifestyleNewsBox from "./News-Sections/LifestyleNewsBox";
-import { SkeletonNewsBox } from "@/utils/Loading";
 
 const categoryPriority: Record<string, number> = {
     "National": 1,
@@ -29,34 +25,8 @@ const categoryPriority: Record<string, number> = {
     "Lifestyle": 9,
 };
 
-export default function CategoryNewsList() {
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [news, setNews] = useState<News[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const { categories, news } = await fetchAllCategoriesAndNews();
-                setCategories(categories);
-                setNews(news);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    if (loading) {
-        return (
-            <div className="container mx-auto px-4 xl:px-0">
-                <SkeletonNewsBox />
-            </div>
-        );
-    }
+export default async function CategoryNewsList() {
+    const { categories, news } = await fetchAllCategoriesAndNews();
 
     const newsByCategory = categories
         .map((cat) => ({
