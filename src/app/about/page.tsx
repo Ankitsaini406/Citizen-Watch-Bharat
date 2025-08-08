@@ -1,7 +1,7 @@
-// app/about/page.tsx
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
 const socialMedia = [
     {
@@ -41,6 +41,40 @@ const socialMedia = [
     //     alt: 'LinkedIn Logo'
     // }
 ]
+
+export const metadata: Metadata = {
+    title: 'About Us',
+    description: 'Learn about Citizen Watch Bharat - Our mission, editorial philosophy, core values, and impact in civic journalism.',
+    keywords: [
+        'citizen journalism',
+        'ethical reporting',
+        'civic accountability',
+        'independent media',
+        'Indian news platform',
+        'public service journalism'
+    ],
+    openGraph: {
+        title: 'About Citizen Watch Bharat',
+        description: 'Journalism for People. By People. With Integrity. Learn about our mission and values.',
+        url: 'https://citizenwatchbharat.com/about',
+        images: [
+            {
+                url: 'https://citizenwatchbharat.com/cover.webp',
+                width: 1200,
+                height: 630,
+                alt: 'Citizen Watch Bharat Team',
+            },
+        ],
+    },
+    twitter: {
+        title: 'About Citizen Watch Bharat',
+        description: 'Journalism for People. By People. With Integrity. Learn about our mission and values.',
+        images: ['https://citizenwatchbharat.com/cover.webp'],
+    },
+    alternates: {
+        canonical: 'https://citizenwatchbharat.com/about',
+    }
+}
 
 export default function Page() {
     return (

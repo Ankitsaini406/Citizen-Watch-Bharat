@@ -1,5 +1,40 @@
 
 import React from 'react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Journalism Code of Ethics',
+    description: 'Our commitment to ethical journalism, accuracy, independence, and public service. Learn about our editorial principles and standards.',
+    keywords: [
+        'journalism ethics',
+        'media standards',
+        'ethical reporting',
+        'press code of conduct',
+        'Indian journalism principles',
+        'citizen journalism ethics'
+    ],
+    openGraph: {
+        title: 'Code of Ethics for Journalism | Citizen Watch Bharat',
+        description: 'Our pledge for accurate, independent, and ethical journalism that serves the public interest.',
+        url: '/code-of-ethics',
+        images: [
+            {
+                url: 'https://citizenwatchbharat.com/cover.webp',
+                width: 1200,
+                height: 630,
+                alt: 'Citizen Watch Bharat Code of Ethics',
+            },
+        ],
+    },
+    twitter: {
+        title: 'Journalism Code of Ethics - Citizen Watch Bharat',
+        description: 'Our commitment to ethical journalism, accuracy, and public service',
+        images: ['https://citizenwatchbharat.com/cover.webp'],
+    },
+    alternates: {
+        canonical: 'https://citizenwatchbharat.com/code-of-ethics',
+    }
+}
 
 export default function Page() {
     return (
