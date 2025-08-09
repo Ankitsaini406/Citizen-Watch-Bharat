@@ -65,6 +65,7 @@ export function TopBanner({ place = 'Home' } : { place?: string; }) {
                                 alt={ad.title}
                                 className="w-full h-full object-cover"
                                 style={{ zIndex: 0 }}
+                                priority
                             />
                         </div>
                     </Link>

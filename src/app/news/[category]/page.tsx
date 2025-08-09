@@ -1,15 +1,20 @@
 
-import { Metadata } from 'next';
 import CategoryNewsClient from './CategoryNewsClient';
 import metadataConfig from '@/data/metadata';
+import type { Metadata } from 'next'
 
-export async function generateMetadata({
-    params
-}: {
-    params: { category: string }
-}): Promise<Metadata> {
-    const category = params.category as keyof typeof metadataConfig;
-    const config = metadataConfig[category] || metadataConfig.national;
+type Props = {
+    params: Promise<{ category: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export async function generateMetadata(
+    { params }: Props,
+): Promise<Metadata> {
+    const { category } = await params;
+
+    const categorys = category as keyof typeof metadataConfig;
+    const config = metadataConfig[categorys] || metadataConfig.international;
 
     return {
         title: config.title,
@@ -19,7 +24,6 @@ export async function generateMetadata({
             title: config.title,
             description: config.description,
             url: config.path,
-            // siteName: metadataConfig.common.siteName,
             images: [
                 {
                     url: 'https://citizenwatchbharat.com/cover.webp',
@@ -35,6 +39,7 @@ export async function generateMetadata({
     };
 }
 
-export default function Page({ params }: { params: { category: string } }) {
-    return <CategoryNewsClient category={params.category} />;
+export default async function Page({ params }: Props) {
+    const { category } = await params;
+    return <CategoryNewsClient category={category} />;
 }

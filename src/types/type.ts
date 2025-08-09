@@ -100,7 +100,13 @@ export interface CommonMetadata {
     type: string;
 }
 
+export interface CategoryMetadata {
+    title: string;
+    description: string;
+    keywords: string[];
+    path: string;
+}
+
 export interface MetadataConfig {
     [key: string]: CategoryMetadata;
-    // common: CommonMetadata;
 }

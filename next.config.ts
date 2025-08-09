@@ -4,32 +4,19 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const nextConfig: NextConfig = {
-  icons: {
-    icon: '/favicon.ico',
-  },
 
   images: {
-    domains: ['citizenwatchbharat.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'citizenwatchbharat.com',
+      },
+    ],
   },
 
   env: {
     HOST_URL: process.env.NEXT_HOST_URL,
     LOCAL_URL: process.env.NEXT_LOCAL_URL,
-  },
-
-  // Add favicon configuration
-  async headers() {
-    return [
-      {
-        source: '/favicon.ico',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-    ];
   },
 };
 
