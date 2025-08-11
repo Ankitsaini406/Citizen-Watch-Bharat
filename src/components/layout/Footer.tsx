@@ -23,7 +23,7 @@ const footerData = {
         { name: 'International', href: '/news/international' },
         { name: 'Business', href: '/news/business' },
         { name: 'Sports', href: '/news/sports' },
-        { name: 'Politics', href: '/news/politics' },
+        { name: 'Politics', href: '/news/political' },
         { name: 'Entertainment', href: '/news/entertainment' },
     ],
     socialMedia: [
