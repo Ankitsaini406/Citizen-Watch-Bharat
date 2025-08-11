@@ -29,7 +29,7 @@ export async function generateMetadata(
                     url: 'https://citizenwatchbharat.com/cover.webp',
                     width: 1200,
                     height: 630,
-                    alt: 'Citizen Watch Bharat Sports News Coverage',
+                    alt: `Citizen Watch Bharat ${config.title} News Coverage`,
                 },
             ],
         },

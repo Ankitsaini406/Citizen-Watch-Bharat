@@ -28,7 +28,7 @@ const metadataConfig: MetadataConfig = {
         path: "https://citizenwatchbharat.com/news/political"
     },
     business: {
-        title: "Business ",
+        title: "Business News",
         description: "Business news, market trends, and economic policies impacting India. From startups to corporate giants, CWB provides data-driven financial journalism.",
         keywords: [
             "Indian business news",
@@ -41,7 +41,7 @@ const metadataConfig: MetadataConfig = {
         path: "https://citizenwatchbharat.com/news/business"
     },
     elections: {
-        title: "Elections ",
+        title: "Elections News",
         description: "Live election updates, voter guides, and results for Lok Sabha, Assembly, and local polls. Non-biased election journalism for informed voters.",
         keywords: [
             "2024 election news India",
@@ -54,7 +54,7 @@ const metadataConfig: MetadataConfig = {
         path: "https://citizenwatchbharat.com/news/elections"
     },
     entertainment: {
-        title: "Entertainment ",
+        title: "Entertainment News",
         description: "Bollywood, OTT, and celebrity news with a critical lens. Ethical entertainment journalism – no gossip, only credible updates.",
         keywords: [
             "Bollywood latest news",
@@ -67,7 +67,7 @@ const metadataConfig: MetadataConfig = {
         path: "https://citizenwatchbharat.com/news/entertainment"
     },
     "web-stories": {
-        title: "Web Stories ",
+        title: "Web Stories News",
         description: "Visual, snackable news – quick updates via Instagram-style web stories. Breaking news, polls, and viral trends in 60 seconds.",
         keywords: [
             "India web stories news",
@@ -80,7 +80,7 @@ const metadataConfig: MetadataConfig = {
         path: "https://citizenwatchbharat.com/news/web-stories"
     },
     lifestyle: {
-        title: "Lifestyle ",
+        title: "Lifestyle News",
         description: "Health, wellness, culture, and travel stories for modern Indians. Solutions-driven lifestyle journalism beyond clickbait.",
         keywords: [
             "Indian lifestyle trends",
