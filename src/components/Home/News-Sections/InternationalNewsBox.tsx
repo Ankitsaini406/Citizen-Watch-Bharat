@@ -1,7 +1,7 @@
 import { Category, News } from "@/types/type";
-import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import { ButtonLink } from "@/utils/Buttons";
 
 interface NewsWithImage extends News {
   heroImage: string;
@@ -41,7 +41,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
   if (isFirst) {
     return (
       <div className="bg-white overflow-hidden h-full border border-gray-300 lg:min-h-96">
-        <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
+        <div className="block h-full">
           <div className="relative h-80 lg:h-full bg-gray-200">
             <Image
               src={imageUrl}
@@ -58,12 +58,14 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
               blurDataURL="/placeholder.svg"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
-              <h2 className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2">
-                {news.title}
-              </h2>
+              <ButtonLink
+                href={`/news/${news.category?.slug}/${news.slug}`}
+                title={news.title}
+                className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2"
+              />
             </div>
           </div>
-        </Link>
+        </div>
       </div>
     );
   }
@@ -71,7 +73,7 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
   if (showImage) {
     return (
       <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-        <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
+        <div className="block h-full">
           <div className="relative h-48 bg-gray-200">
             <Image
               src={imageUrl}
@@ -88,22 +90,26 @@ function NewsCard({ news, isFirst = false, showImage = true }: { news: NewsWithI
             />
           </div>
           <div className="pt-4">
-            <h3 className="font-semibold text-gray-900 text-base mb-4 line-clamp-2 hover:underline underline-offset-2">
-              {news.title}
-            </h3>
+            <ButtonLink
+              href={`/news/${news.category?.slug}/${news.slug}`}
+              title={news.title}
+              className="font-semibold text-gray-900 text-base mb-4 line-clamp-2 hover:underline underline-offset-2"
+            />
           </div>
-        </Link>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-      <Link href={`/news/${news.category?.slug}/${news.slug}`} className="block h-full">
-        <h4 className="font-semibold text-gray-900 mb-4 line-clamp-2 hover:underline underline-offset-2">
-          {news.title}
-        </h4>
-      </Link>
+      <div className="block h-full">
+        <ButtonLink
+          href={`/news/${news.category?.slug}/${news.slug}`}
+          title={news.title}
+          className="font-semibold text-gray-900 mb-4 line-clamp-2 hover:underline underline-offset-2"
+        />
+      </div>
     </div>
   );
 } 

@@ -1,5 +1,8 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useLoading } from '@/context/LoadingContext'; // Import the loading context
 
 // Data structure for maintainability
 const footerData = {
@@ -57,23 +60,21 @@ const footerData = {
             icon: '/social/threads.webp',
             alt: 'Threads Logo'
         },
-        // {
-        //     name: 'LinkedIn',
-        //     href: 'https://linkedin.com/company/citizenwatchbharat',
-        //     icon: '/social/linkedin.webp',
-        //     alt: 'LinkedIn Logo'
-        // }
     ],
     legalLinks: [
         { name: 'Privacy Policy', href: '/privacy-policy' },
         { name: 'Terms of Service', href: '/terms-of-service' },
-        // { name: 'Cookie Policy', href: '/cookie-policy' },
-        // { name: 'GDPR Compliance', href: '/gdpr' }
     ]
 };
 
 export default function Footer() {
     const currentYear = new Date().getFullYear();
+    const { startLoading } = useLoading(); // Get the loading function from context
+
+    // Handle internal link clicks
+    const handleInternalLinkClick = () => {
+        startLoading();
+    };
 
     return (
         <footer className="relative bg-neutral-900 text-white border-t border-neutral-800">
@@ -82,7 +83,12 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                     {/* About Section */}
                     <div className="flex flex-col gap-2">
-                        <Link href="/" aria-label="Citizen Watch Bharat Home" className='w-fit'>
+                        <Link 
+                            href="/" 
+                            aria-label="Citizen Watch Bharat Home" 
+                            className='w-fit'
+                            onClick={handleInternalLinkClick}
+                        >
                             <Image
                                 src={footerData.about.logo}
                                 alt="Citizen Watch Bharat Logo"
@@ -127,6 +133,7 @@ export default function Footer() {
                                         href={link.href}
                                         className="text-gray-300 hover:text-white transition-colors text-sm"
                                         aria-label={`Go to ${link.name}`}
+                                        onClick={handleInternalLinkClick}
                                     >
                                         {link.name}
                                     </Link>
@@ -145,6 +152,7 @@ export default function Footer() {
                                         href={category.href}
                                         className="text-gray-300 hover:text-white transition-colors text-sm"
                                         aria-label={`Browse ${category.name} news`}
+                                        onClick={handleInternalLinkClick}
                                     >
                                         {category.name}
                                     </Link>
@@ -165,6 +173,8 @@ export default function Footer() {
                                     rel="noopener noreferrer"
                                     aria-label={`Follow us on ${social.name}`}
                                     className="hover:opacity-75 transition-opacity"
+                                    // Only trigger loading for internal links (not external social media)
+                                    onClick={social.href.startsWith('http') ? undefined : handleInternalLinkClick}
                                 >
                                     <Image
                                         src={social.icon}
@@ -176,7 +186,6 @@ export default function Footer() {
                                 </Link>
                             ))}
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -195,6 +204,7 @@ export default function Footer() {
                                     href={link.href}
                                     className="text-gray-400 hover:text-red-500 transition-colors"
                                     aria-label={`View ${link.name}`}
+                                    onClick={handleInternalLinkClick}
                                 >
                                     {link.name}
                                 </Link>

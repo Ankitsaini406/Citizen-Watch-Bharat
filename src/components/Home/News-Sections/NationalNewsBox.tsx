@@ -1,11 +1,10 @@
 import { Category, News } from "@/types/type";
-import Link from "next/link";
 import React, { useMemo } from "react";
 import Image from "next/image";
 import { slugify } from "@/utils/Utils";
 import Head from "next/head";
+import { ButtonLink } from "@/utils/Buttons";
 
-// Extend News type locally to include heroImage as string[]
 interface NewsWithImage extends News {
     heroImage: string;
 }
@@ -15,7 +14,6 @@ interface Props {
 }
 
 export default function NationalNewsBox({ category }: Props) {
-    // Get the hero image URL for preload
     const heroImageUrl = useMemo(() => {
         return category.news[0]?.heroImage || "";
     }, [category.news]);
@@ -25,9 +23,9 @@ export default function NationalNewsBox({ category }: Props) {
             {/* Preload the hero image */}
             {heroImageUrl && (
                 <Head>
-                    <link 
-                        rel="preload" 
-                        as="image" 
+                    <link
+                        rel="preload"
+                        as="image"
                         href={heroImageUrl}
                         imageSrcSet={`
                             ${heroImageUrl}?w=640 640w,
@@ -48,15 +46,15 @@ export default function NationalNewsBox({ category }: Props) {
                     <div className="flex-1 border-t-2 border-red-700"></div>
                 </div>
             </div>
-            
+
             {/* News Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {category.news.slice(0, 9).map((n, index) => (
                     <div key={n.slug} className={index === 0 ? "md:col-span-2 md:row-span-2" : ""}>
-                        <NewsCard 
-                            news={n as NewsWithImage} 
-                            isFirst={index === 0} 
-                            showImage={index < 3} 
+                        <NewsCard
+                            news={n as NewsWithImage}
+                            isFirst={index === 0}
+                            showImage={index < 3}
                             index={index}
                         />
                     </div>
@@ -68,15 +66,15 @@ export default function NationalNewsBox({ category }: Props) {
 
 function NewsCard({ news, isFirst = false, showImage = true, index }: { news: NewsWithImage; isFirst?: boolean; showImage?: boolean; index: number }) {
     const imageUrl = news.heroImage || "/placeholder.svg";
-    const altText = useMemo(() => 
-        news.title.split(" ").slice(0, 5).join(" ") + (news.title.split(" ").length > 5 ? "..." : ""), 
+    const altText = useMemo(() =>
+        news.title.split(" ").slice(0, 5).join(" ") + (news.title.split(" ").length > 5 ? "..." : ""),
         [news.title]
     );
 
     if (isFirst) {
         return (
             <div className="bg-white overflow-hidden h-full border border-gray-300 md:min-h-96">
-                <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
+                <div className="block h-full">
                     {/* Full height image with text overlay */}
                     <div className="relative h-80 lg:h-full bg-gray-200">
                         <Image
@@ -94,12 +92,14 @@ function NewsCard({ news, isFirst = false, showImage = true, index }: { news: Ne
                         />
                         {/* Text overlay at bottom */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
-                            <h2 className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2">
-                                {news.title}
-                            </h2>
+                            <ButtonLink
+                                href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`}
+                                title={news.title}
+                                className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2"
+                            />
                         </div>
                     </div>
-                </Link>
+                </div>
             </div>
         );
     }
@@ -107,7 +107,7 @@ function NewsCard({ news, isFirst = false, showImage = true, index }: { news: Ne
     if (showImage) {
         return (
             <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-                <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
+                <div className="block h-full">
                     {/* Image or Placeholder */}
                     <div className="relative h-48 bg-gray-200">
                         <Image
@@ -123,22 +123,24 @@ function NewsCard({ news, isFirst = false, showImage = true, index }: { news: Ne
                         />
                     </div>
                     <div className="pt-4">
-                        <h3 className="font-semibold text-gray-900 text-base mb-4 line-clamp-2 hover:underline underline-offset-2">
-                            {news.title}
-                        </h3>
+                        <ButtonLink href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`}
+                            title={news.title}
+                            className="font-semibold text-gray-900 text-base mb-4 line-clamp-2 hover:underline underline-offset-2"
+                        />
                     </div>
-                </Link>
+                </div>
             </div>
         );
     }
 
     return (
         <div className="bg-white overflow-hidden h-full border-b border-gray-300">
-            <Link href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`} className="block h-full">
-                <h4 className="font-semibold text-gray-900 mb-4 line-clamp-2 hover:underline underline-offset-2">
-                    {news.title}
-                </h4>
-            </Link>
+            <div className="block h-full">
+                <ButtonLink href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`}
+                    className="font-semibold text-gray-900 mb-4 line-clamp-2 hover:underline underline-offset-2"
+                    title={news.title}
+                />
+            </div>
         </div>
     );
 }

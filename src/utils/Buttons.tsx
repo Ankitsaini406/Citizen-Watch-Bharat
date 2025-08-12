@@ -1,9 +1,34 @@
+"use client";
+
+import { useLoading } from "@/context/LoadingContext";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+// Common click handler logic
+const useNavigationHandler = (href: string) => {
+    const { startLoading } = useLoading();
+    const pathname = usePathname();
+
+    const handleClick = () => {
+        // Only start loading if we're actually changing routes
+        if (!pathname || pathname !== href) {
+            startLoading();
+        }
+    };
+
+    return handleClick;
+};
 
 export function ButtonLeft({ href, title, className }: { href: string; title: string; className?: string; }) {
+    const handleClick = useNavigationHandler(href);
+
     return (
-        <Link href={href} className="text-black font-bold group relative leading-snug">
+        <Link 
+            href={href} 
+            className="text-black font-bold group relative leading-snug"
+            onClick={handleClick}
+        >
             <span className={`relative z-10 ${className}`}>{title}</span>
             <span
                 className="absolute left-0 bottom-0 h-0.5 bg-black w-full transition-all duration-300 group-hover:w-0 right-0 group-hover:right-0"
@@ -13,8 +38,14 @@ export function ButtonLeft({ href, title, className }: { href: string; title: st
 }
 
 export function ButtonSeeMore({ href, title }: { href: string; title: string }) {
+    const handleClick = useNavigationHandler(href);
+
     return (
-        <Link href={href} className="flex items-center justify-center col-span-2 text-black hover:bg-gray-100 py-2 px-6 font-bold group duration-300">
+        <Link 
+            href={href} 
+            className="flex items-center justify-center col-span-2 text-black hover:bg-gray-100 py-2 px-6 font-bold group duration-300"
+            onClick={handleClick}
+        >
             <div className="relative w-fit">
                 <span className="flex items-center justify-center gap-2">{title} <MoveRight /></span>
                 <span
@@ -26,10 +57,15 @@ export function ButtonSeeMore({ href, title }: { href: string; title: string }) 
 }
 
 export function ButtonLink({ href, title, className }: { href: string; title: string; className?: string; }) {
+    const handleClick = useNavigationHandler(href);
+
     return (
-        <Link href={href} className={`text-black font-bold hover:underline underline-offset-2 line-clamp-2 leading-snug ${className}`}>
+        <Link 
+            href={href} 
+            className={`text-black font-bold hover:underline underline-offset-2 line-clamp-2 leading-snug ${className}`}
+            onClick={handleClick}
+        >
             <span className="relative z-10">{title}</span>
         </Link>
     )
 }
-

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useLoading } from "@/context/LoadingContext"; // Import the loading context
 
 // --- Types ---
 type Category = { name: string; slug: string };
@@ -31,14 +32,18 @@ const commonLinks: NavLink[] = [
 
 // --- Components ---
 function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
+    const { startLoading } = useLoading(); // Get startLoading from context
+
     return (
         <Link
             href={`/news/${cat.slug}`}
-            className={`px-2 py-1 transition-all border-b-2 text-foreground duration-300 focus-visible:underline ${isActive
+            className={`px-2 py-1 transition-all border-b-2 text-foreground duration-300 focus-visible:underline ${
+                isActive
                     ? "text-red-600 border-red-600"
                     : "border-transparent hover:border-red-600 hover:text-red-600"
-                }`}
+            }`}
             aria-current={isActive ? "page" : undefined}
+            onClick={startLoading} // Add loading trigger
         >
             {cat.name}
         </Link>
@@ -46,21 +51,34 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
 }
 
 function NomineButton() {
+    const { startLoading } = useLoading(); // Get startLoading from context
+
     return (
-        <Link href="/nomines" className="bg-foreground border text-background px-2.5 py-1.5 hover:text-foreground hover:bg-background duration-300 rounded-md w-fit font-semibold">
+        <Link 
+            href="/nomines" 
+            className="bg-foreground border text-background px-2.5 py-1.5 hover:text-foreground hover:bg-background duration-300 rounded-md w-fit font-semibold"
+            onClick={startLoading} // Add loading trigger
+        >
             Nomination Form
         </Link>
     )
 }
 
 function NavLinks({ onClick }: { onClick?: () => void }) {
+    const { startLoading } = useLoading();
+
+    const handleClick = () => {
+        startLoading();
+        onClick?.();
+    };
+
     return (
         <>
             {commonLinks.map(({ label, href }) => (
                 <Link
                     key={label}
                     href={href}
-                    onClick={onClick}
+                    onClick={handleClick}
                     className="py-2 hover:text-red-600 font-semibold"
                 >
                     {label}
@@ -72,6 +90,8 @@ function NavLinks({ onClick }: { onClick?: () => void }) {
 
 function Breadcrumb() {
     const pathname = usePathname();
+    const { startLoading } = useLoading();
+
     if (!pathname || pathname === "/") return null;
     const segments = pathname.split("/").filter(Boolean);
 
@@ -128,6 +148,7 @@ function Breadcrumb() {
                                 <Link
                                     href={linkHref}
                                     className="hover:underline font-medium text-gray-700 capitalize whitespace-nowrap transition-colors"
+                                    onClick={startLoading} // Add loading trigger
                                 >
                                     {label}
                                 </Link>
@@ -144,6 +165,7 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const pathname = usePathname();
+    const { startLoading } = useLoading(); // Get startLoading from context
 
     // Close menu on outside click or Escape key
     useEffect(() => {
@@ -209,6 +231,13 @@ export default function Header() {
 
     const handleCloseMenu = useCallback(() => setIsOpen(false), []);
 
+    // Add loading to logo click
+    const handleLogoClick = () => {
+        if (pathname !== "/") {
+            startLoading();
+        }
+    };
+
     return (
         <>
             {/* Top Navbar */}
@@ -217,7 +246,12 @@ export default function Header() {
                     <div className="px-2 md:px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">
                             {/* Logo */}
-                            <Link href="/" className="flex items-center" aria-label="Home">
+                            <Link 
+                                href="/" 
+                                className="flex items-center" 
+                                aria-label="Home"
+                                onClick={handleLogoClick} // Add loading trigger
+                            >
                                 <Image
                                     className="h-14 w-auto"
                                     src="/cwb-header.png"
@@ -259,8 +293,9 @@ export default function Header() {
                 <div
                     ref={menuRef}
                     id="mobile-menu-panel"
-                    className={`fixed top-0 right-0 bottom-0 w-3/4 z-50 bg-white transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
-                        }`}
+                    className={`fixed top-0 right-0 bottom-0 w-3/4 z-50 bg-white transform transition-transform duration-500 ease-in-out ${
+                        isOpen ? "translate-x-0" : "translate-x-full"
+                    }`}
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="mobile-menu-title"
