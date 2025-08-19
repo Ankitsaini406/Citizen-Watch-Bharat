@@ -100,9 +100,11 @@ export function ScrollableNewsSection({
                         const imageUrl = newsItem.heroImage|| "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
                         console.log(`This is state info : `, newsItem.state);
-                        const href = newsItem.category?.name?.toLowerCase() === 'national'
-                            ? `/news/${newsItem.category?.slug}/${newsItem.state}/${newsItem.slug}` // For national, use the baseHref which includes state
-                            : `/news/${newsItem.category?.slug}/${newsItem.slug}`; // For others, use standard path
+                        const href = 
+                        // newsItem.category?.name?.toLowerCase() === 'national'
+                        //     ? `/news/${newsItem.category?.slug}/${newsItem.state}/${newsItem.slug}` // For national, use the baseHref which includes state
+                        //     : 
+                            `/news/${newsItem.category?.slug}/${newsItem.slug}`; // For others, use standard path
 
                         return (
                             <div

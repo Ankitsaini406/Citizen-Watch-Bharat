@@ -3,14 +3,18 @@ import NominationForm from './NominationPage';
 
 export const metadata: Metadata = {
     title: 'Nomination Form ',
-    description: 'Nominate inspiring individuals for recognition in our impact awards. Celebrate changemakers driving positive social transformation across India.',
+    description: 'Citizen Watch Bharat celebrates India’s changemakers! Nominate inspiring women leaders, social activists, and founders driving impact in education, health & business. Join our network & get recognized today!',
     keywords: [
-        'nomination form',
-        'social impact awards',
-        'changemaker recognition',
-        'citizen journalism awards',
-        'women empowerment awards',
-        'community leaders nomination'
+        'Citizen Watch Bharat',
+        'Changemakers Award India',
+        'Her Story Her Impact',
+        'Social Impact Platform India',
+        'Women Changemakers India',
+        'Nominate a changemaker in India',
+        'Impact stories of Indian women leaders',
+        'Social justice awards in India',
+        'Founder connect for social impact',
+        'How to recognize changemakers in India',
     ],
     openGraph: {
         title: 'Nominate Changemakers | Citizen Watch Bharat',

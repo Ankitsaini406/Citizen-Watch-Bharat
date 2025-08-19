@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchBreakingNews, fetchLatestNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
 import { SkeletonLatest } from "@/utils/Loading";
-import { slugify, timeAgo } from "@/utils/Utils";
+import { timeAgo } from "@/utils/Utils";
 
 type BreakingNewsItem = {
     title: string;
@@ -122,7 +122,7 @@ export function LatestNews() {
                                 )}
                             </div>
                             <ButtonLink
-                                href={`/news/${item.category?.slug}${item.category?.slug === 'national' ? `/${slugify(item.state)}` : ''}/${item.slug}`}
+                                href={`/news/${item.category?.slug}/${item.slug}`}
                                 title={item.title}
                                 className="line-clamp-2"
                             />

@@ -17,7 +17,7 @@ const footerData = {
     quickLinks: [
         { name: 'About Us', href: '/about' },
         { name: 'Contact Us', href: '/contact' },
-        { name: 'Careers', href: '/careers' },
+        { name: 'Careers', href: '/career' },
         { name: 'Code of Ethics', href: '/code-of-ethics' },
         // { name: 'Grievance Redressal', href: '/grievance' }
     ],
