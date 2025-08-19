@@ -1,6 +1,23 @@
 import { MetadataConfig } from "@/types/type"
 
 const metadataConfig: MetadataConfig = {
+    national: {
+        title: "National News ",
+        description: "Comprehensive coverage of Indian national affairs - politics, governance, social developments, and economic updates. Citizen Watch Bharat delivers factual, unbiased reporting on issues shaping the nation.",
+        keywords: [
+            'India national news',
+            'Indian current affairs',
+            'Delhi political updates',
+            'Government policies India',
+            'Social issues in India',
+            'Economic developments India',
+            'Fact-checked Indian news',
+            'National security updates',
+            'Indian infrastructure news',
+            'Rural development India'
+        ],
+        path: "https://citizenwatchbharat.com/news/national"
+    },
     international: {
         title: "International News ",
         description: "Get global news coverage with an Indian perspective. From geopolitics to economics, CWB brings in-depth international reports affecting India and the world.",

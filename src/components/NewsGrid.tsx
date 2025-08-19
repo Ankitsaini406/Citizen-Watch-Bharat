@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { ButtonLink } from "@/utils/Buttons";
 import { NewsArticle } from "@/types/type";
-import { timeAgo } from "@/utils/Utils";
+import { slugToName, timeAgo } from "@/utils/Utils";
 
 export interface NewsGridWithInfiniteScrollProps {
     news: NewsArticle[];
@@ -83,7 +83,12 @@ export function NewsGridWithInfiniteScroll({
                                         />
                                     </div>
                                 )}
-                                <div className="p-4 flex flex-col justify-between h-28">
+                                <div className="p-4 flex flex-col justify-between gap-2">
+                                    {item.category.slug === 'national' && (
+                                        <span className="bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full w-fit">
+                                            {slugToName(item.state)}
+                                        </span>
+                                    )}
                                     <ButtonLink href={`${href}/${item.slug}`} title={item.title} />
                                     <div className="text-xs text-gray-500 mt-2 flex justify-between">
                                         <span>{item.author?.name ? `By ${item.author.name}` : '\u00A0'}</span>
