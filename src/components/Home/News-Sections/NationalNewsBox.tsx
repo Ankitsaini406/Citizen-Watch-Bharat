@@ -1,7 +1,6 @@
 import { Category, News } from "@/types/type";
 import React, { useMemo } from "react";
 import Image from "next/image";
-import { slugify } from "@/utils/Utils";
 import Head from "next/head";
 import { ButtonLink } from "@/utils/Buttons";
 
@@ -93,7 +92,7 @@ function NewsCard({ news, isFirst = false, showImage = true, index }: { news: Ne
                         {/* Text overlay at bottom */}
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
                             <ButtonLink
-                                href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`}
+                                href={`/news/${news.category?.slug}/${news.slug}`}
                                 title={news.title}
                                 className="font-semibold text-white text-2xl line-clamp-2 leading-10 hover:underline underline-offset-2"
                             />
@@ -123,7 +122,7 @@ function NewsCard({ news, isFirst = false, showImage = true, index }: { news: Ne
                         />
                     </div>
                     <div className="pt-4">
-                        <ButtonLink href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`}
+                        <ButtonLink href={`/news/${news.category?.slug}/${news.slug}`}
                             title={news.title}
                             className="font-semibold text-gray-900 text-base mb-4 line-clamp-2 hover:underline underline-offset-2"
                         />
@@ -136,7 +135,7 @@ function NewsCard({ news, isFirst = false, showImage = true, index }: { news: Ne
     return (
         <div className="bg-white overflow-hidden h-full border-b border-gray-300">
             <div className="block h-full">
-                <ButtonLink href={`/news/${news.category?.slug}/${slugify(news.state)}/${news.slug}`}
+                <ButtonLink href={`/news/${news.category?.slug}/${news.slug}`}
                     className="font-semibold text-gray-900 mb-4 line-clamp-2 hover:underline underline-offset-2"
                     title={news.title}
                 />
