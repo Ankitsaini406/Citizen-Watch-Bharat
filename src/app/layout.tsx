@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ChildLayout from "./ChildLayout";
 import QueryProvider from "@/lib/queryClient";
-import GoogleTagManagerAndAnalytics from "./GoolgeAnalytics";
+import GoogleTagManagerClient from "./GoolgeAnalytics";
 
 export const metadata: Metadata = {
   title: {
@@ -85,7 +85,9 @@ export default function RootLayout({
       <body
         className={`antialiased flex flex-col min-h-screen`}
       >
-        <GoogleTagManagerAndAnalytics />
+        <head>
+          <GoogleTagManagerClient />
+        </head>
         <QueryProvider>
           <ChildLayout>
             <main className="min-h-screen">

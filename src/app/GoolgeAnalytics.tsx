@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Script from 'next/script';
-import Head from 'next/head';
 
 const GoogleTagManagerAndAnalytics = () => {
-    const isProduction = process.env.NODE_ENV === "production";
+    const [isProduction, setIsProduction] = useState(false);
+
+    useEffect(() => {
+        // Check if we're in production - this runs only on client
+        setIsProduction(process.env.NODE_ENV === "production");
+    }, []);
 
     useEffect(() => {
         if (!isProduction) return;
@@ -25,7 +29,7 @@ const GoogleTagManagerAndAnalytics = () => {
             
             // Load GA script
             const gaScript = document.createElement('script');
-            gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-6DZ6QW4ZLQ';
+            gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-6HS1L2H40M';
             gaScript.async = true;
             
             // GA configuration
@@ -35,7 +39,7 @@ const GoogleTagManagerAndAnalytics = () => {
                     window.dataLayer.push(arguments);
                 };
                 gtag('js', new Date());
-                gtag('config', 'G-6DZ6QW4ZLQ', {
+                gtag('config', 'G-6HS1L2H40M', {
                     page_path: window.location.pathname,
                 });
             `;
@@ -62,10 +66,8 @@ const GoogleTagManagerAndAnalytics = () => {
 
     return isProduction ? (
         <>
-            <Head>
-                {/* Preconnect for better performance when scripts load */}
-                <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
-            </Head>
+            {/* Preconnect for better performance when scripts load */}
+            <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
             
             {/* Minimal initial script for critical tracking */}
             <Script id="gtm-data-layer" strategy="afterInteractive">
