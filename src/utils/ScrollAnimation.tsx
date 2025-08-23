@@ -99,7 +99,6 @@ export function ScrollableNewsSection({
                         const isLastItem = index === news.length - 1;
                         const imageUrl = newsItem.heroImage|| "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
-                        console.log(`This is state info : `, newsItem.state);
                         const href = 
                         // newsItem.category?.name?.toLowerCase() === 'national'
                         //     ? `/news/${newsItem.category?.slug}/${newsItem.state}/${newsItem.slug}` // For national, use the baseHref which includes state
