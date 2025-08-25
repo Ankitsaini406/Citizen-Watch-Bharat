@@ -6,10 +6,10 @@ import GoogleTagManagerClient from "./GoolgeAnalytics";
 
 export const metadata: Metadata = {
   title: {
-    default: 'Citizen Watch Bharat',
+    default: 'Citizen Watch Bharat | Ethical Civic Journalism in India',
     template: '%s | Citizen Watch Bharat'
   },
-  description: 'Citizen Watch Bharat – A trusted source for unbiased news across India.',
+  description: 'Citizen Watch Bharat (CWB) – India’s civic-first journalism platform delivering verified news, accountability reports & grassroots stories for citizens.',
   keywords: [
     'Citizen Watch Bharat',
     'Indian News',
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     siteName: 'Citizen Watch Bharat',
     images: [
       {
-        url: '/cover.webp', // Relative to metadataBase
+        url: '/cover.webp',
         width: 1200,
         height: 630,
         alt: 'Citizen Watch Bharat Team',

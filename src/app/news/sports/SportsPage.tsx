@@ -84,7 +84,7 @@ function SportsOtherSection({ news }: { news: NewsArticle[] }) {
                         id="sports-other-heading"
                         className="text-2xl font-bold text-red-700 whitespace-nowrap"
                     >
-                        Other
+                        Sports News
                     </h2>
                     <div className="flex-1 border-t-2 border-red-700"></div>
                 </div>
