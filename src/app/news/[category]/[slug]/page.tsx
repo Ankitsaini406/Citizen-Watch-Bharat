@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props ): Promise<Metadata> {
         openGraph: {
             title: news.title || "Default Title",
             description: news.subtitle || news.metaDescription || "Default Description",
-            url: `https://citizenwatchbharat.com/news/${slug}`,
+            url: `https://citizenwatchbharat.com/news/${news.category.slug}/${slug}`,
             images: [
                 {
                     url: news.heroImage || 'https://citizenwatchbharat.com/cover.webp',
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props ): Promise<Metadata> {
             ],
         },
         alternates: {
-            canonical: `https://citizenwatchbharat.com/news/${slug}`,
+            canonical: `https://citizenwatchbharat.com/news/${news.category.slug}/${slug}`,
         }
     };
 }

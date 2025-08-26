@@ -43,13 +43,13 @@ export const metadata: Metadata = {
         canonical: 'https://citizenwatchbharat.com/nomines',
     },
     robots: {
-        index: false, // Typically form pages shouldn't be indexed
+        index: true,
         follow: true,
         nocache: true,
         googleBot: {
             index: false,
             follow: true,
-            noimageindex: true,
+            noimageindex: false,
             'max-video-preview': -1,
             'max-image-preview': 'none',
             'max-snippet': -1,
