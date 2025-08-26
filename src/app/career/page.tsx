@@ -2,7 +2,7 @@ import Image from "next/image"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Career - Citizen Watch Bharat",
+    title: "Career",
     description: "Join the team at Citizen Watch Bharat. Check for current career opportunities and future openings in our organization.",
     keywords: "citizen watch career, job opportunities, watch industry jobs, Citizen Watch Bharat career",
     openGraph: {
