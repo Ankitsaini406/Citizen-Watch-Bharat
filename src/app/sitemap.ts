@@ -44,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         // News URLs with Google News extension
         const newsUrls: MetadataRoute.Sitemap = newsArticles.map((article) => ({
-            url: `${baseUrl}news/${article.slug}`,
+            url: `${baseUrl}news/${article.category.slug}/${article.slug}`,
             lastModified: article.createdAt,
             news: {
                 publication: {
