@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 slug: true,
                 createdAt: true,
                 title: true,
-                isBreaking: true,
+                tags: true,
                 category: {
                     select: {
                         slug: true
@@ -53,9 +53,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 },
                 publicationDate: article.createdAt,
                 title: article.title,
-                keywords: article.isBreaking ? 'breaking news' : ''
+                keywords: Array.isArray(article.tags) && article.tags.length > 0
+                    ? article.tags.join(", ")
+                    : ""
             }
-        }))
+        }));
 
         // Category URLs
         const categoryUrls: MetadataRoute.Sitemap = categories.flatMap((category) => [
