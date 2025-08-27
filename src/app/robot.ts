@@ -7,11 +7,11 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: '/api/',
+            disallow: ['/api/', '/bio'], // ✅ disallow multiple paths
         },
         sitemap: [
             `${baseUrl}/sitemap.xml`,
         ],
-        host: baseUrl.replace(/^https?:\/\//, '')
+        host: baseUrl.replace(/^https?:\/\//, ''),
     }
 }
