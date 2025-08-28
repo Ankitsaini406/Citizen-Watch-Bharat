@@ -6,7 +6,7 @@ type Props = {
     params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata({ params }: Props ): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
 
     const response = await fetch(`${baseUrl}api/news/${slug}`);
@@ -29,6 +29,19 @@ export async function generateMetadata({ params }: Props ): Promise<Metadata> {
                     alt: news.title || `Citizen Watch Bharat ${news.category.name} News Coverage`,
                 },
             ],
+        },
+        robots: {
+            index: true,
+            follow: true,
+            nocache: false,
+            googleBot: {
+                index: true,
+                follow: true,
+                noimageindex: false,
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
         },
         alternates: {
             canonical: `https://citizenwatchbharat.com/news/${news.category.slug}/${slug}`,

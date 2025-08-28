@@ -43,6 +43,19 @@ export const metadata: Metadata = {
         description: 'Get the latest scores, match highlights and breaking sports news from India and worldwide',
         images: ['https://citizenwatchbharat.com/cover.webp'],
     },
+        robots: {
+        index: true,
+        follow: true,
+        nocache: false,
+        googleBot: {
+            index: true,
+            follow: true,
+            noimageindex: false,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
     alternates: {
         canonical: 'https://citizenwatchbharat.com/news/sports',
     },
