@@ -1,4 +1,4 @@
-import BioComponent from "./Biocomponent";
+import BioComponent from './BioComponent';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
