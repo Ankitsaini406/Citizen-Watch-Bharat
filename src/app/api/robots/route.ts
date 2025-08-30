@@ -5,7 +5,6 @@ export async function GET() {
 
     const robots = `
         User-agent: *
-        Allow: /
         Disallow: /api/
         Disallow: /bio
         Sitemap: ${baseUrl}/sitemap.xml
