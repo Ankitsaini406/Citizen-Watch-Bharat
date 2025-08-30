@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     images: ['/cover.webp'], // Relative to metadataBase
   },
   alternates: {
-    canonical: '/',
+    canonical: 'https://citizenwatchbharat.com',
   }
 }
 
