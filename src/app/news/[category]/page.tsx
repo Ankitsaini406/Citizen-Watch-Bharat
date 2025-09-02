@@ -36,11 +36,11 @@ export async function generateMetadata(
         robots: {
             index: true,
             follow: true,
-            nocache: false,
+            nocache: true,
             googleBot: {
                 index: true,
                 follow: true,
-                noimageindex: false,
+                noimageindex: true,
                 'max-video-preview': -1,
                 'max-image-preview': 'large',
                 'max-snippet': -1,

@@ -1,4 +1,3 @@
-"use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useRef, useState, useCallback } from "react";
@@ -12,16 +11,16 @@ export function ScrollableNewsSection({
     title,
     news,
     className = "",
-    fetchNextPage,
     isFetchingNextPage,
-    hasNextPage
+    hasNextPage,
+    onLoadMore
 }: {
     title: string;
     news: NewsArticle[];
     className?: string;
-    fetchNextPage: () => void;
     isFetchingNextPage: boolean;
     hasNextPage: boolean;
+    onLoadMore: () => void;
 }) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -50,9 +49,9 @@ export function ScrollableNewsSection({
 
     useEffect(() => {
         if (inView && hasNextPage && !isFetchingNextPage) {
-            fetchNextPage();
+            onLoadMore();
         }
-    }, [inView, fetchNextPage, hasNextPage, isFetchingNextPage]);
+    }, [inView, onLoadMore, hasNextPage, isFetchingNextPage]);
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollRef.current) {
@@ -99,11 +98,7 @@ export function ScrollableNewsSection({
                         const isLastItem = index === news.length - 1;
                         const imageUrl = newsItem.heroImage|| "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
 
-                        const href = 
-                        // newsItem.category?.name?.toLowerCase() === 'national'
-                        //     ? `/news/${newsItem.category?.slug}/${newsItem.state}/${newsItem.slug}` // For national, use the baseHref which includes state
-                        //     : 
-                            `/news/${newsItem.category?.slug}/${newsItem.slug}`; // For others, use standard path
+                        const href = `/news/${newsItem.category.slug}/${newsItem.slug}`;
 
                         return (
                             <div

@@ -192,10 +192,9 @@ export default function NewsPage() {
                 {/* More from Category Section */}
                 {categoryNews.length > 0 && (
                     <ScrollableNewsSection
-                        // href={`/news/${articleData.category?.slug}`}
                         title={`More from ${articleData.category?.name}`}
                         news={categoryNews}
-                        fetchNextPage={fetchNextCategoryPage}
+                        onLoadMore={() => fetchNextCategoryPage()}
                         isFetchingNextPage={isFetchingNextCategory}
                         hasNextPage={hasNextCategoryPage}
                     />
@@ -204,10 +203,9 @@ export default function NewsPage() {
                 {/* Related News Section */}
                 {relatedNews.length > 0 && (
                     <ScrollableNewsSection
-                        // href={`/news/${articleData.category.slug}`}
                         title="Related News"
                         news={relatedNews}
-                        fetchNextPage={fetchNextRelatedPage}
+                        onLoadMore={() => fetchNextRelatedPage()}
                         isFetchingNextPage={isFetchingNextRelated}
                         hasNextPage={hasNextRelatedPage}
                     />

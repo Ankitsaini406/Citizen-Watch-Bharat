@@ -73,11 +73,7 @@ export default function BioComponent() {
 
 const NewsCard = ({ item }: { item: NewsArticle }) => {
     const imageUrl = item.heroImage || "/placeholder.svg";
-    const href =
-        // item.category?.slug === 'national'
-        //     ? `/news/${item.category.slug}/${item.state}/${item.slug}`
-        //     :
-        `/news/${item.category?.slug}/${item.slug}`;
+    const href =`/news/${item.category.slug}/${item.slug}`;
 
     return (
         <Link href={href} className="relative flex items-end h-32 md:h-48 lg:h-64 overflow-hidden px-0.5">
