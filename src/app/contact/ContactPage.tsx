@@ -1,6 +1,6 @@
 "use client";
 
-import { LocateFixed, Mail, MessageSquare, Newspaper, Phone, Send } from 'lucide-react';
+import { LocateFixed, Mail, MessageSquare, Newspaper, Send } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -79,7 +79,7 @@ export default function ContactUs() {
                             </h2>
 
                             <div className="space-y-6">
-                                <div className="flex items-start gap-4">
+                                {/* <div className="flex items-start gap-4">
                                     <div className="bg-red-100 p-3 rounded-full">
                                         <Phone className="text-red-600 text-xl" />
                                     </div>
@@ -92,7 +92,7 @@ export default function ContactUs() {
                                         </p>
                                         <p className="text-sm text-gray-500 mt-1">For urgent news tips and leads</p>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="flex items-start gap-4">
                                     <div className="bg-red-100 p-3 rounded-full">
