@@ -42,20 +42,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             orderBy: { createdAt: 'desc' }
         })
 
-        // ✅ Count totals
-        const totalNews = newsArticles.length
-        const totalCategories = categories.length
-        const extraurl = 7
-        const totalSubCategories = categories.reduce((acc, c) => acc + c.subCategories.length, 0)
-
-        console.log("📌 Sitemap Counts =>", {
-            totalNews,
-            totalCategories,
-            totalSubCategories,
-            extraurl,
-            totalCategoryUrls: totalCategories + totalSubCategories + totalNews + extraurl
-        })
-
         // News URLs
         const newsUrls: MetadataRoute.Sitemap = newsArticles.map((article) => ({
             url: `${baseUrl}news/${article.category.slug}/${article.slug}`,
