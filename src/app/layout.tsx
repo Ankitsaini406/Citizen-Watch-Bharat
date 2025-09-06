@@ -82,12 +82,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased flex flex-col min-h-screen`}
-      >
         <head>
           <GoogleTagManagerClient />
         </head>
+      <body
+        className={`antialiased flex flex-col min-h-screen`}
+      >
         <QueryProvider>
           <ChildLayout>
             <main className="min-h-screen">

@@ -1,28 +1,88 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from 'next/image';
+import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Page Not Found',
+    description: 'The page you are looking for does not exist or has been moved. Return to the homepage for the latest civic journalism and news from India.',
+    keywords: [
+        '404 error',
+        'page not found',
+        'Citizen Watch Bharat',
+        'civic journalism',
+        'Indian news'
+    ],
+    robots: {
+        index: true,
+        follow: true,
+    },
+    openGraph: {
+        title: 'Page Not Found | Citizen Watch Bharat',
+        description: 'The page you are looking for does not exist. Return to our homepage for the latest civic journalism and news from India.',
+        url: 'https://citizenwatchbharat.com/404',
+        siteName: 'Citizen Watch Bharat',
+        images: [
+            {
+                url: 'https://citizenwatchbharat.com/cover.webp',
+                width: 1200,
+                height: 630,
+                alt: 'Citizen Watch Bharat - Page Not Found',
+            },
+        ],
+        locale: 'en_IN',
+        type: 'website',
+    },
+    alternates: {
+        canonical: 'https://citizenwatchbharat.com/404',
+    },
+    other: {
+        'error-type': '404 Not Found',
+        'response-status': '404'
+    }
+};
 
 export default function NotFound() {
-    return (
-        <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
-            <Image
-                src="/cwb-header.png"
-                alt="Citizen Watch Bharat Logo"
-                className="w-48 mb-8 drop-shadow-lg"
-                height={200}
-                width={300}
-            />
-            <div className="bg-white rounded-xl shadow-lg p-4 md:p-8 flex flex-col items-center max-w-md w-full">
-                <h2 className="text-xl md:text-2xl font-bold text-yellow-600 mb-2">This Page is Under Construction</h2>
-                <p className="text-gray-700 mb-6 text-center">
-                    We are working hard to bring you this page soon. Please check back later!
-                </p>
-                <Link
-                    href="/"
-                    className="inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded transition"
-                >
-                    Return Home
-                </Link>
-            </div>
+  return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="text-center mb-8">
+          <Image
+            src="/cwb-header.png"
+            alt="Citizen Watch Bharat Logo"
+            className="mx-auto mb-6 drop-shadow-lg"
+            height={80}
+            width={240}
+            priority
+          />
+          <h1 className="text-6xl md:text-9xl font-bold text-gray-800 mb-4">404</h1>
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-700 mb-6">Page Not Found</h2>
         </div>
-    )
+        
+        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 max-w-md w-full mb-10">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+          </div>
+          
+          <p className="text-gray-600 text-center mb-6">
+            Sorry, the page you are looking for doesn&apos;t exist or has been moved.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/"
+              className="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 text-center"
+            >
+              Go to Homepage
+            </Link>
+          </div>
+        </div>
+        
+        <div className="text-center text-gray-500 text-sm">
+          <p>Explore our latest stories and civic journalism reports on the homepage</p>
+        </div>
+      </div>
+  );
 }
