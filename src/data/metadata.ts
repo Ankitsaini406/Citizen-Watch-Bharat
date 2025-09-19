@@ -108,6 +108,21 @@ const metadataConfig: MetadataConfig = {
             "Cultural heritage stories"
         ],
         path: "https://citizenwatchbharat.com/news/lifestyle"
+    },
+    sports: {
+        title: "Sports News",
+        description: "Latest sports updates from India and around the world. Coverage of cricket, football, tennis, Olympics, and other major sports events.",
+        keywords: [
+            "Indian sports news",
+            "Cricket updates India",
+            "Football news India",
+            "Olympics news",
+            "Tennis tournaments updates",
+            "Sports event coverage",
+            "Live match updates",
+            "Sports analysis India"
+        ],
+        path: "https://citizenwatchbharat.com/news/sports"
     }
 }
 
