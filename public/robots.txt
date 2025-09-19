@@ -1,4 +1,9 @@
 User-agent: *
 Disallow: /api/
 Disallow: /bio
+Disallow: /archives/
+Disallow: /register
+Disallow: /disclaimer
+Disallow: /home
+Disallow: /change
 Sitemap: https://citizenwatchbharat.com/sitemap.xml
