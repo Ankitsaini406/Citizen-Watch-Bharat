@@ -6,6 +6,7 @@ import { BottomBanner, LeftBanner, RightBanner, TopBanner } from "@/components/A
 import { useNewsCategory } from "@/hooks/useNews";
 import { useInView } from "@/hooks/useView";
 
+
 const PAGE_SIZE = 9;
 
 export default function CategoryNewsClient({ category }: { category: string }) {

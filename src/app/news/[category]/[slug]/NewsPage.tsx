@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import React, { useMemo } from "react";
-import { useParams } from "next/navigation";
+import { redirect, useParams} from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
 import { slugToName, timeAgo } from "@/utils/Utils";
@@ -10,21 +9,6 @@ import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "
 import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
 import AuthorProfile from '@/components/AuthorProfile';
 import { ScrollableNewsSection } from "@/utils/ScrollAnimation";
-
-// Error state component
-function ErrorState({ message }: { message: string; }) {
-    return (
-        <div className="flex flex-col items-center justify-center h-64 text-center text-red-600">
-            <svg className="w-12 h-12 mb-3" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <div className="mb-2 text-lg font-semibold">{message}</div>
-            <div className="flex gap-4 mt-2">
-                <Link href="/" className="underline text-blue-600 px-4 py-2">Go Home</Link>
-            </div>
-        </div>
-    );
-}
 
 // Shimmering skeleton loader for news article
 function NewsSkeleton() {
@@ -72,7 +56,7 @@ export default function NewsPage() {
     const slug = params?.slug as string;
 
     // Fetch main article data
-    const { data: articleData, isLoading, error } = useArticle(slug);
+    const { data: articleData, isLoading } = useArticle(slug);
 
     // Fetch related news
     const {
@@ -101,12 +85,10 @@ export default function NewsPage() {
         [categoryNewsData]
     );
 
-    if (isLoading) return <NewsSkeleton />;
-    if (error) return <ErrorState message={error.message} />;
-    if (!articleData) return <ErrorState message="Article not found" />;
+    if (isLoading) return <NewsSkeleton />
 
     if (!articleData) {
-        return <ErrorState message="Article not found" />;
+        redirect("/not-found");
     }
 
     const heroImageRaw = articleData.heroImage;
