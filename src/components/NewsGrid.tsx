@@ -46,24 +46,6 @@ export function NewsGridWithInfiniteScroll({
                 <h1 className="text-2xl font-bold text-red-700">{title}</h1>
                 <div className="flex-1 border-t-2 border-red-700"></div>
             </div>
-            {loading ? (
-                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
-                        <li key={idx} className="border border-gray-300 overflow-hidden animate-pulse">
-                            <div className="relative h-48 w-full bg-gray-200" />
-                            <div className="p-4 flex flex-col justify-between h-28">
-                                <div className="h-6 bg-gray-200 rounded w-3/4 mb-2" />
-                                <div className="flex justify-between mt-2">
-                                    <div className="h-4 bg-gray-200 rounded w-1/3" />
-                                    <div className="h-4 bg-gray-200 rounded w-1/4" />
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            ) : news.length === 0 ? (
-                <div>No news found.</div>
-            ) : (
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {news.map(item => {
                         const image = item.heroImage || "https://citizenwatchbharat.com/images/cwb/placeholder.svg";
@@ -99,7 +81,6 @@ export function NewsGridWithInfiniteScroll({
                         );
                     })}
                 </ul>
-            )}
             {loadingMore && <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array.from({ length: PAGE_SIZE }).map((_, idx) => (
                     <li key={idx} className="border border-gray-300 overflow-hidden animate-pulse">

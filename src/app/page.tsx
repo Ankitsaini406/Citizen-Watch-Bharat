@@ -1,4 +1,3 @@
-// src/app/page.tsx
 
 import { LeftBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import { BrakingNews } from "@/components/NewsComponents";

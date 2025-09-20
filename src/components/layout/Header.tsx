@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useLoading } from "@/context/LoadingContext"; // Import the loading context
+import { useLoading } from "@/context/LoadingContext";
 
 // --- Types ---
 type Category = { name: string; slug: string };
@@ -92,7 +92,7 @@ function Breadcrumb() {
     const pathname = usePathname();
     const { startLoading } = useLoading();
 
-    if (!pathname || pathname === "/") return null;
+    if (!pathname || pathname === "/" || pathname === "/not-found" || pathname === "404") return null;
     const segments = pathname.split("/").filter(Boolean);
 
     if (segments.length <= 1) return null;

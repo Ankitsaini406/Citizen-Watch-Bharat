@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Page Not Found | Citizen Watch Bharat',
         description: 'The page you are looking for does not exist. Return to our homepage for the latest civic journalism and news from India.',
-        url: 'https://citizenwatchbharat.com/404',
+        url: 'https://citizenwatchbharat.com/not-found',
         siteName: 'Citizen Watch Bharat',
         images: [
             {
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
         type: 'website',
     },
     alternates: {
-        canonical: 'https://citizenwatchbharat.com/404',
+        canonical: 'https://citizenwatchbharat.com/not-found',
     },
     other: {
         'error-type': '404 Not Found',
@@ -43,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4">
         <div className="text-center mb-8">
           <Image
             src="/cwb-header.png"
@@ -65,23 +64,10 @@ export default function NotFound() {
               </svg>
             </div>
           </div>
-          
+
           <p className="text-gray-600 text-center mb-6">
             Sorry, the page you are looking for doesn&apos;t exist or has been moved.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/"
-              className="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 text-center"
-            >
-              Go to Homepage
-            </Link>
-          </div>
-        </div>
-        
-        <div className="text-center text-gray-500 text-sm">
-          <p>Explore our latest stories and civic journalism reports on the homepage</p>
         </div>
       </div>
   );

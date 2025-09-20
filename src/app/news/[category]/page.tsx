@@ -2,6 +2,7 @@
 import CategoryNewsClient from './CategoryNewsClient';
 import metadataConfig from '@/data/metadata';
 import type { Metadata } from 'next'
+import { redirect, notFound } from 'next/navigation';
 
 type Props = {
     params: Promise<{ category: string }>
@@ -15,6 +16,11 @@ export async function generateMetadata(
 
     const categorys = category as keyof typeof metadataConfig;
     const config = metadataConfig[categorys] || metadataConfig.international;
+
+    if (!config) {
+        // 👉 If invalid category, show 404 page without rendering
+        notFound();
+    }
 
     return {
         title: config.title,
@@ -54,5 +60,11 @@ export async function generateMetadata(
 
 export default async function Page({ params }: Props) {
     const { category } = await params;
+    const config = metadataConfig[category as keyof typeof metadataConfig];
+
+    if (!config) {
+        // 👉 redirect to a safe page instead of loading
+        redirect('/not-found'); // or `notFound()` if you want a 404
+    }
     return <CategoryNewsClient category={category} />;
 }
