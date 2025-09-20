@@ -1,7 +1,7 @@
 "use client";
 
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton, WhatsappShareButton, FacebookIcon, TwitterIcon, LinkedinIcon, WhatsappIcon } from "next-share";
-import Tooltip from "@/components/Ui/ToolTip";
+import Tooltip from "@/components/ui/ToolTip";
 
 interface ShareButtonsProps {
     url: string;
