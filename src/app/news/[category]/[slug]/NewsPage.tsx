@@ -9,6 +9,7 @@ import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "
 import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
 import AuthorProfile from '@/components/AuthorProfile';
 import { ScrollableNewsSection } from "@/utils/ScrollAnimation";
+import ShareButtons from "@/utils/ShareButton";
 
 // Shimmering skeleton loader for news article
 function NewsSkeleton() {
@@ -158,6 +159,8 @@ export default function NewsPage() {
                             ))}
                         </div>
                     )}
+
+                    <ShareButtons url={`https://citizenwatchbharat.com/news/${articleData.category.slug}/${slug}`} title={articleData.title} />
 
                     {/* Author Profile */}
                     <div className="mb-8">
