@@ -99,11 +99,11 @@ export default function AuthorProfile({ author, className = '' }: AuthorProfileP
 
                     {/* Bio/Description */}
                     <div className="mb-4">
-                        <p className="text-gray-700 leading-relaxed text- sm:text-base">
+                        <p className="text-gray-700 leading-relaxed text- sm:text-base text-justify">
                             {author.intro}
                         </p>
 
-                        <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                        <p className="text-gray-700 leading-relaxed text-sm sm:text-base text-justify">
                             {author.description}
                         </p>
                     </div>
@@ -186,11 +186,11 @@ export default function AuthorProfile({ author, className = '' }: AuthorProfileP
 
                     {/* Bio/Description */}
                     <div className="mb-4">
-                        <p className="text-gray-700 leading-relaxed text- sm:text-base">
+                        <p className="text-gray-700 leading-relaxed text- sm:text-base text-justify">
                             {author.intro}
                         </p>
 
-                        <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                        <p className="text-gray-700 leading-relaxed text-sm sm:text-base text-justify">
                             {author.description}
                         </p>
                     </div>

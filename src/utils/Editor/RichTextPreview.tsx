@@ -26,7 +26,7 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 return (
                     <p
                         key={index}
-                        className={`mb-4 text-base leading-relaxed ${child.alignment ? `text-${child.alignment}` : ''}`}
+                        className={`mb-4 text-base leading-relaxed text-justify ${child.alignment ? `text-${child.alignment}` : ''}`}
                     >
                         {innerNodes}
                     </p>
@@ -56,37 +56,37 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 );
             case 'h1':
                 return (
-                    <h1 key={index} className="text-4xl font-bold mb-6 mt-8 text-gray-900 dark:text-white">
+                    <h1 key={index} className="text-4xl font-bold mb-6 mt-8 text-gray-900 dark:text-white text-justify">
                         {processChildren(child.children ?? [], child.type)}
                     </h1>
                 );
             case 'h2':
                 return (
-                    <h2 key={index} className="text-3xl font-semibold mb-4 mt-6 text-red-600 dark:text-red-400">
+                    <h2 key={index} className="text-3xl font-semibold mb-4 mt-6 text-red-600 dark:text-red-400 text-justify">
                         {processChildren(child.children ?? [], child.type)}
                     </h2>
                 );
             case 'h3':
                 return (
-                    <h3 key={index} className="text-2xl font-semibold mb-3 mt-5 text-gray-800 dark:text-gray-200">
+                    <h3 key={index} className="text-2xl font-semibold mb-3 mt-5 text-gray-800 dark:text-gray-200 text-justify">
                         {processChildren(child.children ?? [], child.type)}
                     </h3>
                 );
             case 'h4':
                 return (
-                    <h4 key={index} className="text-xl font-semibold mb-2 mt-4 text-gray-700 dark:text-gray-300">
+                    <h4 key={index} className="text-xl font-semibold mb-2 mt-4 text-gray-700 dark:text-gray-300 text-justify">
                         {processChildren(child.children ?? [], child.type)}
                     </h4>
                 );
             case 'h5':
                 return (
-                    <h5 key={index} className="text-lg font-semibold mb-2 mt-3 text-gray-600 dark:text-gray-400">
+                    <h5 key={index} className="text-lg font-semibold mb-2 mt-3 text-gray-600 dark:text-gray-400 text-justify">
                         {processChildren(child.children ?? [], child.type)}
                     </h5>
                 );
             case 'h6':
                 return (
-                    <h6 key={index} className="text-base font-semibold mb-1 mt-2 text-gray-500 dark:text-gray-500">
+                    <h6 key={index} className="text-base font-semibold mb-1 mt-2 text-gray-500 dark:text-gray-500 text-justify">
                         {processChildren(child.children ?? [], child.type)}
                     </h6>
                 );
@@ -114,7 +114,7 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                         href={child.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-blue-500 hover:text-blue-700 underline transition-colors"
+                        className="text-blue-500 hover:text-blue-700 underline transition-colors text-justify"
                     >
                         {processChildren(child.children ?? [], child.type)}
                     </a>
@@ -178,7 +178,7 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
             }
             case 'quote':
                 return (
-                    <blockquote key={index} className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 italic text-gray-600 dark:text-gray-400">
+                    <blockquote key={index} className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 italic text-gray-600 dark:text-gray-400 text-justify">
                         {processChildren(child.children ?? [], child.type)}
                     </blockquote>
                 );
@@ -195,12 +195,12 @@ const processChildren = (children: LexicalNode[], parentType?: string, parentCel
                 const allowedTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
                 const Tag = allowedTags.includes(tag) ? tag : 'h1';
                 const headingClass = {
-                    h1: "text-4xl font-bold mb-6 mt-8 text-gray-900",
-                    h2: "text-3xl font-semibold mb-4 mt-6",
-                    h3: "text-2xl font-semibold mb-3 mt-5",
-                    h4: "text-xl font-semibold mb-2 mt-4",
-                    h5: "text-lg font-semibold mb-2 mt-3",
-                    h6: "text-base font-semibold mb-1 mt-2",
+                    h1: "text-4xl font-bold mb-6 mt-8 text-gray-900 text-justify",
+                    h2: "text-3xl font-semibold mb-4 mt-6 text-justify",
+                    h3: "text-2xl font-semibold mb-3 mt-5 text-justify",
+                    h4: "text-xl font-semibold mb-2 mt-4 text-justify",
+                    h5: "text-lg font-semibold mb-2 mt-3 text-justify",
+                    h6: "text-base font-semibold mb-1 mt-2 text-justify",
                 }[Tag] || "";
                 return React.createElement(
                     Tag,
