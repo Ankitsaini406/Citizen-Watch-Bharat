@@ -1,7 +1,7 @@
 import { Category, News } from "@/types/type";
 import React from "react";
 import Image from "next/image";
-import { ButtonLink } from "@/utils/Buttons";
+import { ButtonLink } from "@/components/ui/Buttons";
 
 interface NewsWithImage extends News {
   heroImage: string;

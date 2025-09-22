@@ -9,7 +9,7 @@ import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "
 import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
 import AuthorProfile from '@/components/AuthorProfile';
 import { ScrollableNewsSection } from "@/utils/ScrollAnimation";
-import ShareButtons from "@/utils/ShareButton";
+import ShareButtons from "@/components/ui/ShareButton";
 
 // Shimmering skeleton loader for news article
 function NewsSkeleton() {

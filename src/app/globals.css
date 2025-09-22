@@ -9,11 +9,8 @@
   --color-foreground: #171717;
   --color-primary: #dc2626;
   --color-primary-hover: #f87171;
-  --color-border: var(--color-gray-300)
+  --color-border: var(--color-gray-300);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-title: var(--font-hindu-title);
   --font-hindu-body: var(--font-hindu-body);
 }
 
@@ -24,12 +21,12 @@
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #949698bb;
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -50,9 +47,6 @@
   --color-background: #ffffff;
   --color-foreground: #171717;
   --color-border: var(--color-gray-300);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-title: var(--font-hindu-title);
   --font-hindu-body: var(--font-hindu-body);
 }
 
@@ -84,4 +78,34 @@ button {
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
+}
+
+@keyframes slide-in {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.5s forwards;
+}
+
+.animate-slide-out {
+    animation: slide-out 0.5s forwards;
 }

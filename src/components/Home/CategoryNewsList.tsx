@@ -8,7 +8,7 @@ import EntertainmentNewsBox from "./News-Sections/EntertainmentNewsBox";
 import ElectionsNewsBox from "./News-Sections/ElectionsNewsBox";
 import WebStoriesNewsBox from "./News-Sections/WebStoriesNewsBox";
 import { LatestNews } from "../NewsComponents";
-import { ButtonSeeMore } from "@/utils/Buttons";
+import { ButtonSeeMore } from "@/components/ui/Buttons";
 import { BottomBanner, MiddleBanner } from "../AddBanners";
 import { fetchAllCategoriesAndNews } from "@/utils/ApiUtils";
 import LifestyleNewsBox from "./News-Sections/LifestyleNewsBox";

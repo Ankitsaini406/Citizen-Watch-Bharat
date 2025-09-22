@@ -5,6 +5,49 @@ import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+interface AccentButtonProps {
+    href?: string;
+    title: string;
+    className?: string;
+    type?: "button" | "submit" | "reset";
+    disabled?: boolean;
+}
+
+export function AccentButton({
+                                 href,
+                                 title,
+                                 className,
+                                 type = "button",
+                                 disabled = false,
+                             }: AccentButtonProps) {
+    const { startLoading } = useLoading();
+    const pathname = usePathname();
+
+    const baseClasses = `inline-flex items-center justify-center px-6 py-2 rounded-lg font-semibold 
+    text-white bg-primary hover:bg-primary-hover active:bg-red-800 
+    transition-colors duration-300 ${className}`;
+
+    if (href) {
+        const handleClick = () => {
+            if (!pathname || pathname !== href) {
+                startLoading();
+            }
+        };
+
+        return (
+            <Link href={href} onClick={handleClick} className={baseClasses}>
+                {title}
+            </Link>
+        );
+    }
+
+    return (
+        <button type={type} disabled={disabled} className={baseClasses}>
+            {title}
+        </button>
+    );
+}
+
 // Common click handler logic
 const useNavigationHandler = (href: string) => {
     const { startLoading } = useLoading();

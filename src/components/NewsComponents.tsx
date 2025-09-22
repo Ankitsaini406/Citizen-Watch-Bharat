@@ -1,6 +1,6 @@
 "use client";
 
-import { ButtonLink } from "@/utils/Buttons";
+import { ButtonLink } from "@/components/ui/Buttons";
 import { useEffect, useState } from "react";
 import { fetchBreakingNews, fetchLatestNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";

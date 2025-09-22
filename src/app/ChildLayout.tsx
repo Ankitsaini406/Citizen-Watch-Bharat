@@ -7,17 +7,20 @@ import TopLoadingBar from "@/components/TopLoadingBar";
 import { LoadingProvider } from "@/context/LoadingContext";
 import TailwindIndicator from "@/lib/TailwindIndicator";
 import { usePathname } from "next/navigation";
+import {ToastContainer} from "@/components/ui/Toast";
 
 export default function ChildLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
-    const isBioPage = pathname === '/bio'
+    const hiddenPaths = ["/bio", "/auth/login", "/auth/signup"];
+    const shouldHideLayout = hiddenPaths.includes(pathname);
     return (
         <LoadingProvider>
+            <ToastContainer />
             <TopLoadingBar />
-            {!isBioPage && <Header />}
+            {!shouldHideLayout && <Header />}
             {children}
             <TailwindIndicator />
-            {!isBioPage && <Footer />}
+            {!shouldHideLayout && <Footer />}
         </LoadingProvider>
     )
 }

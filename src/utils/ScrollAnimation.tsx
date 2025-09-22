@@ -1,7 +1,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { ButtonLink } from "./Buttons";
+import { ButtonLink } from "@/components/ui/Buttons";
 import { NewsArticle } from "@/types/type";
 import Image from "next/image";
 import { useInView } from '@/hooks/useView';

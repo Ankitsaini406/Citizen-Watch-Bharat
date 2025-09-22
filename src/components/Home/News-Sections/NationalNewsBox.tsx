@@ -2,7 +2,7 @@ import { Category, News } from "@/types/type";
 import React, { useMemo } from "react";
 import Image from "next/image";
 import Head from "next/head";
-import { ButtonLink } from "@/utils/Buttons";
+import { ButtonLink } from "@/components/ui/Buttons";
 
 interface NewsWithImage extends News {
     heroImage: string;

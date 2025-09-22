@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { ButtonLink } from "@/utils/Buttons";
+import { ButtonLink } from "@/components/ui/Buttons";
 import { NewsArticle } from "@/types/type";
 import { slugToName, timeAgo } from "@/utils/Utils";
 
