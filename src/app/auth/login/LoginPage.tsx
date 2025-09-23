@@ -20,20 +20,16 @@ export default function LoginPage() {
         setError("");
 
         try {
-            const res = await fetch("/api/users/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+            const result = await signIn("credentials", {
+                redirect: false,
+                email,
+                password,
             });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                setError(data.error || "Invalid credentials");
-                toast.error(data.error || "Invalid credentials");
+            if (result?.error) {
+                setError(result.error);
+                toast.error(result.error);
                 return;
             }
-
             toast.success("Login successful 🎉");
             router.push("/");
         } catch (err) {

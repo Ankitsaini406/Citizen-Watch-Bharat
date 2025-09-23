@@ -8,41 +8,43 @@ datasource db {
 }
 
 model User {
-  id             String            @id @default(cuid())
-  name           String
-  email          String            @unique
-  phonenumber    String?
-  address        String?
-  image          String?
-  password       String?
-  role           Role              @default(USER)
-  offerletter    String?
-  joindate       DateTime?
-  terminate      DateTime?
-  noticeperiod   DateTime?
-  isDelete       Boolean           @default(false)
-  status         String?
-  lastLogin      DateTime?
-  createdBy      String?
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
-  managerId      String?
-  isActive       Boolean           @default(false)
-  department     String?
-  description    String?
-  intro          String?
-  facebook_link  String?
-  instagram_link String?
-  linkedin_link  String?
-  twitter_link   String?
-  editedUsers    EditHistory[]     @relation("EditorUser")
-  editHistory    EditHistory[]
-  news           News[]
-  editedNews     News[]            @relation("NewsEditor")
-  newsEdited     NewsEditHistory[]
-  manager        User?             @relation("UserManager", fields: [managerId], references: [id])
-  subordinates   User[]            @relation("UserManager")
-  UserAttendance UserAttendance[]
+  id                       String            @id @default(cuid())
+  name                     String
+  email                    String            @unique
+  phonenumber              String?
+  address                  String?
+  image                    String?
+  password                 String?
+  role                     Role              @default(USER)
+  offerletter              String?
+  joindate                 DateTime?
+  terminate                DateTime?
+  noticeperiod             DateTime?
+  isDelete                 Boolean           @default(false)
+  status                   String?
+  lastLogin                DateTime?
+  createdBy                String?
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
+  managerId                String?
+  isActive                 Boolean           @default(false)
+  department               String?
+  description              String?
+  intro                    String?
+  facebook_link            String?
+  instagram_link           String?
+  linkedin_link            String?
+  twitter_link             String?
+  passwordResetToken       String?
+  passwordResetTokenExpiry DateTime?
+  editedUsers              EditHistory[]     @relation("EditorUser")
+  editHistory              EditHistory[]
+  news                     News[]
+  editedNews               News[]            @relation("NewsEditor")
+  newsEdited               NewsEditHistory[]
+  manager                  User?             @relation("UserManager", fields: [managerId], references: [id])
+  subordinates             User[]            @relation("UserManager")
+  UserAttendance           UserAttendance[]
 }
 
 model Category {

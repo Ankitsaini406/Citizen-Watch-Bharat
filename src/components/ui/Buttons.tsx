@@ -6,6 +6,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {useState} from "react";
 
+// Common click handler logic
+const useNavigationHandler = (href: string) => {
+    const { startLoading } = useLoading();
+    const pathname = usePathname();
+
+    const handleClick = () => {
+        // Only start loading if we're actually changing routes
+        if (!pathname || pathname !== href) {
+            startLoading();
+        }
+    };
+
+    return handleClick;
+};
+
 interface AccentButtonProps {
     href?: string;
     title: string;
@@ -14,13 +29,8 @@ interface AccentButtonProps {
     disabled?: boolean;
 }
 
-export function AccentButton({
-                                 href,
-                                 title,
-                                 className,
-                                 type = "button",
-                                 disabled = false,
-                             }: AccentButtonProps) {
+export function AccentButton({ href, title, className, type = "button", disabled = false }: AccentButtonProps) {
+
     const { startLoading } = useLoading();
     const pathname = usePathname();
 
@@ -48,21 +58,6 @@ export function AccentButton({
         </button>
     );
 }
-
-// Common click handler logic
-const useNavigationHandler = (href: string) => {
-    const { startLoading } = useLoading();
-    const pathname = usePathname();
-
-    const handleClick = () => {
-        // Only start loading if we're actually changing routes
-        if (!pathname || pathname !== href) {
-            startLoading();
-        }
-    };
-
-    return handleClick;
-};
 
 export function ButtonLeft({ href, title, className }: { href: string; title: string; className?: string; }) {
     const handleClick = useNavigationHandler(href);

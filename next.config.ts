@@ -53,11 +53,6 @@ const nextConfig: NextConfig = {
                 permanent: true,
             },
             {
-                source: '/profile',
-                destination: '/',
-                permanent: true,
-            },
-            {
                 source: '/profile/citizenwatchbharat',
                 destination: '/',
                 permanent: true,

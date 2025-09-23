@@ -7,6 +7,7 @@ import TopLoadingBar from "@/components/TopLoadingBar";
 import { LoadingProvider } from "@/context/LoadingContext";
 import TailwindIndicator from "@/lib/TailwindIndicator";
 import { usePathname } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 import {ToastContainer} from "@/components/ui/Toast";
 
 export default function ChildLayout({ children }: { children: React.ReactNode }) {
@@ -14,13 +15,15 @@ export default function ChildLayout({ children }: { children: React.ReactNode })
     const hiddenPaths = ["/bio", "/auth/login", "/auth/signup"];
     const shouldHideLayout = hiddenPaths.includes(pathname);
     return (
-        <LoadingProvider>
-            <ToastContainer />
-            <TopLoadingBar />
-            {!shouldHideLayout && <Header />}
-            {children}
-            <TailwindIndicator />
-            {!shouldHideLayout && <Footer />}
-        </LoadingProvider>
+        <SessionProvider>
+            <LoadingProvider>
+                <ToastContainer />
+                <TopLoadingBar />
+                {!shouldHideLayout && <Header />}
+                {children}
+                <TailwindIndicator />
+                {!shouldHideLayout && <Footer />}
+            </LoadingProvider>
+        </SessionProvider>
     )
 }

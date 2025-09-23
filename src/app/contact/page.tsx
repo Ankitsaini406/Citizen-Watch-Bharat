@@ -10,7 +10,7 @@ export const metadata: Metadata = {
         'Report civic issues to media',
         'Journalism collaboration India',
         'Ethical news portal contact',
-        'Citizen Watch Bharat emai',
+        'Citizen Watch Bharat email',
     ],
     openGraph: {
         title: 'Contact Our News Team | Citizen Watch Bharat',

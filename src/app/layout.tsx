@@ -92,7 +92,7 @@ export default function RootLayout({
         <QueryProvider>
           <ChildLayout>
             <main className="min-h-screen">
-              {children}
+                {children}
             </main>
           </ChildLayout>
         </QueryProvider>

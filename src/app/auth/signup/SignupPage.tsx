@@ -28,18 +28,29 @@ export default function SignUpPage() {
         });
 
         const data = await res.json();
+
         if (!res.ok) {
             toast.error(data.error || "Failed to sign up");
             setError(data.error || "Failed to sign up");
-        } else {
-            toast.success("✅ Account created! You can now log in.");
-            setName("");
-            setEmail("");
-            setPhonenumber("");
-            setAddress("");
-            setPassword("");
-            router.push('/auth/login');
+            setLoading(false);
+            return;
         }
+
+        toast.success("✅ Account created!");
+        // 🔑 Auto-login with NextAuth Credentials provider
+        const loginRes = await signIn("credentials", {
+            redirect: false,
+            email,
+            password,
+        });
+
+        if (loginRes?.error) {
+            toast.error("Account created, but login failed. Please login in manually.");
+            router.push("/auth/login");
+        } else {
+            router.push("/");
+        }
+
         setLoading(false);
     };
 

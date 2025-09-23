@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -6,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useLoading } from "@/context/LoadingContext";
+import { useSession } from "next-auth/react";
 
 // --- Types ---
 type Category = { name: string; slug: string };
@@ -46,6 +46,47 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
             onClick={startLoading} // Add loading trigger
         >
             {cat.name}
+        </Link>
+    );
+}
+
+function LoginButton() {
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+    const { data: session } = useSession();
+    const { startLoading } = useLoading();
+
+    useEffect(() => {
+        if (session?.user?.email) {
+            // ✅ logged in via NextAuth session
+            setIsLoggedIn(true);
+            return;
+        }
+    }, [session]);
+
+    if (isLoggedIn === null)
+        return <div className="w-24 h-10 bg-gray-200 animate-pulse rounded" />;
+
+    return isLoggedIn ? (
+        <Link
+            href="/profile"
+            onClick={() => startLoading()}
+            replace
+            className="inline-flex items-center justify-center px-6 py-2 rounded-lg font-semibold
+        text-white bg-primary hover:bg-primary-hover active:bg-red-800
+        transition-colors duration-300"
+        >
+            Profile
+        </Link>
+    ) : (
+        <Link
+            href="/auth/login"
+            onClick={() => startLoading()}
+            replace
+            className="inline-flex items-center justify-center px-6 py-2 rounded-lg font-semibold
+        text-white bg-primary hover:bg-primary-hover active:bg-red-800
+        transition-colors duration-300"
+        >
+            Login
         </Link>
     );
 }
@@ -276,6 +317,7 @@ export default function Header() {
                             <nav className="hidden md:flex items-center space-x-6 font-medium" aria-label="Main Navigation">
                                 <NavLinks />
                                 <NomineButton />
+                                <LoginButton />
                             </nav>
                         </div>
                     </div>
@@ -313,6 +355,7 @@ export default function Header() {
                     <nav className="h-full px-4 pt-16 pb-8 flex flex-col space-y-4 font-semibold divide-y overflow-y-auto" aria-label="Mobile Navigation">
                         <NavLinks onClick={handleCloseMenu} />
                         <NomineButton />
+                        <LoginButton />
                     </nav>
                 </div>
             </header>
