@@ -1,4 +1,6 @@
 
+import { JwtPayload } from "jsonwebtoken";
+
 export type Category = {
     id: string;
     name: string;
@@ -109,4 +111,11 @@ export interface CategoryMetadata {
 
 export interface MetadataConfig {
     [key: string]: CategoryMetadata;
+}
+
+export interface DecodeToken extends JwtPayload {
+    id?: string;
+    name?: string;
+    email?: string;
+    role?: string;
 }

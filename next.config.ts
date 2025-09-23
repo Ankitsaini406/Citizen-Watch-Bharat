@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   },
 
   env: {
+      JWT_SECRET: process.env.NEXT_JWT_SECRET,
     HOST_URL: process.env.NEXT_HOST_URL,
     LOCAL_URL: process.env.NEXT_LOCAL_URL,
   },
