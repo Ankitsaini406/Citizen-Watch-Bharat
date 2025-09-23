@@ -4,6 +4,7 @@ import { useLoading } from "@/context/LoadingContext";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {useState} from "react";
 
 interface AccentButtonProps {
     href?: string;
@@ -111,4 +112,27 @@ export function ButtonLink({ href, title, className }: { href: string; title: st
             <span className="relative z-10">{title}</span>
         </Link>
     )
+}
+
+export function ReadMore ({ text, length = 150 }: { text: string, length?: number }) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const needsTruncation = text.length > length;
+    const displayText = isExpanded ? text : (needsTruncation ? text.slice(0, length) + '...' : text);
+
+    return (
+        <div>
+            <p className={`text-gray-700 leading-relaxed text-sm sm:text-base text-justify ${isExpanded ? '' : 'line-clamp-3'}`}>
+                {displayText}
+            </p>
+            {needsTruncation && (
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-1 focus:outline-none"
+                >
+                    {isExpanded ? 'Show Less' : 'Read More'}
+                </button>
+            )}
+        </div>
+    );
 }
