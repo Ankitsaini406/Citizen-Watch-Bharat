@@ -51,20 +51,16 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
 }
 
 function LoginButton() {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const { data: session } = useSession();
     const { startLoading } = useLoading();
 
     useEffect(() => {
         if (session?.user?.email) {
-            // ✅ logged in via NextAuth session
             setIsLoggedIn(true);
             return;
         }
     }, [session]);
-
-    if (isLoggedIn === null)
-        return <div className="w-24 h-10 bg-gray-200 animate-pulse rounded" />;
 
     return isLoggedIn ? (
         <Link
