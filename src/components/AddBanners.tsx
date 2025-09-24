@@ -96,11 +96,11 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
 
     if (loading) {
         return (
-            <div className="hidden 2xl:block fixed left-0 top-48 h-3/4">
+            <aside className="hidden xl:block left-0 xl:top-[30rem] 2xl:top-48 h-full">
                 <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
-            </div>
+            </aside>
         );
     }
 
@@ -109,7 +109,7 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     return (
-        <div className="hidden 2xl:block fixed left-0 top-48 h-3/4">
+        <aside className="hidden xl:block left-0 xl:top-[30rem] 2xl:top-48 h-full">
             {advertisements.map((ad) => (
                 <div
                     key={ad.id}
@@ -137,7 +137,7 @@ export function LeftBanner({ place = 'Home' } : { place?: string; }) {
                     </Link>
                 </div>
             ))}
-        </div>
+        </aside>
     );
 }
 
@@ -162,11 +162,11 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
 
     if (loading) {
         return (
-            <div className="hidden 2xl:block fixed right-0 top-48 h-3/4">
+            <aside className="hidden xl:block sticky right-0 xl:top-[30rem] 2xl:top-48 h-full">
                 <div className="flex justify-center items-center w-40 bg-gradient-to-l from-gray-500 to-gray-400 h-96  border-2 border-gray-300 shadow-lg">
                     <h1 className="text-3xl text-background">Loading...</h1>
                 </div>
-            </div>
+            </aside>
         );
     }
 
@@ -175,7 +175,7 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
     }
 
     return (
-        <div className="hidden 2xl:block fixed right-0 top-48 h-3/4">
+        <aside className="hidden xl:block sticky right-0 xl:top-[30rem] 2xl:top-48 h-full">
             {advertisements.map((ad) => (
                 <div
                     key={ad.id}
@@ -203,7 +203,7 @@ export function RightBanner({ place = 'Home' } : { place?: string; }) {
                     </Link>
                 </div>
             ))}
-        </div>
+        </aside>
     );
 }
 

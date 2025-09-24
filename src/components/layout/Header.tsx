@@ -282,7 +282,7 @@ export default function Header() {
     return (
         <>
             {/* Top Navbar */}
-            <header className="relative bg-white text-black border-b border-black/30 z-50" role="banner">
+            <header className="relative bg-white text-black z-50" role="banner">
                 <div className="border-b border-gray-100">
                     <div className="px-2 md:px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">

@@ -123,7 +123,7 @@ export function ReadMore ({ text, length = 150 }: { text: string, length?: numbe
             {needsTruncation && (
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-1 focus:outline-none"
+                    className="text-primary hover:text-primary-hover text-sm font-medium mt-1 focus:outline-none"
                 >
                     {isExpanded ? 'Show Less' : 'Read More'}
                 </button>

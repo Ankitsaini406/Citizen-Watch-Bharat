@@ -5,7 +5,7 @@ import { redirect, useParams} from "next/navigation";
 import Image from "next/image";
 import RichTextPreview from "@/utils/Editor/RichTextPreview";
 import { slugToName, timeAgo } from "@/utils/Utils";
-import { BottomBanner, LeftBanner, MiddleBanner, RightBanner, TopBanner } from "@/components/AddBanners";
+import { MiddleBanner } from "@/components/AddBanners";
 import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
 import AuthorProfile from '@/components/AuthorProfile';
 import { ScrollableNewsSection } from "@/utils/ScrollAnimation";
@@ -98,53 +98,49 @@ export default function NewsPage() {
 
     return (
         <>
-            <TopBanner place="Par-News" />
-            <LeftBanner place="Par-News" />
-            <RightBanner place="Par-News" />
-            <article className="max-w-3xl mx-auto mt-8 mb-16 overflow-hidden">
-                <h1 className="text-2xl md:text-4xl font-bold mb-2 leading-relaxed px-4 lg:px-0">{articleData.title}</h1>
-                {articleData.subtitle && (
-                    <h2 className="md:text-xl text-gray-700 mb-4 px-4 lg:px-0 text-justify">{articleData.subtitle}</h2>
-                )}
-                {firstImage && (
-                    <div className="relative w-full h-80 sm:h-[400px]">
-                        <Image
-                            src={firstImage}
-                            alt={articleData.title}
-                            fill
-                            className="object-cover"
-                            priority={true}
-                            placeholder="blur"
-                            blurDataURL="https://citizenwatchbharat.com/images/cwb/placeholder.svg"
-                        />
-                    </div>
-                )}
+        <article className="w-full">
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-snug">{articleData.title}</h1>
 
-                <div className="p-4 lg:px-0">
-                    {/* Category and Date */}
-                    <div className="flex flex-wrap justify-between gap-4 mb-2 text-sm text-gray-500">
-                        <span className="uppercase font-semibold tracking-wider text-red-600">
-                            {articleData.category?.name}
-                        </span>
-                        <div className="flex gap-5">
-                            <span>{timeAgo(articleData.createdAt)}</span>
-                            <span>
-                                {[articleData.city, articleData.state, articleData.country]
-                                    .filter((part): part is string => Boolean(part))
-                                    .map(slugToName)
-                                    .join(', ') || null}
-                            </span>
-                        </div>
-                    </div>
+            {articleData.subtitle && (
+                <h2 className="md:text-xl text-gray-600 mb-6 leading-relaxed">{articleData.subtitle}</h2>
+            )}
 
-                    {/* Main Content */}
-                    <div className="prose max-w-none mb-8">
-                        {articleData.content && typeof articleData.content === "object" ? (
-                            <RichTextPreview lexicalJson={articleData.content} />
-                        ) : (
-                            <span className="text-gray-400">No content</span>
-                        )}
-                    </div>
+            {firstImage && (
+                <div className="relative w-full h-64 sm:h-80 md:h-[500px] overflow-hidden shadow">
+                    <Image
+                        src={firstImage}
+                        alt={articleData.title}
+                        fill
+                        className="object-cover"
+                        priority
+                        placeholder="blur"
+                        blurDataURL="/images/cwb/placeholder.svg"
+                    />
+                </div>
+            )}
+
+            <div className="mt-6 text-sm text-gray-500 flex flex-wrap justify-between gap-3">
+        <span className="uppercase font-semibold tracking-wide text-red-600">
+            {articleData.category?.name}
+        </span>
+                <div className="flex gap-4">
+                    <span>{timeAgo(articleData.createdAt)}</span>
+                    <span>
+                {[articleData.city, articleData.state, articleData.country]
+                    .filter((part): part is string => Boolean(part))
+                    .map(slugToName)
+                    .join(", ")}
+            </span>
+                </div>
+            </div>
+
+            <div className="prose prose-lg max-w-none mt-6 mb-10">
+                {articleData.content && typeof articleData.content === "object" ? (
+                    <RichTextPreview lexicalJson={articleData.content} />
+                ) : (
+                    <span className="text-gray-400">No content</span>
+                )}
+            </div>
 
                     {/* Tags */}
                     {articleData.tags && articleData.tags.length > 0 && (
@@ -170,7 +166,6 @@ export default function NewsPage() {
                             }}
                         />
                     </div>
-                </div>
 
                 {(categoryNews.length > 0 || relatedNews.length > 0) && <MiddleBanner place="Par-News" />}
 
@@ -196,7 +191,6 @@ export default function NewsPage() {
                     />
                 )}
             </article>
-            <BottomBanner place="Par-News" />
         </>
     );
 }

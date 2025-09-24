@@ -2,7 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Facebook, Instagram, Linkedin, X } from 'lucide-react';
-import Tooltip from "@/components/ui/ToolTip";
 import {ReadMore} from "@/components/ui/Buttons";
 
 interface AuthorProfileProps {
@@ -101,13 +100,13 @@ export default function AuthorProfile({ author, className = '' }: AuthorProfileP
 
                     {/* Bio/Description */}
                     <div className="mb-4">
-                        <p className="text-gray-700 leading-relaxed text- sm:text-base text-justify">
-                            {author.intro}
-                        </p>
+                        <div className="text-gray-700 leading-relaxed text- sm:text-base text-justify">
+                            <ReadMore text={author.intro ? author.intro : ""} />
+                        </div>
 
-                        <p className="text-gray-700 leading-relaxed text-sm sm:text-base text-justify">
-                            {author.description}
-                        </p>
+                        <div className="text-gray-700 leading-relaxed text-sm sm:text-base text-justify">
+                            <ReadMore text={author.description ? author.description : ""} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,13 +187,13 @@ export default function AuthorProfile({ author, className = '' }: AuthorProfileP
 
                     {/* Bio/Description */}
                     <div className="mb-4">
-                        <p className="text-gray-700 leading-relaxed text- sm:text-base text-justify">
+                        <div className="text-gray-700 leading-relaxed text- sm:text-base text-justify">
                             <ReadMore text={author.intro ? author.intro : ""} />
-                        </p>
+                        </div>
 
-                        <p className="text-gray-700 leading-relaxed text-sm sm:text-base text-justify">
+                        <div className="text-gray-700 leading-relaxed text-sm sm:text-base text-justify">
                            <ReadMore text={author.description ? author.description : ""} />
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>

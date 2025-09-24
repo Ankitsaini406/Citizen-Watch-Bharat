@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { NewsGridWithInfiniteScroll } from "@/components/NewsGrid";
-import { BottomBanner, LeftBanner, RightBanner, TopBanner } from "@/components/AddBanners";
 import { useNewsCategory } from "@/hooks/useNews";
 import { useInView } from "@/hooks/useView";
 
@@ -33,8 +32,7 @@ export default function CategoryNewsClient({ category }: { category: string }) {
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     return (
-            <div className="container mx-auto px-4 py-8">
-            <TopBanner place="News-Section" />
+            <>
                 <NewsGridWithInfiniteScroll
                     news={news}
                     loading={isLoading}
@@ -56,9 +54,6 @@ export default function CategoryNewsClient({ category }: { category: string }) {
                         <></>
                     ) : null}
                 </div>
-            <LeftBanner place="News-Section" />
-            <RightBanner place="News-Section" />
-            <BottomBanner place="News-Section" />
-            </div>
+            </>
     );
 }
