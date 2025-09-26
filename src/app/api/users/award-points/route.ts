@@ -8,8 +8,7 @@ export async function POST(req: Request) {
     try {
 
         const { platform, newsId, userId } = await req.json();
-        console.log(`This is perameter : `, platform, newsId, userId);
-        if (!newsId || !platform) {
+        if (!newsId || !platform || !userId) {
             return NextResponse.json({ error: "Missing fields" }, { status: 400 });
         }
 

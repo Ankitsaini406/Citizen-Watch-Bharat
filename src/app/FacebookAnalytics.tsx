@@ -9,7 +9,6 @@ export default function FacebookAnalytics() {
 
     useEffect(() => {
         if (process.env.NODE_ENV !== "production") {
-            console.log("Facebook Pixel is disabled in development mode.");
             return;
         }
 
