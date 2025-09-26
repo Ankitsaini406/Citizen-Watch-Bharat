@@ -119,3 +119,55 @@ export interface DecodeToken extends JwtPayload {
     email?: string;
     role?: string;
 }
+
+export type BookMarks = {
+    id: string;
+    userId: string;
+    newsId: string;
+}
+
+export type SharedNews = {
+    id: string;
+    userId: string;
+    newsId: string;
+    pointsEarned: number;
+    sharedAt: string;
+    platform: string;
+}
+
+export type PointsHistory = {
+    id: string;
+    userId: string;
+    points: string;
+    type: string;
+    description: string;
+    referenceId: string;
+}
+
+export type UserData = {
+    id: string;
+    name: string;
+    email: string;
+    phonenumber?: string;
+    address?: string;
+    image?: string;
+    role: string;
+    isDelete: boolean;
+    status?: string;
+    lastLogin?: string;
+    createdAt: string;
+    updatedAt: string;
+    manager?: { name: string } | null;
+    isActive: boolean;
+    department?: string;
+    description?: string;
+    intro?: string;
+    facebook_link?: string;
+    instagram_link?: string;
+    linkedin_link?: string;
+    twitter_link?: string;
+    totalPoints: number;
+    bookmarks: BookMarks[];
+    sharedNews: SharedNews[];
+    pointsHistory: PointsHistory[];
+};

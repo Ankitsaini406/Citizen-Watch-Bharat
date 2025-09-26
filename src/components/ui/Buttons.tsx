@@ -1,7 +1,7 @@
 "use client";
 
 import { useLoading } from "@/context/LoadingContext";
-import { MoveRight } from "lucide-react";
+import {ChevronRight, MoveRight} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {useState} from "react";
@@ -128,6 +128,18 @@ export function ReadMore ({ text, length = 150 }: { text: string, length?: numbe
                     {isExpanded ? 'Show Less' : 'Read More'}
                 </button>
             )}
+        </div>
+    );
+}
+
+export function QuickAction({ label, onClick }: { label: string; onClick?: () => void }) {
+    return (
+        <div
+            onClick={onClick}
+            className="flex items-center justify-between w-full rounded-xl border border-gray-200 bg-white px-4 py-3 cursor-pointer transition-all hover:border-blue-300 hover:shadow-md"
+        >
+            <span className="font-medium text-gray-700">{label}</span>
+            <ChevronRight className="h-4 w-4 text-gray-400" />
         </div>
     );
 }
