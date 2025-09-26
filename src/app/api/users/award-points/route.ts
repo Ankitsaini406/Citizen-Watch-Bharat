@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 
 // Points constant — adjust if needed
@@ -7,17 +6,12 @@ const SHARE_POINTS = 10;
 
 export async function POST(req: Request) {
     try {
-        const session = await getServerSession();
-        if (!session?.user?.id) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
 
-        const { platform, newsId } = await req.json();
+        const { platform, newsId, userId } = await req.json();
+        console.log(`This is perameter : `, platform, newsId, userId);
         if (!newsId || !platform) {
             return NextResponse.json({ error: "Missing fields" }, { status: 400 });
         }
-
-        const userId = session.user.id;
 
         // Check if user already shared today (prevent spamming same news multiple times per day)
         const alreadyShared = await prisma.sharedNews.findFirst({

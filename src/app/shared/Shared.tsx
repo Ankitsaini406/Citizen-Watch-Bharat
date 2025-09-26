@@ -3,10 +3,14 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import {useSession} from "next-auth/react";
 
 export default function SharedPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { data: session } = useSession();
+
+    const userId = session?.user?.id;
 
     useEffect(() => {
         const awardPoints = async () => {
@@ -22,7 +26,7 @@ export default function SharedPage() {
             try {
                 await fetch("/api/users/award-points", {
                     method: "POST",
-                    body: JSON.stringify({ newsId, platform }),
+                    body: JSON.stringify({ newsId, platform, userId }),
                     headers: { "Content-Type": "application/json" },
                 });
             } catch (err) {
@@ -34,7 +38,7 @@ export default function SharedPage() {
         };
 
         awardPoints();
-    }, [searchParams, router]);
+    }, [searchParams, router, userId]);
 
     return (
         <div className="flex items-center justify-center h-screen">
