@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
 
                 {/* Main Content */}
-                <section className={`flex-1 min-w-[300px] ${bannerPlace === "Par-News" ? "max-w-5xl" : ""} w-full mx-auto`}>{children}</section>
+                <section className={`flex-1 min-w-[300px] max-w-5xl w-full mx-auto`}>{children}</section>
 
                 {/* Sticky Right */}
                 <div className={`self-start hidden xl:block sticky top-20 2xl:top-12 h-[36rem] 2xl:h-[50rem]`}>
