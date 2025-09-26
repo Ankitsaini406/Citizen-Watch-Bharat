@@ -12,43 +12,53 @@ export default function SignUpPage() {
     const [phonenumber, setPhonenumber] = useState("");
     const [address, setAddress] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
+        setLoading(true); // ✅ button goes into loading mode immediately
 
-        const signupPromise = (async () => {
-            const res = await fetch("/api/users/signup", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, phonenumber, address, password }),
+            const signupPromise = (async () => {
+                const res = await fetch("/api/users/signup", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email, phonenumber, address, password }),
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Failed to sign up");
+
+                // Auto-login after signup
+                const loginRes = await signIn("credentials", {
+                    redirect: false,
+                    email,
+                    password,
+                });
+
+                if (loginRes?.error) {
+                    throw new Error("Account created, but login failed. Please login manually.");
+                }
+
+                router.push("/");
+                return "✅ Account created successfully!";
+            })();
+
+            toast.promise(signupPromise, {
+                loading: "Creating your account...",
+                success: (msg) => msg,
+                error: (err: Error) => err.message || "Something went wrong!",
             });
 
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || "Failed to sign up");
-
-            // Auto-login after signup
-            const loginRes = await signIn("credentials", {
-                redirect: false,
-                email,
-                password,
-            });
-
-            if (loginRes?.error) {
-                throw new Error("Account created, but login failed. Please login manually.");
-            }
-
-            router.push("/");
-            return "✅ Account created successfully!";
-        })();
-
-        await toast.promise(signupPromise, {
-            loading: "Creating your account...",
-            success: (msg) => msg,
-            error: (err: Error) => err.message || "Something went wrong!",
-        });
+        try {
+            await signupPromise;
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -151,9 +161,10 @@ export default function SignUpPage() {
 
                             <button
                                 type="submit"
+                                disabled={loading}
                                 className="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition disabled:opacity-50 shadow-lg"
                             >
-                                Create Account
+                                {loading ? "Creating Account..." : "Create Account"}
                             </button>
                         </form>
 

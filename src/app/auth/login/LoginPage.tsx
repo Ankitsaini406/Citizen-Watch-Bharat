@@ -19,23 +19,32 @@ export default function LoginPage() {
         setLoading(true);
         setError("");
 
-        try {
+        const loginPromise = (async () => {
             const result = await signIn("credentials", {
                 redirect: false,
                 email,
                 password,
             });
+
             if (result?.error) {
                 setError(result.error);
-                toast.error(result.error);
-                return;
+                throw new Error(result.error); // 🔥 this ensures toast.promise catches error
             }
-            toast.success("Login successful 🎉");
+
             router.push("/");
+            return "Login successful 🎉"; // this becomes the success message
+        })();
+
+        toast.promise(loginPromise, {
+            loading: "Logging in...",
+            success: (msg) => msg,
+            error: (err) => err.message || "Something went wrong. Try again.",
+        });
+
+        try {
+            await loginPromise;
         } catch (err) {
             console.error(err);
-            setError("Something went wrong. Try again.");
-            toast.error("Something went wrong. Try again.");
         } finally {
             setLoading(false);
         }
