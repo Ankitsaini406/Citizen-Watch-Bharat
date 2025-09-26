@@ -3,7 +3,7 @@ import ProfilePage from "@/app/profile/ProfilePage";
 
 // 🔹 Add SEO metadata for this page
 export const metadata: Metadata = {
-    title: "Profile | Citizen Watch Bharat",
+    title: "Profile",
     description:
         "Manage your Citizen Watch Bharat profile, update account details, and personalize your preferences.",
     keywords: [
