@@ -104,12 +104,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 changeFrequency: 'monthly' as const
             },
             {
-                url: `${baseUrl}terms-service`,
+                url: `${baseUrl}terms-of-service`,
                 lastModified: new Date(),
                 changeFrequency: 'monthly' as const
             },
             {
                 url: `${baseUrl}code-of-ethics`,
+                lastModified: new Date(),
+                changeFrequency: 'monthly' as const
+            },
+            {
+                url: `${baseUrl}auth/login`,
+                lastModified: new Date(),
+                changeFrequency: 'monthly' as const
+            },
+            {
+                url: `${baseUrl}auth/signup`,
                 lastModified: new Date(),
                 changeFrequency: 'monthly' as const
             },
