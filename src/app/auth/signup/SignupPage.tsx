@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
-import {toast} from "@/components/ui/Toast";
+import { toast } from "sonner";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 
@@ -12,46 +12,43 @@ export default function SignUpPage() {
     const [phonenumber, setPhonenumber] = useState("");
     const [address, setAddress] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
         setError(null);
 
-        const res = await fetch("/api/users/signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, phonenumber, address, password }),
-        });
+        const signupPromise = (async () => {
+            const res = await fetch("/api/users/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, phonenumber, address, password }),
+            });
 
-        const data = await res.json();
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Failed to sign up");
 
-        if (!res.ok) {
-            toast.error(data.error || "Failed to sign up");
-            setError(data.error || "Failed to sign up");
-            setLoading(false);
-            return;
-        }
+            // Auto-login after signup
+            const loginRes = await signIn("credentials", {
+                redirect: false,
+                email,
+                password,
+            });
 
-        toast.success("✅ Account created!");
-        // 🔑 Auto-login with NextAuth Credentials provider
-        const loginRes = await signIn("credentials", {
-            redirect: false,
-            email,
-            password,
-        });
+            if (loginRes?.error) {
+                throw new Error("Account created, but login failed. Please login manually.");
+            }
 
-        if (loginRes?.error) {
-            toast.error("Account created, but login failed. Please login in manually.");
-            router.push("/auth/login");
-        } else {
             router.push("/");
-        }
+            return "✅ Account created successfully!";
+        })();
 
-        setLoading(false);
+        await toast.promise(signupPromise, {
+            loading: "Creating your account...",
+            success: (msg) => msg,
+            error: (err: Error) => err.message || "Something went wrong!",
+        });
     };
 
     return (
@@ -154,10 +151,9 @@ export default function SignUpPage() {
 
                             <button
                                 type="submit"
-                                disabled={loading}
                                 className="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition disabled:opacity-50 shadow-lg"
                             >
-                                {loading ? "Creating Account..." : "Create Account"}
+                                Create Account
                             </button>
                         </form>
 

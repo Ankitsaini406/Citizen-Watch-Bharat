@@ -8,7 +8,7 @@ import { LoadingProvider } from "@/context/LoadingContext";
 import TailwindIndicator from "@/lib/TailwindIndicator";
 import { usePathname } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
-import {ToastContainer} from "@/components/ui/Toast";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function ChildLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
@@ -17,7 +17,7 @@ export default function ChildLayout({ children }: { children: React.ReactNode })
     return (
         <SessionProvider>
             <LoadingProvider>
-                <ToastContainer />
+                <Toaster closeButton richColors position="top-right" />
                 <TopLoadingBar />
                 {!shouldHideLayout && <Header />}
                 {children}

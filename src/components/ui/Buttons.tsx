@@ -34,8 +34,8 @@ export function AccentButton({ href, title, className, type = "button", disabled
     const { startLoading } = useLoading();
     const pathname = usePathname();
 
-    const baseClasses = `inline-flex items-center justify-center px-6 py-2 rounded-lg font-semibold 
-    text-white bg-primary hover:bg-primary-hover active:bg-red-800 
+    const baseClasses = `inline-flex items-center justify-center px-6 py-2 rounded-lg font-semibold border border-primary
+    text-white bg-primary hover:bg-white hover:text-primary active:bg-primary active:text-white
     transition-colors duration-300 ${className}`;
 
     if (href) {
