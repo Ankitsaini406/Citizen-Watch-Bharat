@@ -156,7 +156,11 @@ export default function NewsPage() {
                         </div>
                     )}
 
-                    <ShareButtons url={`https://citizenwatchbharat.com/news/${articleData.category.slug}/${slug}`} title={articleData.title} />
+                    <ShareButtons
+                        url={`https://citizenwatchbharat.com/news/${articleData.category.slug}/${slug}`}
+                        title={articleData.title}
+                        newsId={articleData.id}
+                    />
 
                     {/* Author Profile */}
                     <div className="mb-8">
