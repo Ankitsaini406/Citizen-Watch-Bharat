@@ -1,20 +1,16 @@
-// app/shared/page.tsx
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import {useSession} from "next-auth/react";
 
 export default function SharedPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { data: session } = useSession();
-
-    const userId = session?.user?.id;
 
     useEffect(() => {
         const awardPoints = async () => {
             const newsId = searchParams.get("newsId");
+            const userId = searchParams.get("userId");
             const platform = searchParams.get("platform");
             const redirectUrl = searchParams.get("redirect") || "/";
 
@@ -38,7 +34,7 @@ export default function SharedPage() {
         };
 
         awardPoints();
-    }, [searchParams, router, userId]);
+    }, [searchParams, router]);
 
     return (
         <div className="flex items-center justify-center h-screen">

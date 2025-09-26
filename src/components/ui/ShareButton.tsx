@@ -16,11 +16,12 @@ interface ShareButtonsProps {
     url: string;   // actual news URL
     title: string;
     newsId: string;
+    userId?: string;
 }
 
-export default function ShareButtons({ url, title, newsId }: ShareButtonsProps) {
+export default function ShareButtons({ url, title, newsId, userId }: ShareButtonsProps) {
     const shareUrl = (platform: string) =>
-        `https://citizenwatchbharat.com/shared?newsId=${newsId}&platform=${platform}&redirect=${encodeURIComponent(
+        `https://citizenwatchbharat.com/shared?newsId=${newsId}&platform=${platform}&userId=${userId}&redirect=${encodeURIComponent(
             url
         )}`;
 
