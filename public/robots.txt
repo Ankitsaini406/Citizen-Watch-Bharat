@@ -1,7 +1,6 @@
 User-agent: *
 Disallow: /api/
 Disallow: /bio
-Disallow: /archives/
 Disallow: /disclaimer
 Disallow: /home
 Disallow: /change
