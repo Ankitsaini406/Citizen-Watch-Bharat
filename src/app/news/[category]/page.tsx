@@ -15,7 +15,7 @@ export async function generateMetadata(
     const { category } = await params;
 
     const categorys = category as keyof typeof metadataConfig;
-    const config = metadataConfig[categorys] || metadataConfig.international;
+    const config = metadataConfig[categorys];
 
     if (!config) {
         // 👉 If invalid category, show 404 page without rendering
