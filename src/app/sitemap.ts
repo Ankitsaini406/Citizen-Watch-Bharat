@@ -71,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 url: `${baseUrl}news/${category.slug}/${subCat.slug}`,
                 lastModified: new Date(),
                 changeFrequency: 'daily' as const,
-                priority: 0.7
+                priority: 0.9
             })))
         ])
 
