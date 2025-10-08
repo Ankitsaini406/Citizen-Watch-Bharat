@@ -8,75 +8,71 @@ datasource db {
 }
 
 model News {
-  id             String    @id @default(cuid())
+  id             String            @id @default(cuid())
   title          String
-  slug           String    @unique
+  e_title        String?
+  slug           String            @unique
   subtitle       String?
   tags           String[]
   categoryId     String
   content        Json
-  issue          String[]  @default([])
+  issue          String[]          @default([])
   authorId       String
   author_name    String
-  views          Int       @default(0)
-  live           Boolean   @default(false)
-  isReview       Boolean   @default(false)
-  isPublish      Boolean   @default(false)
-  isDeleted      Boolean   @default(false)
+  views          Int               @default(0)
+  live           Boolean           @default(false)
+  isReview       Boolean           @default(false)
+  isPublish      Boolean           @default(false)
+  isDeleted      Boolean           @default(false)
   twitter_link   String
   facebook_link  String
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
   city           String
   state          String
-  status         String    @default("Draft")
+  status         String            @default("Draft")
   heroImage      String
   editorId       String?
   editor_name    String?
   lastEditedAt   DateTime?
   subCategoryId  String?
-  isBreaking     Boolean   @default(false)
+  isBreaking     Boolean           @default(false)
   pngImage       String?
   instagram_link String?
   country        String?
-
-  // New fields for bookmark and points system
-  bookmarkCount  Int @default(0)
-  shareCount     Int @default(0)
-  pointsPerShare Int @default(10)
-
-  author      User              @relation(fields: [authorId], references: [id])
-  category    Category          @relation(fields: [categoryId], references: [id])
-  editor      User?             @relation("NewsEditor", fields: [editorId], references: [id])
-  subCategory SubCategory?      @relation(fields: [subCategoryId], references: [id])
-  editHistory NewsEditHistory[]
-
-  // New relations for bookmark and sharing
-  bookmarks Bookmark[]
-  shares    SharedNews[]
+  bookmarkCount  Int               @default(0)
+  pointsPerShare Int               @default(10)
+  shareCount     Int               @default(0)
+  author         User              @relation(fields: [authorId], references: [id])
+  category       Category          @relation(fields: [categoryId], references: [id])
+  editor         User?             @relation("NewsEditor", fields: [editorId], references: [id])
+  subCategory    SubCategory?      @relation(fields: [subCategoryId], references: [id])
+  editHistory    NewsEditHistory[]
+  bookmarks      Bookmark[]
+  shares         SharedNews[]
 }
 
 model User {
-  id                       String    @id @default(cuid())
+  id                       String            @id @default(cuid())
   name                     String
-  email                    String    @unique
+  email                    String            @unique
   phonenumber              String?
   address                  String?
   image                    String?
   password                 String?
-  role                     Role      @default(USER)
+  role                     Role              @default(USER)
   offerletter              String?
   joindate                 DateTime?
   terminate                DateTime?
   noticeperiod             DateTime?
-  isDelete                 Boolean   @default(false)
+  isDelete                 Boolean           @default(false)
   status                   String?
   lastLogin                DateTime?
   createdBy                String?
-  createdAt                DateTime  @default(now())
-  updatedAt                DateTime  @updatedAt
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
   managerId                String?
-  isActive                 Boolean   @default(false)
+  isActive                 Boolean           @default(false)
   department               String?
   description              String?
   intro                    String?
@@ -86,35 +82,28 @@ model User {
   twitter_link             String?
   passwordResetToken       String?
   passwordResetTokenExpiry DateTime?
-
-  // New fields for points system
-  totalPoints Int @default(0)
-
-  editedUsers    EditHistory[]     @relation("EditorUser")
-  editHistory    EditHistory[]
-  news           News[]
-  editedNews     News[]            @relation("NewsEditor")
-  newsEdited     NewsEditHistory[]
-  manager        User?             @relation("UserManager", fields: [managerId], references: [id])
-  subordinates   User[]            @relation("UserManager")
-  UserAttendance UserAttendance[]
-
-  // New relations for bookmark and points system
-  bookmarks     Bookmark[]
-  sharedNews    SharedNews[]
-  pointsHistory PointsHistory[]
+  totalPoints              Int               @default(0)
+  editedUsers              EditHistory[]     @relation("EditorUser")
+  editHistory              EditHistory[]
+  news                     News[]
+  editedNews               News[]            @relation("NewsEditor")
+  newsEdited               NewsEditHistory[]
+  manager                  User?             @relation("UserManager", fields: [managerId], references: [id])
+  subordinates             User[]            @relation("UserManager")
+  UserAttendance           UserAttendance[]
+  bookmarks                Bookmark[]
+  pointsHistory            PointsHistory[]
+  sharedNews               SharedNews[]
 }
 
-// New models for bookmark and points system
 model Bookmark {
   id        String   @id @default(cuid())
   userId    String
   newsId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  news      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, newsId])
   @@map("bookmarks")
@@ -126,10 +115,9 @@ model SharedNews {
   newsId       String
   pointsEarned Int      @default(0)
   sharedAt     DateTime @default(now())
-  platform     String? // 'facebook', 'twitter', 'linkedin', 'instagram', 'direct'
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  platform     String?
+  news         News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, newsId, sharedAt])
   @@map("shared_news")
@@ -139,12 +127,11 @@ model PointsHistory {
   id          String   @id @default(cuid())
   userId      String
   points      Int
-  type        String // 'news_share', 'reward', 'bonus', 'redemption'
+  type        String
   description String?
-  referenceId String? // ID of related record (SharedNews id, etc.)
+  referenceId String?
   createdAt   DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("points_history")
 }
@@ -226,7 +213,6 @@ model Content {
 model Nominees {
   id                 String   @id @default(cuid())
   award              String
-  name               String
   age                String?
   phoneNumber        String
   email              String
@@ -248,6 +234,7 @@ model Nominees {
   mediaCoverage      String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  name               String
 }
 
 enum Role {
