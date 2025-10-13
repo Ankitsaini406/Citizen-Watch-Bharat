@@ -10,8 +10,7 @@ const securityHeaders = [
     },
     {
         key: "Content-Security-Policy",
-        value:
-            "default-src 'self'; img-src * data: blob:; media-src *; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src *; font-src 'self' data:; frame-ancestors 'self';",
+        value: "default-src 'self'; img-src * data: blob:; media-src *; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src *; font-src 'self' data:; frame-ancestors 'self';",
     },
     {
         key: "X-Frame-Options",
