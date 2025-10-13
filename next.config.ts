@@ -3,13 +3,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// ✅ Secure Content Security Policy (no unsafe-inline / unsafe-eval)
 const ContentSecurityPolicy = `
   default-src 'self';
-  img-src 'self' data: blob: https://citizenwatchbharat.com https://srv848684.hstgr.cloud;
+  img-src 'self' data: blob: https://citizenwatchbharat.com;
   media-src 'self' blob:;
   script-src 'self' https://www.googletagmanager.com;
   style-src 'self' 'unsafe-inline';
-  connect-src 'self' https://www.googletagmanager.com https://citizenwatchbharat.com https://srv848684.hstgr.cloud;
+  connect-src 'self' https://www.googletagmanager.com https://citizenwatchbharat.com;
   font-src 'self' data:;
   frame-ancestors 'self';
 `;
