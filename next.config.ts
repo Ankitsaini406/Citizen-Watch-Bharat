@@ -3,6 +3,18 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const isDev = process.env.NODE_ENV === "development";
+
+const scriptSrc = [
+    "'self'",
+    "'unsafe-inline'", // needed for inline scripts (like GTM)
+    "https://www.googletagmanager.com",
+    "https://www.google-analytics.com",
+    isDev ? "'unsafe-eval'" : "",
+]
+    .filter(Boolean)
+    .join(" ");
+
 const securityHeaders = [
     {
         key: "Strict-Transport-Security",
@@ -10,7 +22,16 @@ const securityHeaders = [
     },
     {
         key: "Content-Security-Policy",
-        value: "default-src 'self'; img-src * data: blob:; media-src *; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src *; font-src 'self' data:; frame-ancestors 'self';",
+        value: `
+      default-src 'self';
+      img-src * data: blob:;
+      media-src *;
+      script-src ${scriptSrc};
+      style-src 'self' 'unsafe-inline';
+      connect-src *;
+      font-src 'self' data:;
+      frame-ancestors 'self';
+    `.replace(/\s{2,}/g, " ").trim(),
     },
     {
         key: "X-Frame-Options",
@@ -31,7 +52,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-    poweredByHeader: false, // hides "x-powered-by: Next.js"
+    poweredByHeader: false,
 
     images: {
         remotePatterns: [
