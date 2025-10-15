@@ -85,6 +85,7 @@ export default function RootLayout({
     <html lang="en">
         <head>
           <GoogleTagManagerClient />
+            <title>Citizen Watch Bharat | Ethical Civic Journalism in India</title>
         </head>
       <body
         className={`antialiased flex flex-col min-h-screen`}
