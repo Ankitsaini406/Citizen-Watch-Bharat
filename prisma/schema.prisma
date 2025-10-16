@@ -94,6 +94,18 @@ model User {
   bookmarks                Bookmark[]
   pointsHistory            PointsHistory[]
   sharedNews               SharedNews[]
+  refreshTokens            RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenHash String // hashed refresh token
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  device    String? // e.g., "Chrome on Windows"
+  ipAddress String? // optional for security tracking
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model Bookmark {
