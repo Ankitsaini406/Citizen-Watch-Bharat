@@ -12,6 +12,7 @@ export async function fetchAdvertisements(position: string, page: string = 'home
             throw new Error('Failed to fetch advertisements');
         }
 
+
         return await response.json();
     } catch (error) {
         console.error('Error fetching advertisements:', error);
