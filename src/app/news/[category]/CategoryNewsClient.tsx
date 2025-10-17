@@ -1,30 +1,45 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { NewsGridWithInfiniteScroll } from "@/components/NewsGrid";
-import { useNewsCategory } from "@/hooks/useNews";
+import { useNewsQuery } from "@/hooks/useNews";
 import { useInView } from "@/hooks/useView";
 
-const PAGE_SIZE = 9;
+const DEFAULT_PAGE_SIZE = 9;
 
-export default function CategoryNewsClient({ category }: { category: string }) {
+interface CategoryNewsClientProps {
+    category: string;
+    exclude?: string; // optional, can exclude a slug
+}
+
+export default function CategoryNewsClient({ category, exclude }: CategoryNewsClientProps) {
     const [ref, inView] = useInView();
-    
-    const { 
-        data, 
-        isLoading, 
-        fetchNextPage, 
-        hasNextPage, 
-        isFetchingNextPage 
-    } = useNewsCategory(category);
 
-    // Flatten all pages of news items into a single array
-    const news = data?.pages.flatMap(page => page.data) || [];
+    // Use unified paginated hook
+    const {
+        data,
+        isLoading,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useNewsQuery({ category, exclude, limit: DEFAULT_PAGE_SIZE });
 
-    // Capitalize category for title
-    const title = category ? `${category.charAt(0).toUpperCase()}${category.slice(1)} News` : "News";
+    // Flatten pages into a single array
+    const news = useMemo(
+        () => data?.pages.flatMap(page => page.data) || [],
+        [data]
+    );
 
-    // Handle infinite scroll
+    // Capitalize category for display
+    const title = useMemo(
+        () =>
+            category
+                ? `${category.charAt(0).toUpperCase()}${category.slice(1)} News`
+                : "News",
+        [category]
+    );
+
+    // Infinite scroll: fetch next page when in view
     useEffect(() => {
         if (inView && hasNextPage && !isFetchingNextPage) {
             fetchNextPage();
@@ -32,28 +47,24 @@ export default function CategoryNewsClient({ category }: { category: string }) {
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     return (
-            <>
-                <NewsGridWithInfiniteScroll
-                    news={news}
-                    loading={isLoading}
-                    loadingMore={isFetchingNextPage}
-                    title={title}
-                    href={`/news/${category}`}
-                    PAGE_SIZE={PAGE_SIZE}
-                />
-                
-                {/* Infinite scroll trigger */}
-                <div 
-                    ref={ref} 
-                    className="h-10 flex items-center justify-center py-4"
-                    aria-live="polite"
-                >
-                    {isFetchingNextPage ? (
-                        <p>Loading more news...</p>
-                    ) : !hasNextPage && news.length > 0 ? (
-                        <></>
-                    ) : null}
-                </div>
-            </>
+        <>
+            <NewsGridWithInfiniteScroll
+                news={news}
+                loading={isLoading}
+                loadingMore={isFetchingNextPage}
+                title={title}
+                href={`/news/${category}`}
+                PAGE_SIZE={DEFAULT_PAGE_SIZE}
+            />
+
+            {/* Infinite scroll trigger */}
+            <div
+                ref={ref}
+                className="h-10 flex items-center justify-center py-4"
+                aria-live="polite"
+            >
+                {isFetchingNextPage && <p>Loading more news...</p>}
+            </div>
+        </>
     );
 }

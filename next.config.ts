@@ -28,7 +28,7 @@ const securityHeaders = [
       media-src *;
       script-src ${scriptSrc};
       style-src 'self' 'unsafe-inline';
-      connect-src *;
+      connect-src 'self' https://api.citizenwatchbharat.com http://localhost:5007/;
       font-src 'self' data:;
       frame-ancestors 'self';
     `.replace(/\s{2,}/g, " ").trim(),
@@ -67,6 +67,8 @@ const nextConfig: NextConfig = {
         JWT_SECRET: process.env.NEXT_JWT_SECRET,
         HOST_URL: process.env.NEXT_HOST_URL,
         LOCAL_URL: process.env.NEXT_LOCAL_URL,
+        HOST_API_URL: process.env.NEXT_HOST_API_URL,
+        LOCAL_API_URL: process.env.NEXT_LOCAL_API_URL,
     },
 
     async headers() {

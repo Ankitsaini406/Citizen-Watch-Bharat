@@ -1,4 +1,4 @@
-import { baseUrl } from "@/utils/ApiUtils";
+import {baseApiUrl} from "@/utils/ApiUtils";
 import NewsPage from "./NewsPage";
 import type { Metadata } from 'next'
 import { redirect, notFound } from 'next/navigation';
@@ -10,7 +10,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
 
-    const response = await fetch(`${baseUrl}api/news/${slug}`);
+    const response = await fetch(`${baseApiUrl}news/${slug}`);
     if (!response.ok) {
         // API failed → 404
         redirect("/not-found");

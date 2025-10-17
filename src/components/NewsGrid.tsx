@@ -41,7 +41,7 @@ export function NewsGridWithInfiniteScroll({
     }
 
     return (
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 xl:px-0 py-8">
             <div className="flex items-center gap-4 w-full mb-6">
                 <h1 className="text-2xl font-bold text-red-700">{title}</h1>
                 <div className="flex-1 border-t-2 border-red-700"></div>
