@@ -2,20 +2,23 @@
 
 import React, { useEffect, useMemo } from "react";
 import { NewsGridWithInfiniteScroll } from "@/components/NewsGrid";
-import { useNewsQuery } from "@/hooks/useNews";
+import { useNewsQuery, PaginatedNewsResponse } from "@/hooks/useNews";
 import { useInView } from "@/hooks/useView";
+import { NewsArticle } from "@/types/type";
 
 const DEFAULT_PAGE_SIZE = 9;
 
 interface CategoryNewsClientProps {
     category: string;
-    exclude?: string; // optional, can exclude a slug
+    exclude?: string;
 }
 
-export default function CategoryNewsClient({ category, exclude }: CategoryNewsClientProps) {
+export default function CategoryNewsClient({
+                                               category,
+                                               exclude,
+                                           }: CategoryNewsClientProps) {
     const [ref, inView] = useInView();
 
-    // Use unified paginated hook
     const {
         data,
         isLoading,
@@ -24,13 +27,24 @@ export default function CategoryNewsClient({ category, exclude }: CategoryNewsCl
         isFetchingNextPage,
     } = useNewsQuery({ category, exclude, limit: DEFAULT_PAGE_SIZE });
 
-    // Flatten pages into a single array
-    const news = useMemo(
-        () => data?.pages.flatMap(page => page.data) || [],
-        [data]
-    );
+    // ✅ Flatten pages safely without using `any`
+    const news: NewsArticle[] = useMemo(() => {
+        if (!data?.pages) return [];
 
-    // Capitalize category for display
+        // Cast pages to the union type we expect so flatMap callback receives the correct type
+        return (data.pages as (PaginatedNewsResponse | NewsArticle[])[])
+            .flatMap((page) => {
+                if (Array.isArray(page)) return page;
+                if (Array.isArray((page as PaginatedNewsResponse).data)) return (page as PaginatedNewsResponse).data;
+                if ((page as { results?: NewsArticle[] }).results)
+                    return (page as { results?: NewsArticle[] }).results;
+                if ((page as { items?: NewsArticle[] }).items)
+                    return (page as { items?: NewsArticle[] }).items;
+                return [];
+            })
+            .filter((n): n is NewsArticle => n !== undefined && n !== null);
+    }, [data]);
+
     const title = useMemo(
         () =>
             category
@@ -39,7 +53,6 @@ export default function CategoryNewsClient({ category, exclude }: CategoryNewsCl
         [category]
     );
 
-    // Infinite scroll: fetch next page when in view
     useEffect(() => {
         if (inView && hasNextPage && !isFetchingNextPage) {
             fetchNextPage();
@@ -57,7 +70,6 @@ export default function CategoryNewsClient({ category, exclude }: CategoryNewsCl
                 PAGE_SIZE={DEFAULT_PAGE_SIZE}
             />
 
-            {/* Infinite scroll trigger */}
             <div
                 ref={ref}
                 className="h-10 flex items-center justify-center py-4"
