@@ -88,20 +88,6 @@ export interface CategoryMetadata {
     path: string;
 }
 
-export interface CommonMetadata {
-    siteName: string;
-    images: {
-        default: string;
-        sizes: {
-            width: number;
-            height: number;
-        };
-    };
-    twitterHandle: string;
-    locale: string;
-    type: string;
-}
-
 export interface CategoryMetadata {
     title: string;
     description: string;

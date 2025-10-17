@@ -29,7 +29,7 @@ export default function BioComponent() {
         }
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-    const allNews = data?.pages.flatMap(page => page.data) || [];
+    const allNews: NewsArticle[] = data?.pages?.flatMap((page) => page.data) || [];
 
     if (isLoading && !data) {
         return <SkeletonSocialNewsBox />;

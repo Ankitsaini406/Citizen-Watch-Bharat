@@ -9,12 +9,13 @@ export interface NewsQueryOptions {
     limit?: number;
 }
 
-export interface InfiniteNewsResponse {
+export interface PaginatedNewsResponse {
     data: NewsArticle[];
     pagination: {
         total: number;
         page: number;
         pageSize: number;
+        totalPages: number;
         hasMore: boolean;
     };
 }
@@ -23,28 +24,12 @@ export interface InfiniteNewsResponse {
 export const useNewsQuery = (options: NewsQueryOptions = {}) => {
     const { category, tags, exclude, limit = 9 } = options;
 
-    return useInfiniteQuery<
-        InfiniteNewsResponse,        // TData
-        Error,                       // TError
-        InfiniteNewsResponse,        // TQueryFnData
-        ['news', NewsQueryOptions],  // TQueryKey
-        number                       // TPageParam
-    >({
+    return useInfiniteQuery<PaginatedNewsResponse, Error>({
         queryKey: ['news', options],
-        queryFn: async ({ pageParam = 1 }) => {
-            // pageParam is now typed as number
-            const currentPage = pageParam;
-
-            if (tags && tags.length === 0) {
-                return {
-                    data: [],
-                    pagination: { total: 0, page: 1, pageSize: limit, hasMore: false },
-                };
-            }
-
+        queryFn: async ({ pageParam = 1  }) => {
             const query = new URLSearchParams({
+                page: pageParam.toString(),
                 limit: limit.toString(),
-                page: currentPage.toString(),
             });
 
             if (category) query.append('category', category);
@@ -54,11 +39,9 @@ export const useNewsQuery = (options: NewsQueryOptions = {}) => {
             const res = await fetch(`${baseApiUrl}news?${query.toString()}`);
             if (!res.ok) throw new Error('Failed to fetch news');
 
-            const data = await res.json();
-            return {
-                data: data.data,
-                pagination: { ...data.pagination, pageSize: limit },
-            };
+            const json = await res.json();
+            console.log(`This is json data : `, json);
+            return json; // already has { data, pagination }
         },
         getNextPageParam: (lastPage) =>
             lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined,
@@ -67,23 +50,21 @@ export const useNewsQuery = (options: NewsQueryOptions = {}) => {
 };
 
 /** Single article hook */
-export const useArticle = (slug: string) => {
-    return useQuery<NewsArticle, Error>({
+export const useArticle = (slug: string) =>
+    useQuery<NewsArticle, Error>({
         queryKey: ['article', slug],
         queryFn: async () => {
             if (!slug) throw new Error('Invalid slug');
 
             const res = await fetch(`${baseApiUrl}news/${slug}`);
-            const data = await res.json();
+            const json = await res.json();
 
-            if (data.success) return data.data.news;
+            if (json.success && json.data) return json.data;
             throw new Error('Article not found');
         },
         enabled: !!slug,
     });
-};
 
-/** Wrapper hooks for specific use cases */
 export const useCategoryNews = (category?: string, exclude?: string, limit?: number) =>
     useNewsQuery({ category, exclude, limit });
 
