@@ -31,19 +31,18 @@ export default function CategoryNewsClient({
     const news: NewsArticle[] = useMemo(() => {
         if (!data?.pages) return [];
 
-
-        // Cast pages to the union type we expect so flatMap callback receives the correct type
         return (data.pages as (PaginatedNewsResponse | NewsArticle[])[])
             .flatMap((page) => {
                 if (Array.isArray(page)) return page;
                 if (Array.isArray((page as PaginatedNewsResponse).data)) return (page as PaginatedNewsResponse).data;
-                if ((page as { results?: NewsArticle[] }).results)
-                    return (page as { results?: NewsArticle[] }).results;
-                if ((page as { items?: NewsArticle[] }).items)
-                    return (page as { items?: NewsArticle[] }).items;
+                if ((page as { results?: NewsArticle[] }).results) return (page as { results?: NewsArticle[] }).results!;
+                if ((page as { items?: NewsArticle[] }).items) return (page as { items?: NewsArticle[] }).items!;
                 return [];
             })
-            .filter((n): n is NewsArticle => n !== undefined && n !== null);
+            // Filter out anything missing required fields like `slug`
+            .filter(
+                (n): n is NewsArticle => !!n && typeof n.slug === "string"
+            );
     }, [data]);
 
     const title = useMemo(

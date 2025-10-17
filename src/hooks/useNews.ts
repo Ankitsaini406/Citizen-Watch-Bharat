@@ -20,6 +20,11 @@ export interface PaginatedNewsResponse {
     };
 }
 
+export interface NewsData {
+    news: NewsArticle;
+    views: number;
+}
+
 /** ✅ Unified paginated news hook */
 export const useNewsQuery = (options: NewsQueryOptions = {}) => {
     const { category, tags, exclude, limit = 9 } = options;
@@ -55,7 +60,7 @@ export const useNewsQuery = (options: NewsQueryOptions = {}) => {
 
 /** ✅ Single article hook */
 export const useArticle = (slug: string) =>
-    useQuery<NewsArticle, Error>({
+    useQuery<NewsData, Error>({
         queryKey: ['article', slug],
         queryFn: async () => {
             if (!slug) throw new Error('Invalid slug');
@@ -63,7 +68,7 @@ export const useArticle = (slug: string) =>
             const res = await fetch(`${baseApiUrl}news/${slug}`);
             if (!res.ok) throw new Error('Failed to fetch article');
 
-            const json: { success: boolean; data?: NewsArticle } = await res.json();
+            const json: { success: boolean; data?: NewsData } = await res.json();
             if (json.success && json.data) return json.data;
 
             throw new Error('Article not found');

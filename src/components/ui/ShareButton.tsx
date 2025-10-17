@@ -14,8 +14,8 @@ import Tooltip from "@/components/ui/ToolTip";
 
 interface ShareButtonsProps {
     url: string;   // actual news URL
-    title: string;
-    newsId: string;
+    title?: string;
+    newsId?: string;
     userId?: string;
 }
 
