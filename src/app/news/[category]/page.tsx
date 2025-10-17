@@ -22,6 +22,7 @@ export async function generateMetadata(
         notFound();
     }
 
+
     return {
         title: config.title,
         description: config.description,

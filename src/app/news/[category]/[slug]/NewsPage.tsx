@@ -58,6 +58,7 @@ export default function NewsPage() {
     const slug = params?.slug as string;
     const { data: session } = useSession();
 
+
     // Fetch main article data
     const { data: articleData, isLoading } = useArticle(slug);
 

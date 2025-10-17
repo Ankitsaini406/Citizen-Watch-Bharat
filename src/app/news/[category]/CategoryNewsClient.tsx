@@ -31,6 +31,7 @@ export default function CategoryNewsClient({
     const news: NewsArticle[] = useMemo(() => {
         if (!data?.pages) return [];
 
+
         // Cast pages to the union type we expect so flatMap callback receives the correct type
         return (data.pages as (PaginatedNewsResponse | NewsArticle[])[])
             .flatMap((page) => {

@@ -18,6 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         }
     }, [pathname]);
 
+
     return (
         <main className="relative bg-background pb-10">
             {/* Full width Top Banner */}
