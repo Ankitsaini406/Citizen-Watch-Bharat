@@ -15,6 +15,13 @@ const scriptSrc = [
     .filter(Boolean)
     .join(" ");
 
+const connectSrc = [
+    "'self'",
+    "https://api.citizenwatchbharat.com",
+    "http://localhost:5007/",
+    "https://www.google-analytics.com", // <--- ADD THIS
+].join(" ");
+
 const securityHeaders = [
     {
         key: "Strict-Transport-Security",
@@ -28,7 +35,7 @@ const securityHeaders = [
       media-src *;
       script-src ${scriptSrc};
       style-src 'self' 'unsafe-inline';
-      connect-src 'self' https://api.citizenwatchbharat.com http://localhost:5007/;
+      connect-src ${connectSrc};
       font-src 'self' data:;
       frame-ancestors 'self';
     `.replace(/\s{2,}/g, " ").trim(),

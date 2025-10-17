@@ -10,7 +10,6 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
 
-
     const response = await fetch(`${baseApiUrl}news/${slug}`);
     if (!response.ok) {
         // API failed → 404
