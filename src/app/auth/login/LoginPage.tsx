@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Mail, Lock } from "lucide-react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/AuthStore";
+import {baseApiUrl} from "@/utils/ApiUtils";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -14,25 +15,35 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const router = useRouter();
 
+    const setAuthToken = useAuthStore((state) => state.setAuthToken);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError("");
 
         const loginPromise = (async () => {
-            const result = await signIn("credentials", {
-                redirect: false,
-                email,
-                password,
+            const response = await fetch(`${baseApiUrl}auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
             });
 
-            if (result?.error) {
-                setError(result.error);
-                throw new Error(result.error); // 🔥 this ensures toast.promise catches error
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Login failed");
             }
 
+            // ✅ Store user + token in Zustand
+            setAuthToken(data.data.accessToken);
+
+            // Optionally, store in localStorage (for persistence)
+            localStorage.setItem("accessToken", data.data.accessToken);
+            localStorage.setItem("user", JSON.stringify(data.data.user));
+
             router.push("/");
-            return "Login successful 🎉"; // this becomes the success message
+            return "Login successful 🎉";
         })();
 
         toast.promise(loginPromise, {
@@ -44,6 +55,7 @@ export default function LoginPage() {
         try {
             await loginPromise;
         } catch (err) {
+            toast.error("Login failed. Please try again.");
             console.error(err);
         } finally {
             setLoading(false);
@@ -151,7 +163,7 @@ export default function LoginPage() {
 
                         {/* Google Button */}
                         <button
-                            onClick={() => signIn("google")}
+                            onClick={() => ("google")}
                             className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition backdrop-blur-sm"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">

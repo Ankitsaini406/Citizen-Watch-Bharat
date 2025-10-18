@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useLoading } from "@/context/LoadingContext";
-import { useSession } from "next-auth/react";
+import { useAuthStore } from "@/store/AuthStore";
 import { AccentButton } from "@/components/ui/Buttons";
 
 // --- Types ---
@@ -52,18 +52,10 @@ function CategoryLink({ cat, isActive }: { cat: Category; isActive: boolean }) {
 }
 
 function LoginButton() {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const { data: session } = useSession();
-
-    useEffect(() => {
-        if (session?.user?.email) {
-            setIsLoggedIn(true);
-            return;
-        }
-    }, [session]);
+    const { isAuthenticated } = useAuthStore();
 
     return (
-        <AccentButton title={isLoggedIn ? "Profile" : "Login"} href={isLoggedIn ? "/profile" : "/auth/login"} />
+        <AccentButton title={isAuthenticated ? "Profile" : "Login"} href={isAuthenticated ? "/profile" : "/auth/login"} />
     );
 }
 

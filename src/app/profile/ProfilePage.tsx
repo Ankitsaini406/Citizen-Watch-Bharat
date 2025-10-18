@@ -1,27 +1,44 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { signOut } from "next-auth/react";
 import { UserData } from "@/types/type";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
+import { baseApiUrl } from "@/utils/ApiUtils";
+import React, { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChangePasswordDialog, EditProfileDialog } from "@/app/profile/ProfileCompoent";
 import { LogOut, User, Settings, Mail, Phone, MapPin, Award, Share2, Bookmark, Building } from "lucide-react";
-import {ChangePasswordDialog, EditProfileDialog} from "@/app/profile/ProfileCompoent";
+import { useAuthStore } from "@/store/AuthStore";
+import {useRouter} from "next/navigation";
+
 
 export default function ProfilePage() {
     const [user, setUser] = useState<UserData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
+    const { accessToken, logout } = useAuthStore();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 setIsLoading(true);
-                const res = await fetch("/api/users/profile");
+                // ✅ Get token from Zustand or localStorage
+                const token = localStorage.getItem("accessToken");
+                if (!token) {
+                    toast.error("User not authenticated");
+                    return;
+                }
+                // ✅ Call NestJS API with Authorization header
+                const res = await fetch(`${baseApiUrl}user/profile`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 if (!res.ok) {
                     toast.error("Failed to fetch user profile");
+                    return;
                 }
                 const data: UserData = await res.json();
                 setUser(data);
@@ -40,14 +57,36 @@ export default function ProfilePage() {
 
     const handleLogout = async () => {
         try {
-            await signOut({ callbackUrl: "/auth/login" });
-            toast.success("Logged out successfully");
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                toast.error(err.message);
-            } else {
-                toast.error("Failed to log out");
+            if (!accessToken) {
+                toast.error("Not logged in");
+                return;
             }
+
+            // 🔥 1. Call NestJS logout endpoint
+            const res = await fetch(`${baseApiUrl}auth/logout`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            if (!res.ok) {
+                const errData = await res.json().catch(() => null);
+                throw new Error(errData?.message || "Logout failed");
+            }
+
+            // 🔥 2. Clear Zustand + localStorage
+            logout(); // this clears Zustand state
+            localStorage.removeItem("accessToken");
+
+            // 🔥 3. Optional: redirect user
+            toast.success("Logged out successfully");
+            router.push("/auth/login");
+
+        } catch (err: unknown) {
+            if (err instanceof Error) toast.error(err.message);
+            else toast.error("Failed to log out");
         }
     };
 
