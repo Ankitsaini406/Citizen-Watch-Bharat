@@ -4,6 +4,19 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
     const url = req.nextUrl.pathname;
 
+    // 🔹 Get token or user info from cookies/localStorage (on server, use cookies)
+    const token = req.cookies.get("auth-token")?.value;
+
+    // 🔹 1. Protect routes that require authentication
+    const protectedRoutes = ["/profile"]; // add more if needed
+
+    if (protectedRoutes.some((route) => url.startsWith(route))) {
+        if (!token) {
+            const loginUrl = new URL("/auth/login", req.url);
+            return NextResponse.redirect(loginUrl);
+        }
+    }
+
     // 🔹 1. Handle old/deprecated URLs
     const oldPatterns = [
         "/archives",
