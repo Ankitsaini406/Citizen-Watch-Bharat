@@ -15,7 +15,7 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const router = useRouter();
 
-    const setAuthToken = useAuthStore((state) => state.setAuthToken);
+    const setAuthToken = useAuthStore((state) => state.setAuthData);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,7 +36,7 @@ export default function LoginPage() {
             }
 
             // ✅ Store user + token in Zustand
-            setAuthToken(data.data.accessToken);
+            setAuthToken(data.data.accessToken, data.data.user.id);
 
             // Optionally, store in localStorage (for persistence)
             localStorage.setItem("accessToken", data.data.accessToken);

@@ -10,7 +10,7 @@ import { useArticle, useRelatedNews, useCategoryNews } from '@/hooks/useNews';
 import AuthorProfile from '@/components/AuthorProfile';
 import { ScrollableNewsSection } from "@/utils/ScrollAnimation";
 import ShareButtons from "@/components/ui/ShareButton";
-import {useSession} from "next-auth/react";
+import {useAuthStore} from "@/store/AuthStore";
 
 // Shimmering skeleton loader for news article
 function NewsSkeleton() {
@@ -56,7 +56,7 @@ function NewsSkeleton() {
 export default function NewsPage() {
     const params = useParams();
     const slug = params?.slug as string;
-    const { data: session } = useSession();
+    const { userId } = useAuthStore();
 
     // Fetch main article data
     const { data: articleData, isLoading } = useArticle(slug);
@@ -161,7 +161,7 @@ export default function NewsPage() {
                     <ShareButtons
                         url={`https://citizenwatchbharat.com/news/${articleData.news.category.slug}/${slug}`}
                         title={articleData.news.title}
-                        userId={session?.user?.id}
+                        userId={userId == undefined ? undefined : userId}
                         newsId={articleData.news?.id}
                     />
 

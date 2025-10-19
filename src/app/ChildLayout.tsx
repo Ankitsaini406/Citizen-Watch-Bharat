@@ -8,7 +8,7 @@ import { LoadingProvider } from "@/context/LoadingContext";
 import TailwindIndicator from "@/lib/TailwindIndicator";
 import { usePathname } from "next/navigation";
 import { Toaster } from "@/components/ui/sonner";
-import {useAuthInit} from "@/hooks/useAuthInit";
+import { useAuthInit } from "@/hooks/useAuthInit";
 
 export default function ChildLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
