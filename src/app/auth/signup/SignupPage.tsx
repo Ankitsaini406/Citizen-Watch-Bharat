@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
@@ -32,15 +31,15 @@ export default function SignUpPage() {
                 if (!res.ok) throw new Error(data.error || "Failed to sign up");
 
                 // Auto-login after signup
-                const loginRes = await signIn("credentials", {
-                    redirect: false,
-                    email,
-                    password,
-                });
+                // const loginRes = await signIn("credentials", {
+                //     redirect: false,
+                //     email,
+                //     password,
+                // });
 
-                if (loginRes?.error) {
-                    throw new Error("Account created, but login failed. Please login manually.");
-                }
+                // if (loginRes?.error) {
+                //     throw new Error("Account created, but login failed. Please login manually.");
+                // }
 
                 router.push("/");
                 return "✅ Account created successfully!";
@@ -177,7 +176,7 @@ export default function SignUpPage() {
 
                         {/* Google Button */}
                         <button
-                            onClick={() => signIn("google")}
+                            onClick={() => ("google")}
                             className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition backdrop-blur-sm"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
