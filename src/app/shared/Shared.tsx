@@ -2,6 +2,7 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import {baseApiUrl} from "@/utils/ApiUtils";
 
 export default function SharedPage() {
     const searchParams = useSearchParams();
@@ -20,9 +21,9 @@ export default function SharedPage() {
             }
 
             try {
-                await fetch("/api/users/award-points", {
+                await fetch(`${baseApiUrl}user/award-points`, {
                     method: "POST",
-                    body: JSON.stringify({ newsId, platform, userId }),
+                    body: JSON.stringify({ userId, newsId, platform }),
                     headers: { "Content-Type": "application/json" },
                 });
             } catch (err) {

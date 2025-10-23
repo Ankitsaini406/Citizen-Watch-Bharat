@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { baseApiUrl } from "@/utils/ApiUtils";
 
 export default function NominationForm() {
     const [activeSection, setActiveSection] = useState<
@@ -122,7 +123,7 @@ export default function NominationForm() {
                         }
                     };
 
-                    xhr.open('POST', '/api/upload', true);
+                    xhr.open('POST', `${baseApiUrl}upload`, true);
                     xhr.send(formData);
                 });
             })
@@ -177,7 +178,7 @@ export default function NominationForm() {
             };
 
             // Submit to API route
-            const response = await fetch('/api/nominees', {
+            const response = await fetch(`${baseApiUrl}nominees/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

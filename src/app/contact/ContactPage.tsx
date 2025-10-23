@@ -2,7 +2,8 @@
 
 import { LocateFixed, Mail, MessageSquare, Newspaper, Send } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import {baseApiUrl} from "@/utils/ApiUtils";
 
 export default function ContactUs() {
     const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ export default function ContactUs() {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('/api/contact', {
+            const response = await fetch(`${baseApiUrl}contact/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
