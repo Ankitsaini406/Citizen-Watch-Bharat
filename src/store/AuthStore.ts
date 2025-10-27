@@ -33,7 +33,7 @@ export const useAuthStore = create<AuthState>()(
                 }),
         }),
         {
-            name: "auth-storage", // localStorage key
+            name: "refreshToken", // localStorage key
         }
     )
 );

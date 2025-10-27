@@ -5,7 +5,7 @@ export function middleware(req: NextRequest) {
     const url = req.nextUrl.pathname;
 
     // 🔹 Get token or user info from cookies/localStorage (on server, use cookies)
-    const token = req.cookies.get("auth-token")?.value;
+    const token = req.cookies.get("refreshToken")?.value;
 
     // 🔹 1. Protect routes that require authentication
     const protectedRoutes = ["/profile"]; // add more if needed

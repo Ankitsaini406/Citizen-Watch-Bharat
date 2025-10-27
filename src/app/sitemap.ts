@@ -1,51 +1,33 @@
-// app/sitemap.ts
-import { MetadataRoute } from 'next'
-import { prisma } from '@/lib/prisma'
+import { MetadataRoute } from "next";
+import { baseApiUrl } from "@/utils/ApiUtils";
+import {Category, NewsArticle} from "@/types/type";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://citizenwatchbharat.com/'
+    const baseUrl = "https://citizenwatchbharat.com/";
 
     try {
-        const categories = await prisma.category.findMany({
-            select: {
-                slug: true,
-                subCategories: {
-                    select: {
-                        slug: true
-                    }
-                }
-            },
-            orderBy: { name: 'asc' },
-        })
+        // 🔹 Fetch categories and news data from NestJS API
+        const res = await fetch(`${baseApiUrl}news/all-data`, {
+            next: { revalidate: 300 }, // cache for 5 Min
+        });
 
-        const newsArticles = await prisma.news.findMany({
-            where: {
-                isPublish: true,
-                isDeleted: false
-            },
-            select: {
-                slug: true,
-                createdAt: true,
-                title: true,
-                tags: true,
-                category: {
-                    select: {
-                        slug: true
-                    }
-                },
-                subCategory: {
-                    select: {
-                        slug: true
-                    }
-                }
-            },
-            orderBy: { createdAt: 'desc' }
-        })
+        if (!res.ok) {
+            throw new Error(`Failed to fetch from backend: ${res.status}`);
+        }
 
-        // News URLs
-        const newsUrls: MetadataRoute.Sitemap = newsArticles.map((article) => ({
-            url: `${baseUrl}news/${article.category.slug}/${article.slug}`,
-            lastModified: article.createdAt,
+        const data = await res.json();
+
+        if (!data.success) {
+            throw new Error("Backend returned unsuccessful response");
+        }
+
+        const categories = data.categories || [];
+        const newsArticles = data.newsArticles || [];
+
+        // 📰 News URLs
+        const newsUrls: MetadataRoute.Sitemap = newsArticles.map((article: NewsArticle) => ({
+            url: `${baseUrl}news/${article.category?.slug}/${article.slug}`,
+            lastModified: article.createdAt ? new Date(article.createdAt) : new Date(),
             news: {
                 publication: {
                     name: "Citizen Watch Bharat",
@@ -53,91 +35,58 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 },
                 publicationDate: article.createdAt,
                 title: article.title,
-                keywords: Array.isArray(article.tags) && article.tags.length > 0
-                    ? article.tags.join(", ")
-                    : ""
-            }
-        }))
-
-        // Category + Subcategory URLs
-        const categoryUrls: MetadataRoute.Sitemap = categories.flatMap((category) => [
-            {
-                url: `${baseUrl}news/${category.slug}`,
-                lastModified: new Date(),
-                changeFrequency: 'daily' as const,
-                priority: 0.8
+                keywords:
+                    Array.isArray(article.tags) && article.tags.length > 0
+                        ? article.tags.join(", ")
+                        : "",
             },
-            ...(category.subCategories.map(subCat => ({
-                url: `${baseUrl}news/${category.slug}/${subCat.slug}`,
-                lastModified: new Date(),
-                changeFrequency: 'daily' as const,
-                priority: 0.9
-            })))
-        ])
+        }));
 
-        // Static pages
+        // 📂 Category + Subcategory URLs
+        const categoryUrls: MetadataRoute.Sitemap = categories.flatMap(
+            (category: Category) => [
+                {
+                    url: `${baseUrl}news/${category.slug}`,
+                    lastModified: new Date(),
+                    changeFrequency: "daily" as const,
+                    priority: 0.8,
+                },
+                ...(category.subCategories || []).map((subCat: Category) => ({
+                    url: `${baseUrl}news/${category.slug}/${subCat.slug}`,
+                    lastModified: new Date(),
+                    changeFrequency: "daily" as const,
+                    priority: 0.9,
+                })),
+            ]
+        );
+
+        // 🧭 Static pages
         const staticUrls: MetadataRoute.Sitemap = [
             {
                 url: baseUrl,
                 lastModified: new Date(),
-                changeFrequency: 'hourly' as const,
-                priority: 1.0
+                changeFrequency: "hourly",
+                priority: 1.0,
             },
-            {
-                url: `${baseUrl}about`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-            {
-                url: `${baseUrl}contact`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-            {
-                url: `${baseUrl}career`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-            {
-                url: `${baseUrl}privacy-policy`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-            {
-                url: `${baseUrl}terms-of-service`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-            {
-                url: `${baseUrl}code-of-ethics`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-            {
-                url: `${baseUrl}auth/login`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-            {
-                url: `${baseUrl}auth/signup`,
-                lastModified: new Date(),
-                changeFrequency: 'monthly' as const
-            },
-        ]
+            { url: `${baseUrl}about`, lastModified: new Date(), changeFrequency: "monthly" },
+            { url: `${baseUrl}contact`, lastModified: new Date(), changeFrequency: "monthly" },
+            { url: `${baseUrl}career`, lastModified: new Date(), changeFrequency: "monthly" },
+            { url: `${baseUrl}privacy-policy`, lastModified: new Date(), changeFrequency: "monthly" },
+            { url: `${baseUrl}terms-of-service`, lastModified: new Date(), changeFrequency: "monthly" },
+            { url: `${baseUrl}code-of-ethics`, lastModified: new Date(), changeFrequency: "monthly" },
+            { url: `${baseUrl}auth/login`, lastModified: new Date(), changeFrequency: "monthly" },
+            { url: `${baseUrl}auth/signup`, lastModified: new Date(), changeFrequency: "monthly" },
+        ];
 
-        return [
-            ...staticUrls,
-            ...categoryUrls,
-            ...newsUrls
-        ]
-
+        // ✅ Combine everything
+        return [...staticUrls, ...categoryUrls, ...newsUrls];
     } catch (error) {
-        console.error('Sitemap generation error:', error)
+        console.error("Sitemap generation error:", error);
         return [
             {
-                url: baseUrl || 'https://citizenwatchbharat.com',
-                lastModified: new Date()
-            }
-        ]
+                url: baseUrl,
+                lastModified: new Date(),
+            },
+        ];
     }
 }

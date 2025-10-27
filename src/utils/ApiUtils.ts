@@ -1,6 +1,5 @@
 import { Advertisement, Category, NewsArticle } from "@/types/type";
 
-export const baseUrl = process.env.NODE_ENV === "production" ? process.env.HOST_URL : process.env.LOCAL_URL;
 export const baseApiUrl = process.env.NODE_ENV === "production" ? process.env.HOST_API_URL : process.env.LOCAL_API_URL;
 
 export async function fetchAdvertisements(position: string, page: string = 'home'): Promise<Advertisement[]> {
