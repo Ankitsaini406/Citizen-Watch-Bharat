@@ -1,9 +1,9 @@
 import { MetadataRoute } from "next";
-import { baseApiUrl } from "@/utils/ApiUtils";
 import {Category, NewsArticle} from "@/types/type";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = "https://citizenwatchbharat.com/";
+    const baseApiUrl = "https://api.citizenwatchbharat.com/";
 
     try {
         // 🔹 Fetch categories and news data from NestJS API
