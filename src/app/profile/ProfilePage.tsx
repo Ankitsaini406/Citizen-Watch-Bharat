@@ -81,6 +81,7 @@ export default function ProfilePage() {
             logout(); // this clears Zustand state
             localStorage.removeItem("accessToken");
             localStorage.removeItem("user");
+            document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
             // 🔥 3. Optional: redirect user
             toast.success("Logged out successfully");
