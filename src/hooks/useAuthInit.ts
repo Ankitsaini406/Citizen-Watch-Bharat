@@ -2,12 +2,13 @@
 
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/AuthStore";
+import {getCookie} from "@/utils/Utils";
 
 export function useAuthInit() {
     const { accessToken, setAuthData } = useAuthStore();
 
     useEffect(() => {
-        const token = localStorage.getItem("accessToken")
+        const token = getCookie("refreshToken");
         const user = localStorage.getItem("user");
         const parsedUser = user ? JSON.parse(user) as { id?: string } : null;
 

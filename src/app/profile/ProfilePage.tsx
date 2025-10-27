@@ -12,6 +12,7 @@ import { ChangePasswordDialog, EditProfileDialog } from "@/app/profile/ProfileCo
 import { LogOut, User, Settings, Mail, Phone, MapPin, Award, Share2, Bookmark, Building } from "lucide-react";
 import { useAuthStore } from "@/store/AuthStore";
 import {useRouter} from "next/navigation";
+import {getCookie} from "@/utils/Utils";
 
 
 export default function ProfilePage() {
@@ -25,7 +26,7 @@ export default function ProfilePage() {
             try {
                 setIsLoading(true);
                 // ✅ Get token from Zustand or localStorage
-                const token = localStorage.getItem("accessToken");
+                const token = getCookie("refreshToken");
                 if (!token) {
                     toast.error("User not authenticated");
                     return;
@@ -79,6 +80,7 @@ export default function ProfilePage() {
             // 🔥 2. Clear Zustand + localStorage
             logout(); // this clears Zustand state
             localStorage.removeItem("accessToken");
+            localStorage.removeItem("user");
 
             // 🔥 3. Optional: redirect user
             toast.success("Logged out successfully");

@@ -7,6 +7,11 @@ if (!SECRET_KEY) {
     throw new Error("JWT_SECRET is not defined");
 }
 
+export function getCookie(name: string): string | null {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+}
+
 export function slugToName(slug: string) {
     return slug
         .replace(/-/g, " ")
