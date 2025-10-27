@@ -65,7 +65,10 @@ export const useArticle = (slug: string) =>
         queryFn: async () => {
             if (!slug) throw new Error('Invalid slug');
 
-            const res = await fetch(`${baseApiUrl}news/${slug}`);
+            const res = await fetch(`${baseApiUrl}news/${slug}`, {
+                cache: "no-store",
+                next: { revalidate: 300 } // revalidate every 5 min
+            });
             if (!res.ok) throw new Error('Failed to fetch article');
 
             const json: { success: boolean; data?: NewsData } = await res.json();
@@ -74,6 +77,7 @@ export const useArticle = (slug: string) =>
             throw new Error('Article not found');
         },
         enabled: !!slug,
+        staleTime: 5 * 60 * 1000, // cache in React Query for 5 mins
     });
 
 /** ✅ Category news hook */

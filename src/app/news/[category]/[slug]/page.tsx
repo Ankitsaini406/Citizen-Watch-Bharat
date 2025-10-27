@@ -2,6 +2,8 @@ import {baseApiUrl} from "@/utils/ApiUtils";
 import NewsPage from "./NewsPage";
 import type { Metadata } from 'next'
 import { redirect, notFound } from 'next/navigation';
+import { Suspense } from "react";
+import {NewsSkeleton} from "@/utils/Skeleten";
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -10,7 +12,9 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
 
-    const response = await fetch(`${baseApiUrl}news/${slug}`);
+    const response = await fetch(`${baseApiUrl}news/${slug}`, {
+        cache: "no-store",
+    });
     if (!response.ok) {
         // API failed → 404
         redirect("/not-found");
@@ -60,5 +64,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page() {
-    return <NewsPage />
+    return (
+        <Suspense fallback={<NewsSkeleton />}>
+            <NewsPage />
+        </Suspense>
+    )
 }

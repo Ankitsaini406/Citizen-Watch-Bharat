@@ -60,7 +60,6 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
     poweredByHeader: false,
-
     images: {
         remotePatterns: [
             {
@@ -68,6 +67,7 @@ const nextConfig: NextConfig = {
                 hostname: "citizenwatchbharat.com",
             },
         ],
+        qualities: [75, 85],
     },
 
     env: {

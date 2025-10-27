@@ -3,7 +3,7 @@
 import { useSocialNews } from "@/hooks/useNews";
 import { useInView } from "@/hooks/useView";
 import { NewsArticle } from "@/types/type";
-import { SkeletonSocialNewsBox } from "@/utils/Loading";
+import { SkeletonSocialNewsBox } from "@/utils/Skeleten";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";

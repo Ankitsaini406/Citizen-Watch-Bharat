@@ -37,10 +37,7 @@ export default function LoginPage() {
 
             // ✅ Store user + token in Zustand
             setAuthToken(data.data.accessToken, data.data.user.id);
-
-            // Optionally, store in localStorage (for persistence)
             document.cookie = `refreshToken=${data.data.accessToken}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=strict`;
-
             router.push("/");
             return "Login successful 🎉";
         })();

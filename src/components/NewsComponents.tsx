@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/ui/Buttons";
 import { useEffect, useState } from "react";
 import { fetchBreakingNews, fetchLatestNews } from "@/utils/ApiUtils";
 import { NewsArticle } from "@/types/type";
-import { SkeletonLatest } from "@/utils/Loading";
+import { SkeletonLatest } from "@/utils/Skeleten";
 import { timeAgo } from "@/utils/Utils";
 
 type BreakingNewsItem = {
