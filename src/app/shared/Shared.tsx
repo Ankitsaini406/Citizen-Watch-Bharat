@@ -3,10 +3,12 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import {baseApiUrl} from "@/utils/ApiUtils";
+import { useAuthStore } from "@/store/AuthStore";
 
 export default function SharedPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { accessToken } = useAuthStore();
 
     useEffect(() => {
         const awardPoints = async () => {
@@ -23,8 +25,11 @@ export default function SharedPage() {
             try {
                 await fetch(`${baseApiUrl}user/award-points`, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${accessToken}`,
+                    },
                     body: JSON.stringify({ userId, newsId, platform }),
-                    headers: { "Content-Type": "application/json" },
                 });
             } catch (err) {
                 console.error("Error awarding points:", err);
