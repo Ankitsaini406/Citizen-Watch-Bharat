@@ -83,18 +83,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-        <head>
-          <GoogleTagManagerClient />
-            {/* ✅ Preconnect for faster LCP */}
-            <link rel="preconnect" href="https://api.citizenwatchbharat.com" />
-            <link rel="dns-prefetch" href="https://api.citizenwatchbharat.com" />
-            <title>Citizen Watch Bharat | Ethical Civic Journalism in India</title>
-        </head>
-      <body
+    <head>
+        <GoogleTagManagerClient/>
+        {/* ✅ Preconnect for faster LCP */}
+        <link rel="preconnect" href="https://api.citizenwatchbharat.com"/>
+        <link rel="dns-prefetch" href="https://api.citizenwatchbharat.com"/>
+        <link rel="preload" href="/_next/static/chunks/main.js" as="script"/>
+        <title>Citizen Watch Bharat | Ethical Civic Journalism in India</title>
+    </head>
+    <body
         className={`antialiased flex flex-col min-h-screen`}
-      >
-        <QueryProvider>
-          <ChildLayout>
+    >
+    <QueryProvider>
+        <ChildLayout>
             <main className="min-h-screen">
                 {children}
             </main>
