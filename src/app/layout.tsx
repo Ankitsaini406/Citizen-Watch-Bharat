@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ChildLayout from "./ChildLayout";
 import QueryProvider from "@/lib/queryClient";
-import GoogleTagManagerClient from "./GoolgeAnalytics";
+// import GoogleTagManagerClient from "./GoolgeAnalytics";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -84,7 +85,10 @@ export default function RootLayout({
   return (
     <html lang="en">
         <head>
-          <GoogleTagManagerClient />
+          {/*<GoogleTagManagerClient />*/}
+            {/* ✅ Preconnect for faster LCP */}
+            <link rel="preconnect" href="https://api.citizenwatchbharat.com" />
+            <link rel="dns-prefetch" href="https://api.citizenwatchbharat.com" />
             <title>Citizen Watch Bharat | Ethical Civic Journalism in India</title>
         </head>
       <body
@@ -97,6 +101,22 @@ export default function RootLayout({
             </main>
           </ChildLayout>
         </QueryProvider>
+
+        {/* ✅ Optional: Lazy load analytics to avoid blocking */}
+        <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-6HS1L2H40M"
+            strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+            {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-6HS1L2H40M', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
       </body>
     </html>
   );
