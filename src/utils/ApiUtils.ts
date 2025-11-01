@@ -58,7 +58,7 @@ export async function fetchBreakingNews(): Promise<NewsArticle[]> {
 export async function fetchLatestNews(): Promise<NewsArticle[]> {
 
     try {
-        const response = await fetch(`${baseApiUrl}news/latest`, { next: { revalidate: 1 } });
+        const response = await fetch(`${baseApiUrl}news/latest?isPublish=true`, { next: { revalidate: 1 } });
         if (!response.ok) throw new Error('Failed to fetch latest news');
         const news = await response.json();
         return news.data.sort((a: NewsArticle, b: NewsArticle) =>
