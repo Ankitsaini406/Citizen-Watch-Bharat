@@ -25,7 +25,7 @@ export default function CategoryNewsClient({
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-    } = useNewsQuery({ category, exclude, limit: DEFAULT_PAGE_SIZE });
+    } = useNewsQuery({ category, isDeleted: false, isPublish: true, exclude, limit: DEFAULT_PAGE_SIZE });
 
     // ✅ Flatten pages safely without using `any`
     const news: NewsArticle[] = useMemo(() => {

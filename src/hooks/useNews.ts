@@ -7,6 +7,8 @@ export interface NewsQueryOptions {
     tags?: string[];
     exclude?: string;
     limit?: number;
+    isDeleted?: boolean;
+    isPublish?: boolean;
 }
 
 export interface PaginatedNewsResponse {
@@ -27,7 +29,7 @@ export interface NewsData {
 
 /** ✅ Unified paginated news hook */
 export const useNewsQuery = (options: NewsQueryOptions = {}) => {
-    const { category, tags, exclude, limit = 9 } = options;
+    const { category, isDeleted, isPublish, tags, exclude, limit = 9 } = options;
 
     return useInfiniteQuery<PaginatedNewsResponse, Error>({
         queryKey: ['news', options],
@@ -43,6 +45,8 @@ export const useNewsQuery = (options: NewsQueryOptions = {}) => {
             if (category) query.append('category', category);
             if (tags?.length) query.append('tags', tags.join(','));
             if (exclude) query.append('exclude', exclude);
+            if (typeof isDeleted === 'boolean') query.append('isDeleted', isDeleted.toString());
+            if (typeof isPublish === 'boolean') query.append('isPublish', isPublish.toString());
 
             const res = await fetch(`${baseApiUrl}news?${query.toString()}`);
             if (!res.ok) throw new Error('Failed to fetch news');
