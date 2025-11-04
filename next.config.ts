@@ -19,6 +19,7 @@ const connectSrc = [
     "'self'",
     "https://api.citizenwatchbharat.com",
     "http://localhost:5007/",
+    "https://www.googletagmanager.com",
     "https://www.google-analytics.com", // <--- ADD THIS
 ].join(" ");
 
