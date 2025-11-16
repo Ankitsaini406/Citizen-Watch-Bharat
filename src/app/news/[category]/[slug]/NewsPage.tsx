@@ -61,7 +61,7 @@ export default function NewsPage() {
 
     return (
         <>
-        <article className="w-full">
+        <article className="w-full px-5 xl:px-0">
             <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-snug">{articleData.news.title}</h1>
 
             {articleData.news.subtitle && (

@@ -65,7 +65,7 @@ export function ScrollableNewsSection({
     if (news.length === 0) return null;
 
     return (
-        <section className={`mt-12 px-6 lg:px-0 ${className}`}>
+        <section className={`mt-12 px-0 ${className}`}>
             <h3 className="text-2xl font-semibold mb-4">{title}</h3>
 
             <div className="relative group">
