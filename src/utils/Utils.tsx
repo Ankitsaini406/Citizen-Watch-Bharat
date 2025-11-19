@@ -21,12 +21,29 @@ export function slugToName(slug: string) {
 export function timeAgo(dateString: string | Date): string {
     const now = new Date();
     const date = new Date(dateString);
-    const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-    if (diff < 60) return `${diff} seconds ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-    return `${Math.floor(diff / 86400)} days ago`;
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    const diffInDays = Math.floor(diffInSeconds / (60 * 60 * 24));
+
+    // If older than 4 days → return actual date
+    if (diffInDays > 4) {
+        return date.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        });
+    }
+
+    // If within 4 days → show time ago
+    if (diffInDays >= 1) return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+
+    const diffInHours = Math.floor(diffInSeconds / 3600);
+    if (diffInHours >= 1) return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes >= 1) return `${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""} ago`;
+
+    return "Just now";
 }
 
 // Password hashing utilities
